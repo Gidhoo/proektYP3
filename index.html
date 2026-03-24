@@ -1,0 +1,1730 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Изысканный Силуэт | Ателье премиум-класса</title>
+    <!-- Шрифт Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&display=swap" rel="stylesheet">
+    <!-- Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- AOS для анимаций -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Подключаем CSS -->
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Стили для фона с GIF */
+        body {
+            background-image: url('https://i.pinimg.com/originals/5e/d5/40/5ed540dfbb39e1cac9b8c8545b959263.gif');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: inherit;
+            filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+            z-index: -1;
+            pointer-events: none;
+        }
+        .header, .footer, main, .modal__content, .admin-panel {
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 12px;
+            margin: 10px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .header:hover, .footer:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 40px rgba(0, 0, 0, 0.15);
+        }
+        main {
+            background-color: transparent;
+            backdrop-filter: none;
+            box-shadow: none;
+        }
+        .hero {
+            background-size: cover !important;
+            background-position: center !important;
+            animation: fadeIn 1.5s ease-out;
+        }
+        /* Стили для Telegram виджета */
+        .telegram-support {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 320px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.2);
+            z-index: 10000;
+            overflow: hidden;
+            transition: transform 0.3s, opacity 0.3s;
+            transform: translateY(calc(100% - 60px));
+            opacity: 0.9;
+            font-family: 'Inter', sans-serif;
+            animation: slideInRight 0.5s ease-out;
+        }
+        .telegram-support:hover {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .telegram-support.expanded {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .telegram-support__header {
+            background: #0088cc;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+        .telegram-support__header:hover {
+            background: #006699;
+        }
+        .telegram-support__header i:first-child {
+            font-size: 20px;
+            animation: pulse 2s infinite;
+        }
+        .telegram-support__header i:last-child {
+            margin-left: auto;
+            transition: transform 0.3s;
+        }
+        .telegram-support.expanded .telegram-support__header i:last-child {
+            transform: rotate(180deg);
+        }
+        .telegram-support__body {
+            max-height: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+        .telegram-support:not(.expanded) .telegram-support__body {
+            display: none;
+        }
+        .telegram-support__messages {
+            height: 300px;
+            overflow-y: auto;
+            padding: 15px;
+            background: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .message {
+            display: flex;
+            gap: 10px;
+            max-width: 80%;
+            animation: slideInLeft 0.3s ease-out;
+        }
+        .message--bot {
+            align-self: flex-start;
+        }
+        .message--user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+        .message__avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #0088cc;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+            transition: transform 0.3s ease;
+        }
+        .message__avatar:hover {
+            transform: scale(1.1);
+        }
+        .message--user .message__avatar {
+            background: #333;
+        }
+        .message__content {
+            background: white;
+            padding: 10px 15px;
+            border-radius: 18px;
+            font-size: 13px;
+            line-height: 1.4;
+            word-break: break-word;
+            transition: transform 0.2s ease;
+        }
+        .message__content:hover {
+            transform: scale(1.02);
+        }
+        .message--user .message__content {
+            background: #0088cc;
+            color: white;
+            border-top-right-radius: 4px;
+        }
+        .message--bot .message__content {
+            border-top-left-radius: 4px;
+        }
+        .telegram-support__input {
+            display: flex;
+            padding: 10px;
+            background: white;
+            border-top: 1px solid #eee;
+        }
+        .telegram-support__input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.3s, transform 0.2s;
+        }
+        .telegram-support__input input:focus {
+            border-color: #0088cc;
+            transform: scale(1.02);
+        }
+        .telegram-support__input button {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: #0088cc;
+            color: white;
+            border-radius: 50%;
+            margin-left: 10px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .telegram-support__input button:hover {
+            background: #006699;
+            transform: scale(1.1) rotate(360deg);
+        }
+        .telegram-support__badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: red;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            animation: pulse 1s infinite;
+        }
+        @media screen and (max-width: 480px) {
+            .telegram-support {
+                width: calc(100% - 40px);
+                right: 20px;
+                bottom: 20px;
+            }
+        }
+        
+        /* ===== НОВЫЕ СТИЛИ ДЛЯ АВТОРИЗАЦИИ И КОРЗИНЫ ===== */
+        .header__inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .user-menu {
+            position: relative;
+            margin: 0 5px;
+        }
+        
+        .user-menu__btn {
+            background: none;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            padding: 8px 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+        }
+        
+        .user-menu__btn:hover {
+            border-color: #0088cc;
+            background: #f5f5f5;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,136,204,0.2);
+        }
+        
+        .user-menu__btn i {
+            font-size: 16px;
+            color: #0088cc;
+            transition: transform 0.3s;
+        }
+        
+        .user-menu__btn:hover i {
+            transform: rotate(360deg);
+        }
+        
+        .user-menu__name {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .user-menu__dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            width: 260px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            margin-top: 10px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+        
+        .user-menu__dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .user-menu__header {
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px 10px 0 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .user-menu__header i {
+            font-size: 32px;
+            color: #0088cc;
+            animation: pulse 2s infinite;
+        }
+        
+        .user-menu__welcome {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .user-menu__user-name {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .user-menu__items {
+            padding: 8px;
+        }
+        
+        .user-menu__item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            color: #333;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+        
+        .user-menu__item:hover {
+            background: #f5f5f5;
+            color: #0088cc;
+            transform: translateX(5px);
+        }
+        
+        .user-menu__item i {
+            width: 18px;
+            color: #666;
+            transition: transform 0.3s;
+        }
+        
+        .user-menu__item:hover i {
+            transform: scale(1.2);
+            color: #0088cc;
+        }
+        
+        .user-menu__divider {
+            height: 1px;
+            background: #eee;
+            margin: 8px 0;
+        }
+        
+        .cart-btn {
+            position: relative;
+            margin: 0 5px;
+        }
+        
+        .cart-btn button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            font-size: 20px;
+            color: #333;
+            transition: color 0.3s, transform 0.3s;
+            padding: 8px;
+        }
+        
+        .cart-btn button:hover {
+            color: #0088cc;
+            transform: scale(1.1);
+        }
+        
+        .cart-counter {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #0088cc;
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            min-width: 18px;
+            height: 18px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 5px;
+            animation: pulse 2s infinite;
+        }
+        
+        /* Модальное окно авторизации */
+        .auth-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 11000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .auth-modal.show {
+            display: flex;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .auth-modal__content {
+            background: white;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 16px;
+            overflow: hidden;
+            animation: slideInUp 0.4s ease-out;
+        }
+        
+        .auth-modal__header {
+            padding: 20px;
+            background: #0088cc;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .auth-modal__header h2 {
+            margin: 0;
+            font-size: 20px;
+        }
+        
+        .auth-modal__close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .auth-modal__close:hover {
+            transform: rotate(90deg);
+        }
+        
+        .auth-modal__body {
+            padding: 30px;
+        }
+        
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .auth-form .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .auth-form .form-group label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #666;
+        }
+        
+        .auth-form .form-group input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .auth-form .form-group input:focus {
+            outline: none;
+            border-color: #0088cc;
+            transform: scale(1.02);
+            box-shadow: 0 0 10px rgba(0,136,204,0.2);
+        }
+        
+        .auth-btn {
+            background: #0088cc;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .auth-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .auth-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .auth-btn:hover {
+            background: #006699;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,136,204,0.3);
+        }
+        
+        .auth-modal__switch {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .auth-modal__switch button {
+            background: none;
+            border: none;
+            color: #0088cc;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: underline;
+            transition: transform 0.3s;
+        }
+        
+        .auth-modal__switch button:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Модальное окно профиля */
+        .profile-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 11000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .profile-modal.show {
+            display: flex;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .profile-modal__content {
+            background: white;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 16px;
+            overflow: hidden;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: slideInUp 0.4s ease-out;
+        }
+        
+        .profile-modal__header {
+            padding: 20px;
+            background: #0088cc;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .profile-modal__close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .profile-modal__close:hover {
+            transform: rotate(90deg);
+        }
+        
+        .profile-modal__body {
+            padding: 30px;
+        }
+        
+        .profile-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .profile-tab {
+            padding: 10px 20px;
+            border: none;
+            background: #f5f5f5;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .profile-tab:hover {
+            background: #e0e0e0;
+            transform: translateY(-2px);
+        }
+        
+        .profile-tab.active {
+            background: #0088cc;
+            color: white;
+        }
+        
+        .profile-tab-content {
+            display: none;
+        }
+        
+        .profile-tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .profile-btn {
+            background: #0088cc;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 5px;
+            width: 100%;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .profile-btn:hover {
+            background: #006699;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,136,204,0.3);
+        }
+        
+        /* Модальное окно корзины */
+        .cart-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 11000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .cart-modal.show {
+            display: flex;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .cart-modal__content {
+            background: white;
+            width: 90%;
+            max-width: 450px;
+            border-radius: 16px;
+            overflow: hidden;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            animation: slideInUp 0.4s ease-out;
+        }
+        
+        .cart-modal__header {
+            padding: 20px;
+            background: #0088cc;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .cart-modal__close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .cart-modal__close:hover {
+            transform: rotate(90deg);
+        }
+        
+        .cart-modal__body {
+            padding: 20px;
+            overflow-y: auto;
+            flex: 1;
+        }
+        
+        .cart-empty {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+        
+        .cart-empty i {
+            font-size: 48px;
+            margin-bottom: 10px;
+            animation: bounce 2s infinite;
+        }
+        
+        .cart-items {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .cart-item {
+            display: flex;
+            gap: 15px;
+            padding: 10px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .cart-item:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-color: #0088cc;
+        }
+        
+        .cart-item__image {
+            width: 70px;
+            height: 70px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .cart-item__image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+        
+        .cart-item:hover .cart-item__image img {
+            transform: scale(1.1);
+        }
+        
+        .cart-item__info {
+            flex: 1;
+        }
+        
+        .cart-item__title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .cart-item__price {
+            color: #0088cc;
+            font-weight: 600;
+        }
+        
+        .cart-item__quantity {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 8px;
+        }
+        
+        .cart-item__quantity button {
+            width: 24px;
+            height: 24px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .cart-item__quantity button:hover {
+            background: #0088cc;
+            color: white;
+            border-color: #0088cc;
+            transform: scale(1.1);
+        }
+        
+        .cart-item__remove {
+            color: #ff4444;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: all 0.3s;
+        }
+        
+        .cart-item__remove:hover {
+            transform: scale(1.2);
+            color: #ff0000;
+        }
+        
+        .cart-modal__footer {
+            padding: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        
+        .cart-checkout-btn {
+            width: 100%;
+            padding: 12px;
+            background: #0088cc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .cart-checkout-btn:hover {
+            background: #006699;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,136,204,0.3);
+        }
+        
+        /* Уведомления */
+        .cart-notification {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 12000;
+            transition: transform 0.3s;
+        }
+        
+        .cart-notification.show {
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        .cart-notification i {
+            animation: pulse 1s infinite;
+        }
+        
+        .order-item {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+        
+        .order-item:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-color: #0088cc;
+        }
+        
+        .order-item__header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .order-item__status {
+            color: #0088cc;
+            font-weight: 600;
+        }
+        
+        .portfolio-price {
+            font-weight: 600;
+            color: #0088cc;
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        
+        .add-to-cart-btn {
+            background: #0088cc;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+            transition: all 0.3s;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .add-to-cart-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .add-to-cart-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .add-to-cart-btn:hover {
+            background: #006699;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,136,204,0.3);
+        }
+        
+        /* Анимации */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideInUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideInRight {
+            from {
+                transform: translateX(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Анимации для карточек товаров */
+        .product-card {
+            transition: all 0.3s;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(0,136,204,0.2);
+        }
+        
+        .product-card__image {
+            overflow: hidden;
+        }
+        
+        .product-card__image img {
+            transition: transform 0.5s;
+        }
+        
+        .product-card:hover .product-card__image img {
+            transform: scale(1.1);
+        }
+        
+        /* Анимации для специальных секций */
+        .special__item {
+            transition: all 0.3s;
+        }
+        
+        .special__item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .special__item i {
+            transition: transform 0.3s;
+        }
+        
+        .special__item:hover i {
+            transform: scale(1.2) rotate(360deg);
+        }
+        
+        .special__link {
+            transition: all 0.3s;
+        }
+        
+        .special__link:hover {
+            transform: translateX(5px);
+            color: #0088cc;
+        }
+        
+        .special-product {
+            transition: all 0.3s;
+        }
+        
+        .special-product:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .special-product__img {
+            transition: transform 0.5s;
+        }
+        
+        .special-product:hover .special-product__img {
+            transform: scale(1.05);
+        }
+        
+        /* Анимации для ссылок в футере */
+        .footer__list a {
+            transition: all 0.3s;
+        }
+        
+        .footer__list a:hover {
+            transform: translateX(5px);
+            color: #0088cc;
+        }
+        
+        .footer__social a {
+            transition: all 0.3s;
+        }
+        
+        .footer__social a:hover {
+            transform: translateY(-5px) scale(1.2);
+            color: #0088cc;
+        }
+    </style>
+    <!-- AOS JavaScript -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+</head>
+<body>
+    <!-- Шапка сайта -->
+    <header class="header">
+        <div class="container header__inner">
+            <div class="logo">
+                <i class="fas fa-cut"></i>
+                <span>ИЗЫСКАННЫЙ СИЛУЭТ</span>
+            </div>
+            
+            <nav class="nav">
+                <a href="index.html" class="active">Главная</a>
+                <a href="services.html">Услуги</a>
+                <a href="portfolio.html">Портфолио</a>
+                <a href="sell.html">Продать вещь</a>
+                <a href="#contacts">Контакты</a>
+            </nav>
+            
+            <!-- Меню пользователя -->
+            <div class="user-menu">
+                <button class="user-menu__btn" id="userMenuBtn">
+                    <i class="fas fa-user"></i>
+                    <span class="user-menu__name" id="userName">Войти</span>
+                </button>
+                <div class="user-menu__dropdown" id="userDropdown">
+                    <div class="user-menu__header">
+                        <i class="fas fa-user-circle"></i>
+                        <div>
+                            <div class="user-menu__welcome">Здравствуйте,</div>
+                            <div class="user-menu__user-name" id="dropdownUserName">Гость</div>
+                        </div>
+                    </div>
+                    <div class="user-menu__items">
+                        <a href="#" class="user-menu__item" id="profileLink">
+                            <i class="fas fa-id-card"></i> Мой профиль
+                        </a>
+                        <a href="#" class="user-menu__item" id="ordersLink">
+                            <i class="fas fa-shopping-bag"></i> Мои заказы
+                        </a>
+                        <div class="user-menu__divider"></div>
+                        <a href="#" class="user-menu__item" id="loginLink">
+                            <i class="fas fa-sign-in-alt"></i> Войти
+                        </a>
+                        <a href="#" class="user-menu__item" id="registerLink">
+                            <i class="fas fa-user-plus"></i> Регистрация
+                        </a>
+                        <a href="#" class="user-menu__item" id="logoutLink" style="display: none;">
+                            <i class="fas fa-sign-out-alt"></i> Выйти
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Корзина -->
+            <div class="cart-btn">
+                <button id="cartBtn">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-counter" id="cartCounter">0</span>
+                </button>
+            </div>
+            
+            <!-- Кнопка записи -->
+            <a href="#" class="btn btn--primary btn--header" id="openModalBtn">
+                <i class="fas fa-calendar-check"></i> Записаться
+            </a>
+            <button class="mobile-nav-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero секция -->
+        <section class="hero" style="background-image: url('https://resizer.mail.ru/p/9f49faca-8282-57b9-90ab-ee0a9f364cd8/AQAFi116BKdbSzallgmR2TGojVVDIr0mEhlmAOpQaHsQ7xIPcReqjL3QprFtmQV7zWB5qR5IDw3bZRnRkxz3ONjjJBs.jpg');">
+            <div class="hero__overlay"></div>
+            <div class="container hero__container">
+                <div class="hero__content">
+                    <span class="hero__badge" data-aos="fade-down">Премиум ателье</span>
+                    <h1 class="hero__title" data-aos="zoom-in">Индивидуальный<br><span>пошив на заказ</span></h1>
+                    <p class="hero__subtitle" data-aos="fade-up" data-aos-delay="100">Создайте свою уникальную вещь с помощью наших мастеров</p>
+                    <div class="hero__buttons" data-aos="fade-up" data-aos-delay="200">
+                        <a href="#" class="btn btn--primary btn--large" id="heroBtn">
+                            <i class="fas fa-calendar-check"></i> Записаться
+                        </a>
+                        <a href="portfolio.html" class="btn btn--outline btn--large">
+                            <i class="fas fa-images"></i> Портфолио
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="container">
+            <!-- Популярные услуги -->
+            <section class="section">
+                <div class="section__header" data-aos="fade-down">
+                    <h2 class="section__title">Самые популярные сейчас</h2>
+                    <p class="section__subtitle">Что чаще всего заказывают в этом сезоне</p>
+                </div>
+                <div class="grid-4">
+                    <!-- Вечернее платье -->
+                    <div class="product-card" data-category="evening" data-aos="flip-left" data-aos-delay="100">
+                        <div class="product-card__image">
+                            <img src="https://avatars.mds.yandex.net/i?id=2a0000019b6ad37dbebd9cd05095d605ad8e-14778405-yarec&n=13" alt="Вечернее платье">
+                        </div>
+                        <div class="product-card__title">Вечернее платье</div>
+                        <div class="product-card__desc">шелк, кружево</div>
+                        <div class="product-card__price portfolio-price">21 500 ₽</div>
+                        <button class="btn btn--small btn--primary add-to-cart-btn" data-name="Вечернее платье" data-price="21500" data-image="https://avatars.mds.yandex.net/i?id=2a0000019b6ad37dbebd9cd05095d605ad8e-14778405-yarec&n=13">
+                            <i class="fas fa-shopping-cart"></i> В корзину
+                        </button>
+                    </div>
+                    <!-- Мужской костюм -->
+                    <div class="product-card" data-category="suit" data-aos="flip-left" data-aos-delay="200">
+                        <div class="product-card__image">
+                            <img src="https://img.joomcdn.net/8188d0822eefac3cf03f38cd8705d53e4e141935_original.jpeg" alt="Мужской костюм">
+                        </div>
+                        <div class="product-card__title">Мужской костюм</div>
+                        <div class="product-card__desc">шерсть, итальянский пошив</div>
+                        <div class="product-card__price portfolio-price">34 900 ₽</div>
+                        <button class="btn btn--small btn--primary add-to-cart-btn" data-name="Мужской костюм" data-price="34900" data-image="https://img.joomcdn.net/8188d0822eefac3cf03f38cd8705d53e4e141935_original.jpeg">
+                            <i class="fas fa-shopping-cart"></i> В корзину
+                        </button>
+                    </div>
+                    <!-- Пальто -->
+                    <div class="product-card" data-category="coat" data-aos="flip-left" data-aos-delay="300">
+                        <div class="product-card__image">
+                            <img src="https://basket-04.wbbasket.ru/vol646/part64616/64616340/images/big/1.webp" alt="Пальто">
+                        </div>
+                        <div class="product-card__title">Кашемировое пальто</div>
+                        <div class="product-card__desc">кашемир 100%</div>
+                        <div class="product-card__price portfolio-price">29 900 ₽</div>
+                        <button class="btn btn--small btn--primary add-to-cart-btn" data-name="Кашемировое пальто" data-price="29900" data-image="https://basket-04.wbbasket.ru/vol646/part64616/64616340/images/big/1.webp">
+                            <i class="fas fa-shopping-cart"></i> В корзину
+                        </button>
+                    </div>
+                    <!-- Свадебное платье -->
+                    <div class="product-card" data-category="wedding" data-aos="flip-left" data-aos-delay="400">
+                        <div class="product-card__image">
+                            <img src="https://sofoly.ru/wp-content/uploads/2025/12/02Gallery13-product-1_3-600x750.jpg" alt="Свадебное платье">
+                        </div>
+                        <div class="product-card__title">Свадебное платье</div>
+                        <div class="product-card__desc">шелк, ручная вышивка</div>
+                        <div class="product-card__price portfolio-price">45 000 ₽</div>
+                        <button class="btn btn--small btn--primary add-to-cart-btn" data-name="Свадебное платье" data-price="45000" data-image="https://sofoly.ru/wp-content/uploads/2025/12/02Gallery13-product-1_3-600x750.jpg">
+                            <i class="fas fa-shopping-cart"></i> В корзину
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Новинки коллекции -->
+            <section class="section">
+                <div class="section__header" data-aos="fade-down">
+                    <h2 class="section__title">Новинки</h2>
+                    <p class="section__subtitle">Свежие поступления в нашем портфолио</p>
+                </div>
+                <div class="grid-3">
+                    <!-- Пальто новинка -->
+                    <div class="product-card" data-aos="zoom-in" data-aos-delay="100">
+                        <div class="product-card__image">
+                            <img src="https://basket-12.wbbasket.ru/vol1710/part171072/171072456/images/big/1.webp" alt="Демисезонное пальто">
+                        </div>
+                        <div class="product-card__title">Демисезонное пальто</div>
+                        <div class="product-card__desc">шерсть, кашемир</div>
+                        <div class="product-card__price portfolio-price">32 900 ₽</div>
+                        <button class="btn btn--small btn--primary add-to-cart-btn" data-name="Демисезонное пальто" data-price="32900" data-image="https://basket-12.wbbasket.ru/vol1710/part171072/171072456/images/big/1.webp">
+                            <i class="fas fa-shopping-cart"></i> В корзину
+                        </button>
+                    </div>
+                    <!-- Пальто зимнее -->
+                    <div class="product-card" data-aos="zoom-in" data-aos-delay="200">
+                        <div class="product-card__image">
+                            <img src="https://avatars.mds.yandex.net/get-mpic/5209134/2a00000195e3e8fb4fd32075b08814e1eafd/orig" alt="Зимнее пальто">
+                        </div>
+                        <div class="product-card__title">Зимнее пальто</div>
+                        <div class="product-card__desc">верблюжья шерсть</div>
+                        <div class="product-card__price portfolio-price">38 900 ₽</div>
+                        <button class="btn btn--small btn--primary add-to-cart-btn" data-name="Зимнее пальто" data-price="38900" data-image="https://avatars.mds.yandex.net/get-mpic/5209134/2a00000195e3e8fb4fd32075b08814e1eafd/orig">
+                            <i class="fas fa-shopping-cart"></i> В корзину
+                        </button>
+                    </div>
+                    <!-- Пальто классическое -->
+                    <div class="product-card" data-aos="zoom-in" data-aos-delay="300">
+                        <div class="product-card__image">
+                            <img src="https://main-cdn.sbermegamarket.ru/big1/hlr-system/-10/030/095/673/523/47/600016055232b0.jpg" alt="Классическое пальто">
+                        </div>
+                        <div class="product-card__title">Классическое пальто</div>
+                        <div class="product-card__desc">английская шерсть</div>
+                        <div class="product-card__price portfolio-price">35 900 ₽</div>
+                        <button class="btn btn--small btn--primary add-to-cart-btn" data-name="Классическое пальто" data-price="35900" data-image="https://main-cdn.sbermegamarket.ru/big1/hlr-system/-10/030/095/673/523/47/600016055232b0.jpg">
+                            <i class="fas fa-shopping-cart"></i> В корзину
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Для вечерних прогулок -->
+            <section class="section">
+                <div class="section__header" data-aos="fade-down">
+                    <h2 class="section__title">Для вечерних прогулок</h2>
+                    <p class="section__subtitle">Элегантные вечерние образы</p>
+                </div>
+                <div class="grid-3">
+                    <!-- Вечернее платье бархат -->
+                    <div class="product-card" data-aos="fade-up" data-aos-delay="100">
+                        <div class="product-card__image">
+                            <img src="https://img.joomcdn.net/2e4ee8a2c39503040bb112db6127340277461fad_original.jpeg" alt="Вечернее платье">
+                        </div>
+                        <div class="product-card__title">Вечернее платье</div>
+                        <div class="product-card__desc">бархат, атлас</div>
+                        <div class="product-card__price portfolio-price">28 900 ₽</div>
+                        <button class="btn btn--small btn--primary add-to-cart-btn" data-name="Вечернее платье" data-price="28900" data-image="https://img.joomcdn.net/2e4ee8a2c39503040bb112db6127340277461fad_original.jpeg">
+                            <i class="fas fa-shopping-cart"></i> В корзину
+                        </button>
+                    </div>
+                    <!-- Платье в пол -->
+                    <div class="product-card" data-aos="fade-up" data-aos-delay="200">
+                        <div class="product-card__image">
+                            <img src="https://img.joomcdn.net/c586358b22b509db5f52240091b48069e14368ae_1024_1024.jpeg" alt="Платье в пол">
+                        </div>
+                        <div class="product-card__title">Платье в пол</div>
+                        <div class="product-card__desc">шифон, пайетки</div>
+                        <div class="product-card__price portfolio-price">31 500 ₽</div>
+                        <button class="btn btn--small btn--primary add-to-cart-btn" data-name="Платье в пол" data-price="31500" data-image="https://img.joomcdn.net/c586358b22b509db5f52240091b48069e14368ae_1024_1024.jpeg">
+                            <i class="fas fa-shopping-cart"></i> В корзину
+                        </button>
+                    </div>
+                    <!-- Коктейльное платье -->
+                    <div class="product-card" data-aos="fade-up" data-aos-delay="300">
+                        <div class="product-card__image">
+                            <img src="https://img.joomcdn.net/c0ed31f57e79c6f9faed6596b76438ee841ebf0a_original.jpeg" alt="Коктейльное платье">
+                        </div>
+                        <div class="product-card__title">Коктейльное платье</div>
+                        <div class="product-card__desc">кружево, атлас</div>
+                        <div class="product-card__price portfolio-price">25 900 ₽</div>
+                        <button class="btn btn--small btn--primary add-to-cart-btn" data-name="Коктейльное платье" data-price="25900" data-image="https://img.joomcdn.net/c0ed31f57e79c6f9faed6596b76438ee841ebf0a_original.jpeg">
+                            <i class="fas fa-shopping-cart"></i> В корзину
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Эксклюзивная линейка -->
+            <section class="brand-block" data-aos="fade-up">
+                <div>
+                    <h3 class="brand-block__title">Взгляните на</h3>
+                    <p class="brand-block__big">SILHOUETTE</p>
+                </div>
+                <div class="brand-block__right">
+                    <p class="brand-block__subtitle">эксклюзивная линейка</p>
+                    <p class="brand-block__small">премиального пошива</p>
+                    <a href="#" class="btn btn--outline btn--small" style="margin-top: 20px;">
+                        <i class="fas fa-arrow-right"></i> Подробнее
+                    </a>
+                </div>
+            </section>
+
+            <!-- Особенные категории -->
+            <section class="special-section">
+                <div class="special__header" data-aos="fade-down">
+                    <h2 class="special__title">Особенные категории</h2>
+                </div>
+
+                <div class="special__grid">
+                    <div class="special__item" data-aos="flip-left" data-aos-delay="100">
+                        <div class="special__icon">
+                            <i class="fas fa-magic"></i>
+                        </div>
+                        <h3>закастомизируем ваш гардероб</h3>
+                        <p class="special__brand">dealer.custom</p>
+                        <a href="castom.html" class="special__link">смотреть <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <div class="special__item" data-aos="flip-right" data-aos-delay="200">
+                        <div class="special__icon">
+                            <i class="fas fa-history"></i>
+                        </div>
+                        <h3>для тех, кто ценит осознанное потребление</h3>
+                        <p class="special__brand">pre-loved by dealer</p>
+                        <a href="preloved.html" class="special__link">смотреть <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <!-- Блок с товарами -->
+                <div class="special__products">
+                    <h3 class="special__subtitle" data-aos="fade-right">В наличии</h3>
+                    <div class="special__products-grid">
+                        <div class="special-product" data-aos="zoom-in" data-aos-delay="100">
+                            <img src="https://img.joomcdn.net/a364d16208734ec5576e9928d35222c1073f1900_original.jpeg" alt="Сумка" class="special-product__img">
+                            <div class="special-product__info">
+                                <h4>Изумительные туфли</h4>
+                                <p class="special-product__brand">Le Mio</p>
+                                <p class="special-product__price portfolio-price">21 999 ₽</p>
+                                <button class="btn btn--small btn--primary add-to-cart-btn" data-name="Изумительные туфли" data-price="21999" data-image="https://img.joomcdn.net/a364d16208734ec5576e9928d35222c1073f1900_original.jpeg">
+                                    <i class="fas fa-shopping-cart"></i> В корзину
+                                </button>
+                            </div>
+                        </div>
+                        <div class="special-product" data-aos="zoom-in" data-aos-delay="200">
+                            <img src="https://as2.ftcdn.net/jpg/00/46/13/99/1000_F_46139918_5aSke9W0usn5LX5OjqXDb09d2DAOZMhU.jpg" alt="Сумка" class="special-product__img">
+                            <div class="special-product__info">
+                                <h4>Костюмы от известных брендов</h4>
+                                <p class="special-product__brand">Le Bandito</p>
+                                <p class="special-product__price portfolio-price">21 999 ₽</p>
+                                <button class="btn btn--small btn--primary add-to-cart-btn" data-name="Костюмы от известных брендов" data-price="21999" data-image="https://as2.ftcdn.net/jpg/00/46/13/99/1000_F_46139918_5aSke9W0usn5LX5OjqXDb09d2DAOZMhU.jpg">
+                                    <i class="fas fa-shopping-cart"></i> В корзину
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Два промо-блока -->
+                <div class="special__promo-grid">
+                    <div class="special__promo" data-aos="fade-right" data-aos-delay="100">
+                        <h3>Продай свою вещь вместе с нами</h3>
+                        <p>Реализуем позиции, которые потеряли актуальность в вашем гардеробе</p>
+                        <a href="sell.html" class="btn btn--outline btn--small">Оставить заявку</a>
+                    </div>
+                    <div class="special__promo special__promo--dark" data-aos="fade-left" data-aos-delay="200">
+                        <h3>Скидка 7%</h3>
+                        <p>Получите скидку 7% на первую примерку при подписке на наши новости</p>
+                        <a href="https://www.figma.com/design/oXlswsyVJVMjyVTkNim4KX/Интернет-магазин---Женской-одежды?node-id=132-1671&p=f" class="btn btn--primary btn--small">Подписаться</a>
+                    </div>
+                </div>
+
+                <!-- Бренд блок -->
+                <div class="special__brand-block" data-aos="zoom-in">
+                    <div class="special__brand-logo">
+                        <i class="fas fa-cut"></i> ИЗЫСКАННЫЙ СИЛУЭТ
+                    </div>
+                    <p class="special__brand-description">Ваш поставщик в мир эксклюзивного пошива с доставкой по всей России</p>
+                    <div class="special__brand-buttons">
+                        <a href="portfolio.html" class="btn btn--primary">КАТАЛОГ</a>
+                        <a href="#" class="btn btn--outline">МЕНЮ</a>
+                        <a href="" class="btn btn--outline">ПОДДЕРЖКА</a>
+                    </div>
+                </div>
+
+                <!-- Три колонки ссылок -->
+                <div class="special__links-grid">
+                    <div class="special__links-col" data-aos="fade-up" data-aos-delay="100">
+                        <h4>Категории</h4>
+                        <ul>
+                            <li><a href="#">Одежда</a></li>
+                            <li><a href="#">Обучение</a></li>
+                            <li><a href="#">Аксессуары</a></li>
+                            <li><a href="#">Сумки</a></li>
+                            <li><a href="#">Pre-loved</a></li>
+                            <li><a href="#">Custom</a></li>
+                        </ul>
+                    </div>
+                    <div class="special__links-col" data-aos="fade-up" data-aos-delay="200">
+                        <h4>Информация</h4>
+                        <ul>
+                            <li><a href="#">О нас</a></li>
+                            <li><a href="#">Продать свою одежду</a></li>
+                            <li><a href="#">Консьерж</a></li>
+                            <li><a href="#">Клиентский сервис</a></li>
+                        </ul>
+                    </div>
+                    <div class="special__links-col" data-aos="fade-up" data-aos-delay="300">
+                        <h4>Помощь</h4>
+                        <ul>
+                            <li><a href="#">Доставка</a></li>
+                            <li><a href="#">Оплата</a></li>
+                            <li><a href="#">Частые вопросы</a></li>
+                            <li><a href="#">Отправить заказ</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Подвал сайта -->
+    <footer id="contacts" class="footer">
+        <div class="container">
+            <div class="footer__grid">
+                <div class="footer__col" data-aos="fade-up" data-aos-delay="100">
+                    <div class="footer__logo">
+                        <i class="fas fa-cut"></i> ИЗЫСКАННЫЙ СИЛУЭТ
+                    </div>
+                    <p class="footer__text">Премиальное ателье индивидуального пошива. Работаем с 2010 года.</p>
+                    <div class="footer__social">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-vk"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer__col" data-aos="fade-up" data-aos-delay="200">
+                    <h4 class="footer__title">Навигация</h4>
+                    <ul class="footer__list">
+                        <li><a href="index.html">Главная</a></li>
+                        <li><a href="services.html">Услуги</a></li>
+                        <li><a href="portfolio.html">Портфолио</a></li>
+                        <li><a href="#contacts">Контакты</a></li>
+                    </ul>
+                </div>
+                <div class="footer__col" data-aos="fade-up" data-aos-delay="300">
+                    <h4 class="footer__title">Услуги</h4>
+                    <ul class="footer__list">
+                        <li><a href="#" class="service-link" data-service="dress">Вечерние платья</a></li>
+                        <li><a href="#" class="service-link" data-service="wedding">Свадебные платья</a></li>
+                        <li><a href="#" class="service-link" data-service="suit">Мужские костюмы</a></li>
+                        <li><a href="#" class="service-link" data-service="coat">Пальто</a></li>
+                    </ul>
+                </div>
+                <div class="footer__col" data-aos="fade-up" data-aos-delay="400">
+                    <h4 class="footer__title">Контакты</h4>
+                    <ul class="footer__list">
+                        <li><i class="fas fa-phone-alt"></i> +7 (999) 777-77-77</li>
+                        <li><i class="fas fa-envelope"></i> info@siluet.ru</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Москва, ул. Тверская, 15</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom" data-aos="fade-up" data-aos-delay="500">
+                <p>© 2025 Изысканный Силуэт — ателье индивидуального пошива</p>
+                <p>Сделано с заботой о качестве</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Модальное окно для записи -->
+    <div id="appointmentModal" class="modal">
+        <div class="modal__content">
+            <span class="modal__close">&times;</span>
+            <h2 class="modal__title">Запись на примерку</h2>
+            <form id="appointmentForm">
+                <div class="form-group">
+                    <label for="name">Ваше имя *</label>
+                    <input type="text" id="name" name="name" required placeholder="Введите ваше имя">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Телефон *</label>
+                    <input type="tel" id="phone" name="phone" required placeholder="+7 (___) ___-__-__">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="example@mail.ru">
+                </div>
+                <div class="form-group">
+                    <label for="service">Услуга</label>
+                    <select id="service" name="service">
+                        <option value="consultation">Консультация</option>
+                        <option value="dress">Пошив платья</option>
+                        <option value="suit">Пошив костюма</option>
+                        <option value="coat">Пошив пальто</option>
+                        <option value="repair">Ремонт одежды</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="date">Желаемая дата</label>
+                    <input type="date" id="date" name="date">
+                </div>
+                <div class="form-group">
+                    <label for="time">Желаемое время</label>
+                    <input type="time" id="time" name="time">
+                </div>
+                <div class="form-group">
+                    <label for="comment">Комментарий</label>
+                    <textarea id="comment" name="comment" rows="3" placeholder="Ваши пожелания..."></textarea>
+                </div>
+                <button type="submit" class="btn btn--primary btn--large">
+                    <i class="fas fa-paper-plane"></i> Отправить заявку
+                </button>
+            </form>
+            <div id="formMessage" class="form-message"></div>
+        </div>
+    </div>
+
+    <!-- Telegram Support Widget -->
+    <div id="telegram-support" class="telegram-support">
+        <div class="telegram-support__header" id="toggleSupport">
+            <i class="fab fa-telegram"></i>
+            <span>Чат поддержки</span>
+            <i class="fas fa-chevron-up" id="supportToggleIcon"></i>
+        </div>
+        <div class="telegram-support__body" id="supportBody">
+            <div class="telegram-support__messages" id="supportMessages">
+                <div class="message message--bot">
+                    <div class="message__avatar"><i class="fas fa-robot"></i></div>
+                    <div class="message__content">
+                        Здравствуйте! Чем я могу помочь? Напишите ваш вопрос, и администратор ответит вам в Telegram.
+                    </div>
+                </div>
+            </div>
+            <div class="telegram-support__input">
+                <input type="text" id="supportMessageInput" placeholder="Ваш вопрос..." maxlength="500">
+                <button id="sendSupportMessage"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно авторизации -->
+    <div class="auth-modal" id="authModal">
+        <div class="auth-modal__content">
+            <div class="auth-modal__header">
+                <h2 id="authModalTitle">Вход в личный кабинет</h2>
+                <button class="auth-modal__close" id="closeAuthModal">&times;</button>
+            </div>
+            <div class="auth-modal__body">
+                <form id="loginForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" required placeholder="Введите email">
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Пароль</label>
+                        <input type="password" id="loginPassword" required placeholder="Введите пароль">
+                    </div>
+                    <button type="submit" class="auth-btn">Войти</button>
+                </form>
+                
+                <form id="registerForm" class="auth-form" style="display: none;">
+                    <div class="form-group">
+                        <label for="regName">Имя</label>
+                        <input type="text" id="regName" required placeholder="Введите имя">
+                    </div>
+                    <div class="form-group">
+                        <label for="regEmail">Email</label>
+                        <input type="email" id="regEmail" required placeholder="Введите email">
+                    </div>
+                    <div class="form-group">
+                        <label for="regPhone">Телефон</label>
+                        <input type="tel" id="regPhone" placeholder="+7 (___) ___-__-__">
+                    </div>
+                    <div class="form-group">
+                        <label for="regPassword">Пароль</label>
+                        <input type="password" id="regPassword" required placeholder="Введите пароль">
+                    </div>
+                    <div class="form-group">
+                        <label for="regConfirmPassword">Подтверждение пароля</label>
+                        <input type="password" id="regConfirmPassword" required placeholder="Повторите пароль">
+                    </div>
+                    <button type="submit" class="auth-btn">Зарегистрироваться</button>
+                </form>
+                
+                <div class="auth-modal__switch">
+                    <span id="switchAuthText">Нет аккаунта?</span>
+                    <button id="switchAuthBtn">Зарегистрироваться</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно профиля -->
+    <div class="profile-modal" id="profileModal">
+        <div class="profile-modal__content">
+            <div class="profile-modal__header">
+                <h2>Личный кабинет</h2>
+                <button class="profile-modal__close" id="closeProfileModal">&times;</button>
+            </div>
+            <div class="profile-modal__body">
+                <div class="profile-tabs">
+                    <button class="profile-tab active" data-tab="profile">Профиль</button>
+                    <button class="profile-tab" data-tab="orders">Мои заказы</button>
+                </div>
+                
+                <div class="profile-tab-content active" id="profileTab">
+                    <form id="profileForm">
+                        <div class="form-group">
+                            <label>Имя</label>
+                            <input type="text" id="profileName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="profileEmail" required readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Телефон</label>
+                            <input type="tel" id="profilePhone">
+                        </div>
+                        <button type="submit" class="profile-btn">Сохранить изменения</button>
+                    </form>
+                </div>
+                
+                <div class="profile-tab-content" id="ordersTab">
+                    <div id="ordersList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно корзины -->
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-modal__content">
+            <div class="cart-modal__header">
+                <h2>Корзина</h2>
+                <button class="cart-modal__close" id="closeCartModal">&times;</button>
+            </div>
+            <div class="cart-modal__body" id="cartBody">
+                <div class="cart-empty" id="cartEmpty">
+                    <i class="fas fa-shopping-cart"></i>
+                    <p>Корзина пуста</p>
+                </div>
+                <div class="cart-items" id="cartItems"></div>
+            </div>
+            <div class="cart-modal__footer" id="cartFooter">
+                <div class="cart-total">
+                    <span>Итого:</span>
+                    <span id="cartTotalPrice">0 ₽</span>
+                </div>
+                <button class="cart-checkout-btn" id="checkoutBtn">Оформить заказ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Подключение скриптов -->
+    <script src="script.js"></script>
+    <script>
+        // Инициализация AOS
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 50
+        });
+    </script>
+</body>
+</html>

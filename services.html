@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Услуги — Изысканный Силуэт | Ателье</title>
+    <!-- Шрифт Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- AOS для анимаций -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideInUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Шапка */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            animation: slideInDown 0.8s ease-out;
+        }
+
+        .header__inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 0;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+            transition: transform 0.3s;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo i {
+            color: #0088cc;
+            margin-right: 5px;
+            transition: transform 0.3s;
+        }
+
+        .logo:hover i {
+            transform: rotate(360deg);
+        }
+
+        .nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #3e4446;
+            transition: width 0.3s;
+        }
+
+        .nav a:hover::after,
+        .nav a.active::after {
+            width: 100%;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            color: #3e4446;
+        }
+
+        /* Кнопки */
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn--primary {
+            background: #000000;
+            color: white;
+        }
+
+        .btn--primary:hover {
+            background: #000000;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,136,204,0.3);
+        }
+
+        /* Заголовок страницы с гифкой */
+        .page-header {
+            background-image: url('https://kostum-i-galstuk.ru/wp-content/uploads/2025/09/seo-image.jpg');
+            background-size: cover;
+            background-position: center 30%;
+            background-attachment: fixed;
+            position: relative;
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 100%);
+            backdrop-filter: blur(2px);
+        }
+
+        .page-header .container {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            padding: 60px 20px;
+        }
+
+        .page-header span {
+            display: inline-block;
+            font-size: 18px;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            padding: 10px 25px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50px;
+            font-weight: 400;
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(5px);
+            color: white;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            animation: slideInUp 0.8s ease-out;
+        }
+
+        .page-header h1 {
+            font-size: 90px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 30px rgba(0,0,0,0.5);
+            line-height: 1.1;
+            letter-spacing: -2px;
+            color: white;
+            animation: scaleIn 0.8s ease-out 0.2s both;
+        }
+
+        .page-header .line {
+            width: 120px;
+            height: 4px;
+            background: linear-gradient(90deg, #0088cc, #00aaff);
+            margin: 25px auto;
+            border-radius: 4px;
+            box-shadow: 0 0 20px rgba(0,136,204,0.7);
+            animation: slideInUp 0.8s ease-out 0.4s both;
+        }
+
+        /* Услуги - уменьшенные карточки */
+        .services-page {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .service-detailed {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s;
+            animation: slideInUp 0.8s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .service-detailed:nth-child(1) { animation-delay: 0.1s; }
+        .service-detailed:nth-child(2) { animation-delay: 0.2s; }
+        .service-detailed:nth-child(3) { animation-delay: 0.3s; }
+        .service-detailed:nth-child(4) { animation-delay: 0.4s; }
+
+        .service-detailed:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .service-detailed__image {
+            height: 100%;
+            min-height: 280px;
+            overflow: hidden;
+        }
+
+        .service-detailed__image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s;
+        }
+
+        .service-detailed:hover .service-detailed__image img {
+            transform: scale(1.1);
+        }
+
+        .service-detailed__content {
+            padding: 30px 30px 30px 0;
+            animation: slideInRight 0.8s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .service-detailed:nth-child(1) .service-detailed__content { animation-delay: 0.2s; }
+        .service-detailed:nth-child(2) .service-detailed__content { animation-delay: 0.3s; }
+        .service-detailed:nth-child(3) .service-detailed__content { animation-delay: 0.4s; }
+        .service-detailed:nth-child(4) .service-detailed__content { animation-delay: 0.5s; }
+
+        .service-detailed__content h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: #222;
+            transition: transform 0.3s;
+        }
+
+        .service-detailed:hover .service-detailed__content h2 {
+            transform: translateX(5px);
+        }
+
+        .service-detailed__price {
+            font-size: 22px;
+            font-weight: 700;
+            color: #0088cc;
+            margin-bottom: 15px;
+            transition: transform 0.3s;
+        }
+
+        .service-detailed:hover .service-detailed__price {
+            transform: translateX(5px);
+        }
+
+        .service-detailed__desc {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #666;
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+        }
+
+        .service-detailed:hover .service-detailed__desc {
+            transform: translateX(5px);
+        }
+
+        .service-detailed__content h3 {
+            font-size: 18px;
+            margin-bottom: 12px;
+            color: #333;
+            transition: transform 0.3s;
+        }
+
+        .service-detailed:hover .service-detailed__content h3 {
+            transform: translateX(5px);
+        }
+
+        .service-detailed__list {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .service-detailed__list li {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #555;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .service-detailed__list li:hover {
+            transform: translateX(5px);
+            color: #0088cc;
+        }
+
+        .service-detailed__list li:hover i {
+            transform: scale(1.2);
+        }
+
+        .service-detailed__list i {
+            color: #4CAF50;
+            font-size: 14px;
+            transition: transform 0.3s;
+        }
+
+        .order-btn {
+            padding: 12px 25px;
+            font-size: 15px;
+            background: #000000;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .order-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .order-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .order-btn:hover {
+            background: #000000;
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* Подвал */
+        .footer {
+            background: #1a1a1a;
+            color: white;
+            padding: 60px 0 20px;
+            margin-top: 60px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .footer__grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer__col {
+            animation: slideInUp 0.6s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .footer__col:nth-child(1) { animation-delay: 0.1s; }
+        .footer__col:nth-child(2) { animation-delay: 0.2s; }
+        .footer__col:nth-child(3) { animation-delay: 0.3s; }
+        .footer__col:nth-child(4) { animation-delay: 0.4s; }
+
+        .footer__logo {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            transition: transform 0.3s;
+        }
+
+        .footer__logo:hover {
+            transform: translateX(5px);
+        }
+
+        .footer__logo i {
+            color: #0088cc;
+            transition: transform 0.3s;
+        }
+
+        .footer__logo:hover i {
+            transform: rotate(360deg);
+        }
+
+        .footer__text {
+            color: #999;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .footer__social {
+            display: flex;
+            gap: 15px;
+        }
+
+        .footer__social a {
+            color: #999;
+            font-size: 20px;
+            transition: all 0.3s;
+        }
+
+        .footer__social a:hover {
+            color: #0088cc;
+            transform: translateY(-5px) scale(1.2);
+        }
+
+        .footer__title {
+            margin-bottom: 20px;
+            font-size: 18px;
+            transition: transform 0.3s;
+        }
+
+        .footer__title:hover {
+            transform: translateX(5px);
+        }
+
+        .footer__list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer__list li {
+            margin-bottom: 10px;
+            font-size: 14px;
+            transition: transform 0.3s;
+        }
+
+        .footer__list li:hover {
+            transform: translateX(5px);
+        }
+
+        .footer__list a {
+            color: #999;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .footer__list a:hover {
+            color: #0088cc;
+        }
+
+        .footer__bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            color: #999;
+            font-size: 14px;
+            animation: fadeIn 1s ease-out 0.5s both;
+        }
+
+        /* Модальное окно */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 11000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal__content {
+            background: white;
+            width: 90%;
+            max-width: 500px;
+            padding: 30px;
+            border-radius: 16px;
+            position: relative;
+            animation: slideInUp 0.4s ease-out;
+        }
+
+        .modal__close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            cursor: pointer;
+            color: #999;
+            transition: all 0.3s;
+        }
+
+        .modal__close:hover {
+            color: #333;
+            transform: rotate(90deg) scale(1.2);
+        }
+
+        .modal__title {
+            margin-bottom: 20px;
+            font-size: 24px;
+            animation: slideInDown 0.4s ease-out;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            animation: slideInRight 0.4s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .form-group:nth-child(1) { animation-delay: 0.1s; }
+        .form-group:nth-child(2) { animation-delay: 0.2s; }
+        .form-group:nth-child(3) { animation-delay: 0.3s; }
+        .form-group:nth-child(4) { animation-delay: 0.4s; }
+        .form-group:nth-child(5) { animation-delay: 0.5s; }
+        .form-group:nth-child(6) { animation-delay: 0.6s; }
+        .form-group:nth-child(7) { animation-delay: 0.7s; }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #555;
+            transition: transform 0.3s;
+        }
+
+        .form-group:hover label {
+            transform: translateX(5px);
+            color: #0088cc;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #0088cc;
+            transform: scale(1.02);
+            box-shadow: 0 0 10px rgba(0,136,204,0.2);
+        }
+
+        .form-group input:hover,
+        .form-group select:hover,
+        .form-group textarea:hover {
+            border-color: #0088cc;
+        }
+
+        .form-message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+            animation: pulse 0.5s ease-out;
+        }
+
+        @media screen and (max-width: 768px) {
+            .service-detailed {
+                grid-template-columns: 1fr;
+            }
+            
+            .service-detailed__image {
+                min-height: 200px;
+            }
+            
+            .service-detailed__content {
+                padding: 20px;
+            }
+            
+            .footer__grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .page-header h1 {
+                font-size: 60px;
+            }
+            
+            .nav {
+                display: none;
+            }
+        }
+        
+        @media screen and (max-width: 480px) {
+            .footer__grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-header h1 {
+                font-size: 40px;
+            }
+            
+            .page-header span {
+                font-size: 14px;
+                letter-spacing: 3px;
+            }
+        }
+    </style>
+    <!-- AOS JavaScript -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+</head>
+<body>
+    <!-- Шапка сайта -->
+    <header class="header">
+        <div class="container header__inner">
+            <div class="logo">
+                <i class="fas fa-cut"></i>
+                <span>ИЗЫСКАННЫЙ СИЛУЭТ</span>
+            </div>
+            <nav class="nav">
+                <a href="index.html">Главная</a>
+                <a href="services.html" class="active">Услуги</a>
+                <a href="portfolio.html">Портфолио</a>
+                <a href="index.html#contacts">Контакты</a>
+            </nav>
+            <a href="#" class="btn btn--primary btn--header" id="openModalBtn">
+                <i class="fas fa-calendar-check"></i> Записаться
+            </a>
+            
+        </div>
+    </header>
+
+    <main>
+        <!-- Заголовок страницы с гифкой -->
+        <section class="page-header">
+            <div class="container">
+                <span>UNRIVALED VERSATILITY</span>
+                <h1>Наши услуги</h1>
+                <div class="line"></div>
+            </div>
+        </section>
+
+        <div class="container">
+            <!-- Все услуги -->
+            <section class="services-page">
+                <!-- Пошив женской одежды -->
+                <div class="service-detailed" id="womens">
+                    <div class="service-detailed__image">
+                        <img src="https://avatars.mds.yandex.net/i?id=2a0000019b6ad37dbebd9cd05095d605ad8e-14778405-yarec&n=13" alt="Женская одежда">
+                    </div>
+                    <div class="service-detailed__content">
+                        <h2>Пошив женской одежды</h2>
+                        <p class="service-detailed__price">от 5 000 ₽</p>
+                        <p class="service-detailed__desc">Индивидуальный пошив женской одежды любой сложности. Мы создаем уникальные модели, которые идеально сидят по фигуре и подчеркивают вашу индивидуальность.</p>
+                        
+                        <h3>Что мы шьем:</h3>
+                        <ul class="service-detailed__list">
+                            <li><i class="fas fa-check"></i> Вечерние платья</li>
+                            <li><i class="fas fa-check"></i> Свадебные платья</li>
+                            <li><i class="fas fa-check"></i> Блузы</li>
+                            <li><i class="fas fa-check"></i> Юбки</li>
+                            <li><i class="fas fa-check"></i> Жакеты</li>
+                            <li><i class="fas fa-check"></i> Пальто</li>
+                        </ul>
+                        
+                        <button class="order-btn" onclick="openAppointmentModal('dress')">
+                            <i class="fas fa-calendar-check"></i> Заказать пошив
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Мужские костюмы -->
+                <div class="service-detailed" id="mens">
+                    <div class="service-detailed__image">
+                        <img src="https://img.joomcdn.net/8188d0822eefac3cf03f38cd8705d53e4e141935_original.jpeg" alt="Мужской костюм">
+                    </div>
+                    <div class="service-detailed__content">
+                        <h2>Мужские костюмы на заказ</h2>
+                        <p class="service-detailed__price">от 15 000 ₽</p>
+                        <p class="service-detailed__desc">Классические и современные мужские костюмы, сшитые по вашим меркам. Идеальная посадка, качественные ткани и безупречный стиль.</p>
+                        
+                        <h3>Варианты:</h3>
+                        <ul class="service-detailed__list">
+                            <li><i class="fas fa-check"></i> Двойка (пиджак+брюки)</li>
+                            <li><i class="fas fa-check"></i> Тройка (с жилетом)</li>
+                            <li><i class="fas fa-check"></i> Смокинг</li>
+                            <li><i class="fas fa-check"></i> Классический</li>
+                        </ul>
+                        
+                        <button class="order-btn" onclick="openAppointmentModal('suit')">
+                            <i class="fas fa-calendar-check"></i> Заказать костюм
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Пальто -->
+                <div class="service-detailed" id="coats">
+                    <div class="service-detailed__image">
+                        <img src="https://basket-04.wbbasket.ru/vol646/part64616/64616340/images/big/1.webp" alt="Пальто">
+                    </div>
+                    <div class="service-detailed__content">
+                        <h2>Пошив пальто</h2>
+                        <p class="service-detailed__price">от 12 000 ₽</p>
+                        <p class="service-detailed__desc">Элегантные и теплые пальто на любой сезон. Используем только лучшие ткани: кашемир, шерсть, альпака.</p>
+                        
+                        <h3>Виды пальто:</h3>
+                        <ul class="service-detailed__list">
+                            <li><i class="fas fa-check"></i> Классическое пальто</li>
+                            <li><i class="fas fa-check"></i> Пальто оверсайз</li>
+                            <li><i class="fas fa-check"></i> Демисезонное</li>
+                            <li><i class="fas fa-check"></i> Зимнее с мехом</li>
+                        </ul>
+                        
+                        <button class="order-btn" onclick="openAppointmentModal('coat')">
+                            <i class="fas fa-calendar-check"></i> Заказать пальто
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Ремонт одежды -->
+                <div class="service-detailed" id="repair">
+                    <div class="service-detailed__image">
+                        <img src="https://main-cdn.sbermegamarket.ru/big1/hlr-system/-10/030/095/673/523/47/600016055232b0.jpg" alt="Ремонт одежды">
+                    </div>
+                    <div class="service-detailed__content">
+                        <h2>Ремонт и реставрация</h2>
+                        <p class="service-detailed__price">от 500 ₽</p>
+                        <p class="service-detailed__desc">Профессиональный ремонт одежды любой сложности. Вернем вторую жизнь вашим любимым вещам!</p>
+                        
+                        <h3>Виды работ:</h3>
+                        <ul class="service-detailed__list">
+                            <li><i class="fas fa-check"></i> Укорачивание брюк, юбок</li>
+                            <li><i class="fas fa-check"></i> Замена молний</li>
+                            <li><i class="fas fa-check"></i> Ушивка по фигуре</li>
+                            <li><i class="fas fa-check"></i> Реставрация изделий</li>
+                        </ul>
+                        
+                        <button class="order-btn" onclick="openAppointmentModal('repair')">
+                            <i class="fas fa-calendar-check"></i> Заказать ремонт
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Подвал сайта -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__grid">
+                <div class="footer__col">
+                    <div class="footer__logo">
+                        <i class="fas fa-cut"></i> ИЗЫСКАННЫЙ СИЛУЭТ
+                    </div>
+                    <p class="footer__text">Премиальное ателье индивидуального пошива. Работаем с 2010 года.</p>
+                    <div class="footer__social">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-vk"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer__col">
+                    <h4 class="footer__title">Навигация</h4>
+                    <ul class="footer__list">
+                        <li><a href="index.html">Главная</a></li>
+                        <li><a href="services.html">Услуги</a></li>
+                        <li><a href="index.html#portfolio">Портфолио</a></li>
+                        <li><a href="index.html#contacts">Контакты</a></li>
+                    </ul>
+                </div>
+                <div class="footer__col">
+                    <h4 class="footer__title">Услуги</h4>
+                    <ul class="footer__list">
+                        <li><a href="#womens">Вечерние платья</a></li>
+                        <li><a href="#mens">Мужские костюмы</a></li>
+                        <li><a href="#coats">Пальто</a></li>
+                        <li><a href="#repair">Ремонт</a></li>
+                    </ul>
+                </div>
+                <div class="footer__col">
+                    <h4 class="footer__title">Контакты</h4>
+                    <ul class="footer__list">
+                        <li><i class="fas fa-phone-alt"></i> +7 (999) 777-77-77</li>
+                        <li><i class="fas fa-envelope"></i> info@siluet.ru</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Москва, ул. Тверская, 15</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>© 2025 Изысканный Силуэт — ателье индивидуального пошива</p>
+                <p>Сделано с заботой о качестве</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Модальное окно для записи -->
+    <div class="modal" id="appointmentModal">
+        <div class="modal__content">
+            <span class="modal__close" id="closeModal">&times;</span>
+            <h2 class="modal__title">Запись на примерку</h2>
+            <form id="appointmentForm">
+                <div class="form-group">
+                    <label for="name">Ваше имя *</label>
+                    <input type="text" id="name" required placeholder="Введите ваше имя">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Телефон *</label>
+                    <input type="tel" id="phone" required placeholder="+7 (___) ___-__-__">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="example@mail.ru">
+                </div>
+                <div class="form-group">
+                    <label for="service">Услуга</label>
+                    <select id="service">
+                        <option value="consultation">Консультация</option>
+                        <option value="dress">Пошив платья</option>
+                        <option value="suit">Пошив костюма</option>
+                        <option value="coat">Пошив пальто</option>
+                        <option value="repair">Ремонт одежды</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="date">Желаемая дата</label>
+                    <input type="date" id="date">
+                </div>
+                <div class="form-group">
+                    <label for="time">Желаемое время</label>
+                    <input type="time" id="time">
+                </div>
+                <div class="form-group">
+                    <label for="comment">Комментарий</label>
+                    <textarea id="comment" rows="3" placeholder="Ваши пожелания..."></textarea>
+                </div>
+                <button type="submit" class="btn btn--primary btn--large" style="width: 100%;">
+                    <i class="fas fa-paper-plane"></i> Отправить заявку
+                </button>
+            </form>
+            <div id="formMessage" class="form-message"></div>
+        </div>
+    </div>
+
+    <script>
+        // Инициализация AOS
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 50
+        });
+
+        // Telegram конфигурация
+        const TELEGRAM_CONFIG = {
+            BOT_TOKEN: '8637443515:AAFVvbYdYrpDRhrbq6UsUJqEGDRWqU0XS_0',
+            CHAT_ID: '1551325264'
+        };
+
+        // Элементы модального окна
+        const modal = document.getElementById('appointmentModal');
+        const closeBtn = document.getElementById('closeModal');
+        const openBtns = document.querySelectorAll('#openModalBtn, .order-btn');
+        const form = document.getElementById('appointmentForm');
+        const formMessage = document.getElementById('formMessage');
+        const serviceSelect = document.getElementById('service');
+
+        // Функция открытия модалки
+        window.openAppointmentModal = function(service) {
+            if (service && serviceSelect) {
+                serviceSelect.value = service;
+            }
+            if (modal) {
+                modal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+                
+                // Анимация для модального окна
+                const modalContent = modal.querySelector('.modal__content');
+                modalContent.style.animation = 'none';
+                modalContent.offsetHeight;
+                modalContent.style.animation = 'slideInUp 0.4s ease-out';
+            }
+        };
+
+        // Закрытие модалки
+        if (closeBtn) {
+            closeBtn.addEventListener('click', function() {
+                modal.classList.remove('show');
+                document.body.style.overflow = 'auto';
+            });
+        }
+
+        // Открытие по кнопкам
+        openBtns.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Анимация кнопки
+                btn.style.transform = 'scale(0.95)';
+                setTimeout(() => btn.style.transform = 'scale(1)', 200);
+                
+                const service = this.dataset.service;
+                openAppointmentModal(service);
+            });
+        });
+
+        // Закрытие по клику на фон
+        window.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.classList.remove('show');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Маска для телефона
+        const phoneInput = document.getElementById('phone');
+        if (phoneInput) {
+            phoneInput.addEventListener('input', function(e) {
+                let x = e.target.value.replace(/\D/g, '').match(/(\d{0,1})(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/);
+                e.target.value = !x[2] ? x[1] : '+7 (' + x[2] + ') ' + (x[3] ? x[3] : '') + (x[4] ? '-' + x[4] : '') + (x[5] ? '-' + x[5] : '');
+            });
+        }
+
+        // Минимальная дата
+        const dateInput = document.getElementById('date');
+        if (dateInput) {
+            const today = new Date().toISOString().split('T')[0];
+            dateInput.min = today;
+        }
+
+        // Отправка формы
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('name')?.value.trim();
+                const phone = document.getElementById('phone')?.value.trim();
+                
+                if (!name || !phone) {
+                    showFormMessage('Пожалуйста, заполните обязательные поля', 'error');
+                    return;
+                }
+                
+                if (phone.replace(/\D/g, '').length < 11) {
+                    showFormMessage('Введите корректный номер телефона', 'error');
+                    return;
+                }
+                
+                const formData = {
+                    name: name,
+                    phone: phone,
+                    email: document.getElementById('email')?.value.trim() || 'не указан',
+                    service: serviceSelect?.value || 'consultation',
+                    date: document.getElementById('date')?.value || 'не указана',
+                    time: document.getElementById('time')?.value || 'не указано',
+                    comment: document.getElementById('comment')?.value.trim() || 'нет'
+                };
+                
+                // Отправка в Telegram
+                const message = `📝 <b>НОВАЯ ЗАЯВКА</b>\n\n` +
+                    `👤 <b>Имя:</b> ${formData.name}\n` +
+                    `📞 <b>Телефон:</b> ${formData.phone}\n` +
+                    `📧 <b>Email:</b> ${formData.email}\n` +
+                    `💼 <b>Услуга:</b> ${getServiceName(formData.service)}\n` +
+                    `📅 <b>Дата:</b> ${formData.date}\n` +
+                    `⏰ <b>Время:</b> ${formData.time}\n` +
+                    `💬 <b>Комментарий:</b> ${formData.comment}\n\n` +
+                    `🕐 ${new Date().toLocaleString('ru-RU')}`;
+                
+                fetch(`https://api.telegram.org/bot${TELEGRAM_CONFIG.BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CONFIG.CHAT_ID,
+                        text: message,
+                        parse_mode: 'HTML'
+                    })
+                });
+                
+                showFormMessage('Спасибо! Заявка отправлена', 'success');
+                form.reset();
+                
+                setTimeout(() => {
+                    modal.classList.remove('show');
+                    document.body.style.overflow = 'auto';
+                    formMessage.style.display = 'none';
+                }, 2000);
+            });
+        }
+
+        function showFormMessage(text, type) {
+            if (!formMessage) return;
+            formMessage.textContent = text;
+            formMessage.style.background = type === 'success' ? '#4CAF50' : '#f44336';
+            formMessage.style.color = 'white';
+            formMessage.style.display = 'block';
+            
+            // Анимация сообщения
+            formMessage.style.animation = 'none';
+            formMessage.offsetHeight;
+            formMessage.style.animation = 'pulse 0.5s ease-out';
+        }
+
+        function getServiceName(value) {
+            const services = {
+                'consultation': 'Консультация',
+                'dress': 'Пошив платья',
+                'suit': 'Пошив костюма',
+                'coat': 'Пошив пальто',
+                'repair': 'Ремонт'
+            };
+            return services[value] || value;
+        }
+
+        // Анимация для карточек при загрузке
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.service-detailed');
+            cards.forEach((card, index) => {
+                card.style.animation = `slideInUp 0.8s ease-out ${index * 0.1}s both`;
+            });
+        });
+    </script>
+</body>
+</html>

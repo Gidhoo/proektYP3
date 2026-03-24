@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEALER.CUSTOM | Галерея товаров</title>
+    <!-- Шрифт Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- AOS для анимаций -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideInUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideInRight {
+            from {
+                transform: translateX(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif; color: #fff; line-height: 1.5;
+            background-image: url('https://cdn1.ozone.ru/s3/multimedia-x/c600/6664779897.jpg');
+            background-size: cover; background-position: center; background-attachment: fixed;
+            position: relative;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); z-index: -1; pointer-events: none;
+            animation: fadeIn 1.5s ease-out;
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 40px; position: relative; z-index: 1; }
+        .header {
+            padding: 25px 0; background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(5px);
+            border-bottom: 1px solid rgba(255,255,255,0.1); position: sticky; top: 0; z-index: 100;
+            animation: slideInDown 0.8s ease-out;
+        }
+        @keyframes slideInDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        .header__inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 28px; font-weight: 700; color: #fff; transition: transform 0.3s; }
+        .logo:hover { transform: scale(1.05); }
+        .logo span { font-weight: 300; color: rgba(255,255,255,0.7); }
+        .nav { display: flex; gap: 40px; }
+        .nav a {
+            text-decoration: none; color: #fff; font-weight: 500; font-size: 14px;
+            text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s;
+            position: relative;
+        }
+        .nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #fff;
+            transition: width 0.3s;
+        }
+        .nav a:hover::after,
+        .nav a.active::after {
+            width: 100%;
+        }
+        .nav a:hover { opacity: 0.9; transform: translateY(-2px); }
+        .nav a.active { font-weight: 700; }
+        .btn {
+            display: inline-block; padding: 12px 30px; text-decoration: none; font-weight: 600;
+            font-size: 13px; border: none; cursor: pointer; transition: all 0.3s;
+            text-transform: uppercase; letter-spacing: 1px; background: #fff; color: #000;
+            border-radius: 4px; position: relative; overflow: hidden;
+        }
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.1);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        .btn:hover { background: #f0f0f0; transform: translateY(-2px); box-shadow: 0 5px 20px rgba(255,255,255,0.2); }
+        .btn--outline { background: transparent; border: 1px solid #fff; color: #fff; }
+        .btn--outline:hover { background: #fff; color: #000; }
+        .content-wrapper {
+            background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(3px); border-radius: 16px;
+            padding: 40px; margin: 30px 0; animation: scaleIn 0.8s ease-out;
+        }
+        .categories-bar {
+            display: flex; gap: 40px; padding: 20px 0; border-bottom: 1px solid rgba(255,255,255,0.2);
+            margin-bottom: 30px; flex-wrap: wrap; animation: fadeIn 1s ease-out;
+        }
+        .categories-bar a {
+            color: #fff; text-decoration: none; font-size: 14px; text-transform: uppercase;
+            font-weight: 600; letter-spacing: 1px; opacity: 0.8; transition: all 0.3s;
+            cursor: pointer; position: relative;
+        }
+        .categories-bar a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #fff;
+            transition: width 0.3s;
+        }
+        .categories-bar a:hover::after {
+            width: 100%;
+        }
+        .categories-bar a:hover { opacity: 1; transform: translateY(-2px); }
+        .categories-bar a.active-category { opacity: 1; }
+        .categories-bar a.active-category::after {
+            width: 100%;
+        }
+
+        .breadcrumb { 
+            font-size: 14px; margin-bottom: 30px; opacity: 0.8; 
+            animation: slideInLeft 0.6s ease-out;
+        }
+        .breadcrumb a, .breadcrumb span { color: #fff; text-decoration: none; transition: opacity 0.3s; }
+        .breadcrumb a:hover { opacity: 0.7; }
+        
+        .gallery-header { margin-bottom: 40px; }
+        .gallery-header h1 { 
+            font-size: 48px; font-weight: 700; margin-bottom: 10px; color: #fff;
+            animation: slideInLeft 0.8s ease-out;
+        }
+        .gallery-header h2 { 
+            font-size: 32px; font-weight: 600; margin-bottom: 10px; color: #fff;
+            animation: slideInRight 0.8s ease-out;
+        }
+        .gallery-header p { 
+            font-size: 16px; opacity: 0.9; color: #fff;
+            animation: fadeIn 1s ease-out 0.2s both;
+        }
+
+        .gallery-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin: 40px 0;
+        }
+        .gallery-card {
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(5px); border-radius: 16px;
+            overflow: hidden; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255,255,255,0.1); cursor: pointer;
+            animation: scaleIn 0.6s ease-out;
+            animation-fill-mode: both;
+        }
+        .gallery-card:nth-child(1) { animation-delay: 0.1s; }
+        .gallery-card:nth-child(2) { animation-delay: 0.2s; }
+        .gallery-card:nth-child(3) { animation-delay: 0.3s; }
+        
+        .gallery-card:hover { 
+            transform: translateY(-15px) scale(1.02); 
+            background: rgba(255, 255, 255, 0.2); 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+        .gallery-card__image { 
+            height: 280px; overflow: hidden; position: relative;
+        }
+        .gallery-card__image img {
+            width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s;
+        }
+        .gallery-card:hover .gallery-card__image img { transform: scale(1.15); }
+        .gallery-card__content { 
+            padding: 20px; color: #fff; 
+            transition: transform 0.3s;
+        }
+        .gallery-card:hover .gallery-card__content { transform: translateX(5px); }
+        .gallery-card__content h3 { 
+            font-size: 18px; margin-bottom: 5px;
+            transition: color 0.3s;
+        }
+        .gallery-card:hover .gallery-card__content h3 { color: #ffd700; }
+        .gallery-card__content p { opacity: 0.8; font-size: 14px; transition: opacity 0.3s; }
+        .gallery-card:hover .gallery-card__content p { opacity: 1; }
+        
+        /* Бейдж "Кастомизировать" */
+        .customize-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ffd700;
+            color: #000;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 2;
+            transform: translateY(-10px);
+        }
+        
+        .gallery-card:hover .customize-badge {
+            opacity: 1;
+            transform: translateY(0);
+            animation: pulse 1s infinite;
+        }
+        
+        .customize-badge i {
+            margin-right: 5px;
+            animation: rotate 2s infinite;
+        }
+
+        .subscribe-section {
+            background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(5px); padding: 60px;
+            border-radius: 16px; margin: 60px 0; text-align: center; 
+            border: 1px solid rgba(255,255,255,0.1);
+            animation: scaleIn 0.8s ease-out;
+            transition: all 0.3s;
+        }
+        .subscribe-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        .subscribe-section h2 { 
+            font-size: 32px; margin-bottom: 20px; color: #fff;
+            animation: slideInUp 0.6s ease-out;
+        }
+        .subscribe-section p { 
+            opacity: 0.9; margin-bottom: 30px;
+            animation: fadeIn 0.8s ease-out 0.2s both;
+        }
+        .subscribe-buttons { 
+            display: flex; gap: 20px; justify-content: center;
+            animation: fadeIn 1s ease-out 0.4s both;
+        }
+        .subscribe-buttons button {
+            transition: all 0.3s;
+        }
+        .subscribe-buttons button:hover {
+            transform: translateY(-3px) scale(1.05);
+        }
+        
+        .footer {
+            background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px); padding: 60px 0 30px;
+            margin-top: 80px; border-top: 1px solid rgba(255,255,255,0.1);
+            animation: fadeIn 1s ease-out;
+        }
+        .footer__grid { 
+            display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 40px; 
+        }
+        .footer__col {
+            animation: slideInUp 0.6s ease-out;
+            animation-fill-mode: both;
+        }
+        .footer__col:nth-child(1) { animation-delay: 0.1s; }
+        .footer__col:nth-child(2) { animation-delay: 0.2s; }
+        .footer__col:nth-child(3) { animation-delay: 0.3s; }
+        .footer__col:nth-child(4) { animation-delay: 0.4s; }
+        .footer__logo { 
+            font-size: 28px; font-weight: 700; margin-bottom: 20px; color: #fff;
+            transition: transform 0.3s;
+        }
+        .footer__logo:hover { transform: translateX(5px); }
+        .footer__text { color: rgba(255,255,255,0.7); font-size: 14px; line-height: 1.6; }
+        .footer__title { 
+            font-size: 16px; font-weight: 600; margin-bottom: 20px; color: #fff;
+            transition: transform 0.3s;
+        }
+        .footer__title:hover { transform: translateX(5px); }
+        .footer__list { list-style: none; }
+        .footer__list li { 
+            margin-bottom: 12px; 
+            transition: transform 0.3s;
+        }
+        .footer__list li:hover {
+            transform: translateX(5px);
+        }
+        .footer__list a { 
+            color: rgba(255,255,255,0.7); text-decoration: none; font-size: 14px; 
+            transition: all 0.3s;
+            display: inline-block;
+        }
+        .footer__list a:hover { 
+            color: #fff; 
+            transform: scale(1.05);
+        }
+        .footer__bottom { 
+            border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; 
+            text-align: center; color: rgba(255,255,255,0.5); font-size: 13px;
+            animation: fadeIn 1s ease-out 0.5s both;
+        }
+
+        /* Стили для редактора кастомизации */
+        .customizer-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 10000;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .customizer-container {
+            width: 95%;
+            height: 95%;
+            margin: 2.5% auto;
+            background: #1a1a1a;
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            animation: scaleIn 0.4s ease-out;
+        }
+        
+        .customizer-header {
+            padding: 20px 30px;
+            background: #000;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+            animation: slideInDown 0.4s ease-out;
+        }
+        
+        .customizer-header h2 {
+            font-size: 24px;
+            margin: 0;
+            animation: slideInLeft 0.4s ease-out;
+        }
+        
+        .customizer-header h2 i {
+            margin-right: 10px;
+            color: #ffd700;
+            animation: rotate 3s infinite;
+        }
+        
+        .customizer-close {
+            background: none;
+            border: none;
+            color: #999;
+            font-size: 32px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .customizer-close:hover {
+            color: #fff;
+            transform: rotate(90deg) scale(1.2);
+        }
+        
+        .customizer-main {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        
+        .customizer-tools {
+            width: 280px;
+            background: #222;
+            padding: 20px;
+            overflow-y: auto;
+            border-right: 1px solid #333;
+            animation: slideInLeft 0.5s ease-out;
+        }
+        
+        .tool-section {
+            margin-bottom: 30px;
+            animation: fadeIn 0.6s ease-out;
+            animation-fill-mode: both;
+        }
+        .tool-section:nth-child(1) { animation-delay: 0.1s; }
+        .tool-section:nth-child(2) { animation-delay: 0.2s; }
+        .tool-section:nth-child(3) { animation-delay: 0.3s; }
+        .tool-section:nth-child(4) { animation-delay: 0.4s; }
+        
+        .tool-section h3 {
+            color: #fff;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            opacity: 0.7;
+        }
+        
+        .tool-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        
+        .tool-btn {
+            background: #333;
+            border: none;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+        }
+        
+        .tool-btn:hover {
+            background: #444;
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .tool-btn i {
+            font-size: 18px;
+            color: #ffd700;
+            transition: all 0.3s;
+        }
+        
+        .tool-btn:hover i {
+            transform: scale(1.2) rotate(360deg);
+        }
+        
+        .tool-btn.active {
+            background: #ffd700;
+            color: #000;
+        }
+        
+        .tool-btn.active i {
+            color: #000;
+        }
+        
+        .color-picker {
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+        }
+        
+        .color-picker input[type="color"] {
+            width: 50px;
+            height: 40px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .color-picker input[type="color"]:hover {
+            transform: scale(1.1);
+        }
+        
+        .brush-size {
+            margin-top: 10px;
+            color: white;
+        }
+        
+        .brush-size input[type="range"] {
+            width: 100%;
+            margin-top: 5px;
+            transition: all 0.3s;
+        }
+        
+        .brush-size input[type="range"]:hover {
+            transform: scaleY(1.5);
+        }
+        
+        .text-controls {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .text-controls input {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background: #333;
+            color: white;
+            transition: all 0.3s;
+        }
+        
+        .text-controls input:focus {
+            transform: scale(1.02);
+            outline: 2px solid #ffd700;
+        }
+        
+        .stickers-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        
+        .sticker-btn {
+            aspect-ratio: 1;
+            background: #333;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .sticker-btn:hover {
+            background: #444;
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .customizer-canvas-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #111;
+            padding: 20px;
+        }
+        
+        #customizerCanvas {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 8px;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.5);
+            background: #fff;
+            cursor: crosshair;
+            transition: all 0.3s;
+        }
+        
+        #customizerCanvas:hover {
+            box-shadow: 0 10px 40px rgba(255,215,0,0.2);
+        }
+        
+        .customizer-layers {
+            width: 250px;
+            background: #222;
+            padding: 20px;
+            border-left: 1px solid #333;
+            overflow-y: auto;
+            animation: slideInRight 0.5s ease-out;
+        }
+        
+        .customizer-layers h3 {
+            color: #fff;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            opacity: 0.7;
+        }
+        
+        .layers-list {
+            margin-bottom: 30px;
+        }
+        
+        .layer-item {
+            background: #333;
+            color: white;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            animation: slideInRight 0.4s ease-out;
+            animation-fill-mode: both;
+        }
+        .layer-item:nth-child(1) { animation-delay: 0.1s; }
+        .layer-item:nth-child(2) { animation-delay: 0.2s; }
+        .layer-item:nth-child(3) { animation-delay: 0.3s; }
+        
+        .layer-item:hover {
+            background: #3a3a3a;
+            transform: translateX(-5px);
+        }
+        
+        .layer-item.active {
+            background: #ffd700;
+            color: #000;
+            animation: pulse 1s infinite;
+        }
+        
+        .layer-item i {
+            font-size: 16px;
+            transition: transform 0.3s;
+        }
+        
+        .layer-item:hover i {
+            transform: scale(1.2);
+        }
+        
+        .layer-delete {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s;
+        }
+        
+        .layer-delete:hover {
+            color: #ff4444;
+            transform: scale(1.2) rotate(90deg);
+        }
+        
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .action-btn {
+            background: #333;
+            border: none;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .action-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .action-btn:first-child {
+            background: #ffd700;
+            color: #000;
+        }
+        
+        .action-btn:first-child:hover {
+            background: #ffed4a;
+        }
+
+        @media screen and (max-width: 992px) {
+            .gallery-grid, .footer__grid { grid-template-columns: repeat(2, 1fr); }
+            .categories-bar { gap: 20px; }
+            .customizer-main { flex-direction: column; }
+            .customizer-tools, .customizer-layers { width: 100%; border: none; }
+            .tool-buttons { grid-template-columns: repeat(4, 1fr); }
+            .customizer-canvas-container { min-height: 400px; }
+        }
+        @media screen and (max-width: 768px) {
+            .nav { display: none; }
+            .gallery-grid, .footer__grid { grid-template-columns: 1fr; }
+            .subscribe-buttons { flex-direction: column; align-items: center; }
+            .gallery-header h1 { font-size: 36px; }
+            .container { padding: 0 20px; }
+            .content-wrapper { padding: 20px; }
+        }
+    </style>
+    <!-- AOS JavaScript -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+</head>
+<body>
+    <header class="header">
+        <div class="container header__inner">
+            <div class="logo">DEALER<span>.CUSTOM</span></div>
+            <nav class="nav">
+                <a href="index.html">ГЛАВНАЯ</a>
+                <a href="catalog.html">КАТАЛОГ</a>
+                <a href="sell.html">ПРОДАТЬ</a>
+                <a href="custom.html" class="active">CUSTOM</a>
+                <a href="#contacts">КОНТАКТЫ</a>
+            </nav>
+            <button class="btn" id="openModalBtn"><i class="fas fa-pen"></i> ЗАКАЗАТЬ</button>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="categories-bar">
+                <a href="#" data-category="odezhda" class="active-category">ОДЕЖДА</a>
+                <a href="#" data-category="obuv">ОБУВЬ</a>
+                <a href="#" data-category="aksessuary">АКСЕССУАРЫ</a>
+                <a href="#" data-category="sumki">СУМКИ</a>
+                <a href="#" data-category="sport">ТОВАРЫ ДЛЯ СПОРТА</a>
+            </div>
+
+            <div class="breadcrumb">
+                <a href="#">DEALER</a> <span>/</span> <span>Главная</span>
+            </div>
+
+            <div class="content-wrapper">
+                <div class="gallery-header">
+                    <h1># ГАЛЕРЕЯ CUSTOM</h1>
+                    <h2>Галерея Custom</h2>
+                    <p>Ниже вы можете увидеть примеры закастомизированных моделей</p>
+                </div>
+
+                <div class="gallery-grid" id="productGallery">
+                </div>
+            </div>
+
+            <div class="subscribe-section">
+                <h2>Sign up to comment, edit, inspect and more.</h2>
+                <p>Присоединяйтесь к сообществу DEALER.CUSTOM</p>
+                <div class="subscribe-buttons">
+                    <button class="btn">Sign up</button>
+                    <button class="btn btn--outline">Continue</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer" id="contacts">
+        <div class="container">
+            <div class="footer__grid">
+                <div class="footer__col">
+                    <div class="footer__logo">DEALER<span>.CUSTOM</span></div>
+                    <p class="footer__text">Премиальное ателье индивидуального пошива и кастомизации. Создайте свой уникальный стиль.</p>
+                </div>
+                <div class="footer__col">
+                    <h4 class="footer__title">Меню</h4>
+                    <ul class="footer__list">
+                        <li><a href="#">О нас</a></li>
+                        <li><a href="#">Каталог</a></li>
+                        <li><a href="#">Custom</a></li>
+                        <li><a href="#">Контакты</a></li>
+                    </ul>
+                </div>
+                <div class="footer__col">
+                    <h4 class="footer__title">Поддержка</h4>
+                    <ul class="footer__list">
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Доставка</a></li>
+                        <li><a href="#">Оплата</a></li>
+                        <li><a href="#">Возврат</a></li>
+                    </ul>
+                </div>
+                <div class="footer__col">
+                    <h4 class="footer__title">Контакты</h4>
+                    <ul class="footer__list">
+                        <li><i class="fas fa-phone"></i> +7 (999) 777-77-77</li>
+                        <li><i class="fas fa-envelope"></i> custom@dealer.ru</li>
+                        <li><i class="fas fa-map-marker"></i> Москва, ул. Тверская, 15</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>Mob.Custom © 2025 DEALER.CUSTOM — Все права защищены</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Редактор кастомизации -->
+    <div id="customizerModal" class="customizer-modal">
+        <div class="customizer-container">
+            <div class="customizer-header">
+                <h2><i class="fas fa-paint-brush"></i> Редактор кастомизации</h2>
+                <button class="customizer-close" id="closeCustomizer">&times;</button>
+            </div>
+            
+            <div class="customizer-main">
+                <div class="customizer-tools">
+                    <div class="tool-section">
+                        <h3>Загрузить</h3>
+                        <div class="tool-buttons">
+                            <label for="uploadBgImage" class="tool-btn">
+                                <i class="fas fa-image"></i>
+                                <span>Фон</span>
+                            </label>
+                            <input type="file" id="uploadBgImage" accept="image/*" style="display: none;">
+                            
+                            <label for="uploadOverlayImage" class="tool-btn">
+                                <i class="fas fa-layer-group"></i>
+                                <span>Наклейка</span>
+                            </label>
+                            <input type="file" id="uploadOverlayImage" accept="image/*" style="display: none;">
+                        </div>
+                    </div>
+                    
+                    <div class="tool-section">
+                        <h3>Рисование</h3>
+                        <div class="tool-buttons">
+                            <button class="tool-btn" id="drawBrush">
+                                <i class="fas fa-pencil-alt"></i>
+                                <span>Кисть</span>
+                            </button>
+                            <button class="tool-btn" id="drawEraser">
+                                <i class="fas fa-eraser"></i>
+                                <span>Ластик</span>
+                            </button>
+                            <button class="tool-btn" id="clearCanvas">
+                                <i class="fas fa-trash"></i>
+                                <span>Очистить</span>
+                            </button>
+                        </div>
+                        
+                        <div class="color-picker">
+                            <label>Цвет:</label>
+                            <input type="color" id="brushColor" value="#000000">
+                        </div>
+                        
+                        <div class="brush-size">
+                            <label>Размер: <span id="sizeValue">5</span></label>
+                            <input type="range" id="brushSize" min="1" max="50" value="5">
+                        </div>
+                    </div>
+                    
+                    <div class="tool-section">
+                        <h3>Текст</h3>
+                        <div class="text-controls">
+                            <input type="text" id="textInput" placeholder="Введите текст">
+                            <button class="tool-btn" id="addText">
+                                <i class="fas fa-plus"></i> Добавить
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="tool-section">
+                        <h3>Наклейки</h3>
+                        <div class="stickers-grid">
+                            <button class="sticker-btn" data-sticker="⭐">⭐</button>
+                            <button class="sticker-btn" data-sticker="❤️">❤️</button>
+                            <button class="sticker-btn" data-sticker="🔥">🔥</button>
+                            <button class="sticker-btn" data-sticker="💎">💎</button>
+                            <button class="sticker-btn" data-sticker="👕">👕</button>
+                            <button class="sticker-btn" data-sticker="👖">👖</button>
+                            <button class="sticker-btn" data-sticker="🧥">🧥</button>
+                            <button class="sticker-btn" data-sticker="👟">👟</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="customizer-canvas-container">
+                    <canvas id="customizerCanvas" width="600" height="600"></canvas>
+                </div>
+                
+                <div class="customizer-layers">
+                    <h3>Слои</h3>
+                    <div class="layers-list" id="layersList">
+                        <div class="layer-item active" data-layer="bg">
+                            <i class="fas fa-image"></i> Фон
+                            <button class="layer-delete" onclick="if(window.customizer) customizer.deleteLayer('bg')">×</button>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="action-btn" id="saveDesign">
+                            <i class="fas fa-save"></i> Сохранить
+                        </button>
+                        <button class="action-btn" id="resetDesign">
+                            <i class="fas fa-undo"></i> Сбросить
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Инициализация AOS
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 50
+        });
+
+        // БАЗА ДАННЫХ ТОВАРОВ
+        const products = {
+            odezhda: [
+                { name: "Вечернее платье", desc: "Кастомная вышивка", img: "https://avatars.mds.yandex.net/i?id=2a0000019b6ad37dbebd9cd05095d605ad8e-14778405-yarec&n=13" },
+                { name: "Мужской костюм", desc: "Индивидуальный пошив", img: "https://img.joomcdn.net/8188d0822eefac3cf03f38cd8705d53e4e141935_original.jpeg" },
+                { name: "Кашемировое пальто", desc: "Кастомный крой", img: "https://basket-04.wbbasket.ru/vol646/part64616/64616340/images/big/1.webp" }
+            ],
+            obuv: [
+                { name: "Bad Bunny Campus", desc: "Bad Bunny x Adidas", img: "https://outmaxshop.ru/components/com_jshopping/files/img_products/40133/bad-bunny-x-adidas-campus-40133-1.jpg" },
+                { name: "Yeezy", desc: "Модель Yeezy 350", img: "https://avatars.mds.yandex.net/get-yastore/16104656/rmx69pt7tqhtcrdrswc99zm5zms7hxds/x1920" },
+                { name: "Adidas Classic", desc: "Классические Adidas", img: "https://main-cdn.sbermegamarket.ru/big2/hlr-system/-14/303/510/419/165/7/100066457496b13.jpg" }
+            ],
+            aksessuary: [
+                { name: "Стильные очки", desc: "Солнцезащитные очки", img: "https://img.joomcdn.net/65580ba4968f64ceaef35b312bad3f20a9a89135_original.jpeg" },
+                { name: "Кожаный ремень", desc: "Натуральная кожа", img: "https://basket-23.wbbasket.ru/vol4092/part409237/409237179/images/big/1.webp" },
+                { name: "Элегантные часы", desc: "Наручные часы", img: "https://ae01.alicdn.com/kf/S8be275065f894aa99d6bd0868c300084H.jpg" }
+            ],
+            sumki: [
+                { name: "Женская сумка", desc: "Кожаная сумка", img: "https://img.joomcdn.net/42f75094dcf27f12083b8ceff336144fd10ffc84_original.jpeg" },
+                { name: "Рюкзак", desc: "Кожаный рюкзак", img: "https://cdn1.ozone.ru/s3/multimedia-7/6688842019.jpg" },
+                { name: "Клатч", desc: "Вечерний клатч", img: "https://i.pinimg.com/736x/ce/ed/bc/ceedbc17c65bd219a7807da44908707d.jpg" }
+            ],
+            sport: [
+                { name: "Гантели", desc: "Набор гантелей", img: "https://avatars.mds.yandex.net/i?id=aa9c6b2c6914825faaa9d9046edd9cd8_l-5578456-images-thumbs&n=13" },
+                { name: "Бутылка", desc: "Спортивная бутылка", img: "https://www.domsporta.com/upload/iblock/3c9/f4ee196a-81b9-11f0-8301-00155d02a007_d6590fad-8894-11f0-8301-00155d02a007.jpeg" },
+                { name: "Эспандер", desc: "Эспандер для тренировок", img: "https://cache3.youla.io/files/images/780_780/5e/6a/5e6a2d4bf8efdc5def495736.jpg" }
+            ]
+        };
+
+        // ЛОГИКА РАБОТЫ ГАЛЕРЕИ
+        const categoryLinks = document.querySelectorAll('.categories-bar a');
+        const gallery = document.getElementById('productGallery');
+
+        function renderGallery(categoryKey) {
+            const categoryProducts = products[categoryKey];
+            if (!categoryProducts) return;
+
+            let htmlString = '';
+            for (const product of categoryProducts) {
+                htmlString += `
+                    <div class="gallery-card" onclick="openCustomizerWithImage('${product.img}', '${product.name}')">
+                        <div class="gallery-card__image">
+                            <img src="${product.img}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/300?text=Image+not+found';">
+                            <div class="customize-badge">
+                                <i class="fas fa-paint-brush"></i> Кастомизировать
+                            </div>
+                        </div>
+                        <div class="gallery-card__content">
+                            <h3>${product.name}</h3>
+                            <p>${product.desc}</p>
+                        </div>
+                    </div>
+                `;
+            }
+            gallery.innerHTML = htmlString || '<p style="color:white; grid-column: 1/-1; text-align:center;">Товары в этой категории скоро появятся.</p>';
+        }
+
+        function setActiveCategory(activeLink) {
+            categoryLinks.forEach(link => link.classList.remove('active-category'));
+            activeLink.classList.add('active-category');
+        }
+
+        categoryLinks.forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                const category = this.dataset.category;
+                renderGallery(category);
+                setActiveCategory(this);
+                
+                // Добавляем анимацию появления новых карточек
+                const cards = document.querySelectorAll('.gallery-card');
+                cards.forEach((card, index) => {
+                    card.style.animation = 'none';
+                    card.offsetHeight;
+                    card.style.animation = `scaleIn 0.6s ease-out ${index * 0.1}s both`;
+                });
+            });
+        });
+
+        renderGallery('odezhda');
+
+        // РЕДАКТОР КАСТОМИЗАЦИИ
+        class Customizer {
+            constructor() {
+                this.canvas = document.getElementById('customizerCanvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.isDrawing = false;
+                this.currentImage = null;
+                this.init();
+            }
+            
+            init() {
+                this.ctx.fillStyle = '#ffffff';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                this.currentTool = 'brush';
+                this.brushColor = '#000000';
+                this.brushSize = 5;
+                this.actions = [];
+                
+                this.bindEvents();
+            }
+            
+            bindEvents() {
+                this.canvas.addEventListener('mousedown', (e) => this.startDrawing(e));
+                this.canvas.addEventListener('mousemove', (e) => this.draw(e));
+                this.canvas.addEventListener('mouseup', () => this.stopDrawing());
+                this.canvas.addEventListener('mouseleave', () => this.stopDrawing());
+                
+                document.getElementById('drawBrush').addEventListener('click', () => {
+                    this.currentTool = 'brush';
+                    document.querySelectorAll('.tool-btn').forEach(btn => btn.classList.remove('active'));
+                    document.getElementById('drawBrush').classList.add('active');
+                });
+                
+                document.getElementById('drawEraser').addEventListener('click', () => {
+                    this.currentTool = 'eraser';
+                    document.querySelectorAll('.tool-btn').forEach(btn => btn.classList.remove('active'));
+                    document.getElementById('drawEraser').classList.add('active');
+                });
+                
+                document.getElementById('clearCanvas').addEventListener('click', () => {
+                    if (confirm('Очистить холст?')) {
+                        this.ctx.fillStyle = '#ffffff';
+                        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                        if (this.currentImage) {
+                            const img = new Image();
+                            img.onload = () => {
+                                this.ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
+                            };
+                            img.src = this.currentImage;
+                        }
+                    }
+                });
+                
+                document.getElementById('brushColor').addEventListener('input', (e) => {
+                    this.brushColor = e.target.value;
+                });
+                
+                document.getElementById('brushSize').addEventListener('input', (e) => {
+                    this.brushSize = e.target.value;
+                    document.getElementById('sizeValue').textContent = e.target.value;
+                });
+                
+                document.getElementById('uploadBgImage').addEventListener('change', (e) => {
+                    this.loadImage(e.target.files[0], 'bg');
+                });
+                
+                document.getElementById('uploadOverlayImage').addEventListener('change', (e) => {
+                    this.loadImage(e.target.files[0], 'overlay');
+                });
+                
+                document.getElementById('addText').addEventListener('click', () => {
+                    const text = document.getElementById('textInput').value;
+                    if (text) this.addText(text);
+                });
+                
+                document.querySelectorAll('.sticker-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        this.addSticker(btn.dataset.sticker);
+                    });
+                });
+                
+                document.getElementById('saveDesign').addEventListener('click', () => {
+                    this.saveDesign();
+                });
+                
+                document.getElementById('resetDesign').addEventListener('click', () => {
+                    if (confirm('Сбросить все изменения?')) {
+                        this.resetCanvas();
+                    }
+                });
+            }
+            
+            loadImageFromUrl(url) {
+                const img = new Image();
+                img.crossOrigin = 'Anonymous';
+                img.onload = () => {
+                    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                    this.ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
+                    this.currentImage = url;
+                };
+                img.onerror = () => {
+                    alert('Не удалось загрузить изображение');
+                };
+                img.src = url;
+            }
+            
+            startDrawing(e) {
+                this.isDrawing = true;
+                const pos = this.getMousePos(e);
+                this.ctx.beginPath();
+                this.ctx.moveTo(pos.x, pos.y);
+            }
+            
+            draw(e) {
+                if (!this.isDrawing) return;
+                
+                const pos = this.getMousePos(e);
+                
+                this.ctx.lineWidth = this.brushSize;
+                this.ctx.lineCap = 'round';
+                this.ctx.lineJoin = 'round';
+                
+                if (this.currentTool === 'brush') {
+                    this.ctx.strokeStyle = this.brushColor;
+                } else if (this.currentTool === 'eraser') {
+                    this.ctx.strokeStyle = '#ffffff';
+                }
+                
+                this.ctx.lineTo(pos.x, pos.y);
+                this.ctx.stroke();
+                this.ctx.beginPath();
+                this.ctx.moveTo(pos.x, pos.y);
+            }
+            
+            stopDrawing() {
+                this.isDrawing = false;
+                this.ctx.beginPath();
+            }
+            
+            getMousePos(e) {
+                const rect = this.canvas.getBoundingClientRect();
+                const scaleX = this.canvas.width / rect.width;
+                const scaleY = this.canvas.height / rect.height;
+                
+                return {
+                    x: (e.clientX - rect.left) * scaleX,
+                    y: (e.clientY - rect.top) * scaleY
+                };
+            }
+            
+            loadImage(file, type) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        if (type === 'bg') {
+                            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                            this.ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
+                            this.currentImage = e.target.result;
+                        } else {
+                            const x = (this.canvas.width - img.width) / 2;
+                            const y = (this.canvas.height - img.height) / 2;
+                            this.ctx.drawImage(img, x, y, img.width, img.height);
+                        }
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+            
+            addText(text) {
+                this.ctx.font = '30px Inter';
+                this.ctx.fillStyle = this.brushColor;
+                this.ctx.fillText(text, 100, 100);
+            }
+            
+            addSticker(sticker) {
+                this.ctx.font = '60px Arial';
+                this.ctx.fillText(sticker, 200, 200);
+            }
+            
+            saveDesign() {
+                const dataUrl = this.canvas.toDataURL('image/png');
+                localStorage.setItem('customizedDesign', dataUrl);
+                
+                const link = document.createElement('a');
+                link.download = 'my-custom-design.png';
+                link.href = dataUrl;
+                link.click();
+                
+                alert('Дизайн сохранен! Файл скачан');
+            }
+            
+            resetCanvas() {
+                localStorage.removeItem('customizedDesign');
+                this.ctx.fillStyle = '#ffffff';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                if (this.currentImage) {
+                    const img = new Image();
+                    img.onload = () => {
+                        this.ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
+                    };
+                    img.src = this.currentImage;
+                }
+            }
+            
+            deleteLayer(layerId) {
+                // Заглушка для удаления слоя
+                console.log('Delete layer:', layerId);
+            }
+        }
+
+        // Открытие редактора с выбранным изображением
+        let customizer = null;
+
+        function openCustomizerWithImage(imageUrl, productName) {
+            const modal = document.getElementById('customizerModal');
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            
+            if (!customizer) {
+                customizer = new Customizer();
+            }
+            
+            // Обновляем заголовок
+            document.querySelector('.customizer-header h2').innerHTML = `<i class="fas fa-paint-brush"></i> Кастомизация: ${productName}`;
+            
+            // Загружаем изображение
+            setTimeout(() => {
+                customizer.loadImageFromUrl(imageUrl);
+            }, 100);
+        }
+
+        // Закрытие редактора
+        document.getElementById('closeCustomizer').addEventListener('click', function() {
+            document.getElementById('customizerModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+
+        window.addEventListener('click', function(e) {
+            const modal = document.getElementById('customizerModal');
+            if (e.target === modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Открытие модального окна заказа (если нужно)
+        document.getElementById('openModalBtn').addEventListener('click', function() {
+            alert('Форма заказа будет доступна в следующем обновлении');
+        });
+    </script>
+</body>
+</html>

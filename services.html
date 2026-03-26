@@ -777,7 +777,7 @@
                 <!-- Пошив женской одежды -->
                 <div class="service-detailed" id="womens">
                     <div class="service-detailed__image">
-                        <img src="https://avatars.mds.yandex.net/i?id=2a0000019b6ad37dbebd9cd05095d605ad8e-14778405-yarec&n=13" alt="Женская одежда">
+                        <img src="https://cdn-sh1.vigbo.com/shops/190987/products/21460549/images/3-f854bb73c0a91c38a22bf4bbee9ef7d9.jpg" alt="Женская одежда">
                     </div>
                     <div class="service-detailed__content">
                         <h2>Пошив женской одежды</h2>
@@ -1150,5 +1150,33 @@
             });
         });
     </script>
+    <!-- Кнопка для администратора (видна только при входе) -->
+<div class="admin-badge" id="adminBadge" style="display: none;">
+    <i class="fas fa-cog"></i> Режим администратора
+</div>
+
+<script>
+// Проверка авторизации администратора
+function checkAdminMode() {
+    const admin = JSON.parse(localStorage.getItem('admin_user') || 'null');
+    const adminBadge = document.getElementById('adminBadge');
+    
+    if (admin && admin.role === 'admin') {
+        adminBadge.style.display = 'flex';
+        document.body.classList.add('admin-mode');
+        
+        // Добавляем возможность редактирования текста
+        if (adminBadge) {
+            adminBadge.addEventListener('click', function() {
+                window.location.href = 'admin.html';
+            });
+        }
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    checkAdminMode();
+});
+</script>
 </body>
 </html>

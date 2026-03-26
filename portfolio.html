@@ -519,7 +519,7 @@
                 <!-- Вечерние платья -->
                 <div class="portfolio-item" data-category="evening">
                     <div class="portfolio-item__image">
-                        <img src="https://avatars.mds.yandex.net/i?id=2a0000019b6ad37dbebd9cd05095d605ad8e-14778405-yarec&n=13" alt="Вечернее платье">
+                        <img src="https://cdn-sh1.vigbo.com/shops/190987/products/21460549/images/3-f854bb73c0a91c38a22bf4bbee9ef7d9.jpg" alt="Вечернее платье">
                         <div class="portfolio-item__overlay">
                             <h3>Вечернее платье</h3>
                             <p>Шелк, кружево</p>
@@ -1246,3 +1246,32 @@
     </script>
 </body>
 </html>
+// Загрузка портфолио из админ-панели
+function loadPortfolioFromAdmin() {
+    const siteData = JSON.parse(localStorage.getItem('siteData') || '{}');
+    const portfolio = siteData.portfolio || [];
+    
+    if (portfolio.length > 0) {
+        const portfolioContainer = document.querySelector('.portfolio-page');
+        if (portfolioContainer) {
+            portfolioContainer.innerHTML = portfolio.map(item => `
+                <div class="portfolio-item" data-category="${item.category}">
+                    <div class="portfolio-item__image">
+                        <img src="${item.image}" alt="${item.name}">
+                        <div class="portfolio-item__overlay">
+                            <h3>${item.name}</h3>
+                            <p>${item.desc}</p>
+                            <button class="btn btn--small btn--primary view-project" data-img="${item.image}">
+                                <i class="fas fa-search"></i> Увеличить
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    loadPortfolioFromAdmin();
+});

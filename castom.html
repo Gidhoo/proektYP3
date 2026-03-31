@@ -1,0 +1,2130 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+    <meta name="theme-color" content="#000000">
+    <title>DEALER.CUSTOM | Галерея товаров</title>
+    <!-- Шрифт Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- AOS для анимаций -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideInUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideInRight {
+            from {
+                transform: translateX(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif; color: #fff; line-height: 1.5;
+            background-image: url('https://cdn1.ozone.ru/s3/multimedia-x/c600/6664779897.jpg');
+            background-size: cover; background-position: center; background-attachment: fixed;
+            position: relative;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); z-index: -1; pointer-events: none;
+            animation: fadeIn 1.5s ease-out;
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 40px; position: relative; z-index: 1; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 0 20px; }
+        }
+        
+        @media (max-width: 480px) {
+            .container { padding: 0 15px; }
+        }
+        
+        .header {
+            padding: 15px 0; background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(5px);
+            border-bottom: 1px solid rgba(255,255,255,0.1); position: sticky; top: 0; z-index: 100;
+            animation: slideInDown 0.8s ease-out;
+        }
+        @keyframes slideInDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        .header__inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .logo { font-size: 24px; font-weight: 700; color: #fff; transition: transform 0.3s; }
+        .logo:hover { transform: scale(1.05); }
+        .logo span { font-weight: 300; color: rgba(255,255,255,0.7); }
+        
+        @media (max-width: 768px) {
+            .logo { font-size: 20px; }
+        }
+        
+        .nav {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        .nav a {
+            text-decoration: none; color: #fff; font-weight: 500; font-size: 14px;
+            text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s;
+            position: relative;
+        }
+        .nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #fff;
+            transition: width 0.3s;
+        }
+        .nav a:hover::after,
+        .nav a.active::after {
+            width: 100%;
+        }
+        .nav a:hover { opacity: 0.9; transform: translateY(-2px); }
+        .nav a.active { font-weight: 700; }
+        
+        @media (max-width: 768px) {
+            .nav {
+                display: none;
+            }
+            .mobile-nav-toggle {
+                display: block;
+                background: none;
+                border: none;
+                color: white;
+                font-size: 24px;
+                cursor: pointer;
+            }
+        }
+        
+        .mobile-nav-toggle {
+            display: none;
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-menu {
+            position: relative;
+        }
+        
+        .user-menu__btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px;
+            transition: transform 0.3s;
+        }
+        
+        .user-menu__btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .user-menu__dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            min-width: 200px;
+            padding: 10px 0;
+            margin-top: 10px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+        
+        .user-menu__dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .user-menu__dropdown a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+        
+        .user-menu__dropdown a:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .cart-btn {
+            position: relative;
+        }
+        
+        .cart-btn button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px;
+            transition: transform 0.3s;
+            position: relative;
+        }
+        
+        .cart-btn button:hover {
+            transform: scale(1.1);
+        }
+        
+        .cart-counter {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ffd700;
+            color: #000;
+            font-size: 10px;
+            font-weight: 600;
+            min-width: 18px;
+            height: 18px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 5px;
+        }
+        
+        .btn {
+            display: inline-block; padding: 10px 24px; text-decoration: none; font-weight: 600;
+            font-size: 13px; border: none; cursor: pointer; transition: all 0.3s;
+            text-transform: uppercase; letter-spacing: 1px; background: #fff; color: #000;
+            border-radius: 4px; position: relative; overflow: hidden;
+        }
+        
+        @media (max-width: 480px) {
+            .btn { padding: 8px 16px; font-size: 12px; }
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.1);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        .btn:hover { background: #f0f0f0; transform: translateY(-2px); box-shadow: 0 5px 20px rgba(255,255,255,0.2); }
+        .btn--outline { background: transparent; border: 1px solid #fff; color: #fff; }
+        .btn--outline:hover { background: #fff; color: #000; }
+        
+        .content-wrapper {
+            background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(3px); border-radius: 16px;
+            padding: 30px; margin: 30px 0; animation: scaleIn 0.8s ease-out;
+        }
+        
+        @media (max-width: 768px) {
+            .content-wrapper { padding: 20px; }
+        }
+        
+        .categories-bar {
+            display: flex; gap: 20px; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.2);
+            margin-bottom: 30px; flex-wrap: wrap; animation: fadeIn 1s ease-out;
+        }
+        .categories-bar a {
+            color: #fff; text-decoration: none; font-size: 13px; text-transform: uppercase;
+            font-weight: 600; letter-spacing: 1px; opacity: 0.8; transition: all 0.3s;
+            cursor: pointer; position: relative;
+            white-space: nowrap;
+        }
+        
+        @media (max-width: 480px) {
+            .categories-bar a { font-size: 11px; white-space: normal; }
+            .categories-bar { gap: 12px; }
+        }
+        
+        .categories-bar a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #fff;
+            transition: width 0.3s;
+        }
+        .categories-bar a:hover::after { width: 100%; }
+        .categories-bar a:hover { opacity: 1; transform: translateY(-2px); }
+        .categories-bar a.active-category { opacity: 1; }
+        .categories-bar a.active-category::after { width: 100%; }
+
+        .breadcrumb { 
+            font-size: 13px; margin-bottom: 25px; opacity: 0.8; 
+            animation: slideInLeft 0.6s ease-out;
+        }
+        
+        .gallery-header { margin-bottom: 30px; }
+        .gallery-header h1 { 
+            font-size: 40px; font-weight: 700; margin-bottom: 8px; color: #fff;
+            animation: slideInLeft 0.8s ease-out;
+        }
+        .gallery-header h2 { 
+            font-size: 28px; font-weight: 600; margin-bottom: 8px; color: #fff;
+            animation: slideInRight 0.8s ease-out;
+        }
+        .gallery-header p { 
+            font-size: 15px; opacity: 0.9; color: #fff;
+            animation: fadeIn 1s ease-out 0.2s both;
+        }
+        
+        @media (max-width: 768px) {
+            .gallery-header h1 { font-size: 32px; }
+            .gallery-header h2 { font-size: 24px; }
+            .gallery-header p { font-size: 14px; }
+        }
+        
+        @media (max-width: 480px) {
+            .gallery-header h1 { font-size: 28px; }
+            .gallery-header h2 { font-size: 20px; }
+        }
+
+        .gallery-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; margin: 40px 0;
+        }
+        
+        @media (max-width: 992px) {
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        }
+        
+        @media (max-width: 576px) {
+            .gallery-grid { grid-template-columns: 1fr; gap: 20px; }
+        }
+        
+        .gallery-card {
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(5px); border-radius: 16px;
+            overflow: hidden; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255,255,255,0.1); cursor: pointer;
+            animation: scaleIn 0.6s ease-out;
+            animation-fill-mode: both;
+        }
+        
+        .gallery-card__image { 
+            height: 260px; overflow: hidden; position: relative;
+        }
+        
+        @media (max-width: 480px) {
+            .gallery-card__image { height: 220px; }
+        }
+        
+        .gallery-card__image img {
+            width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s;
+        }
+        .gallery-card:hover .gallery-card__image img { transform: scale(1.1); }
+        .gallery-card__content { 
+            padding: 16px; color: #fff; 
+            transition: transform 0.3s;
+        }
+        .gallery-card__content h3 { 
+            font-size: 17px; margin-bottom: 5px;
+            transition: color 0.3s;
+        }
+        .gallery-card__content p { opacity: 0.8; font-size: 13px; transition: opacity 0.3s; }
+        
+        .customize-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ffd700;
+            color: #000;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 2;
+            transform: translateY(-10px);
+        }
+        .gallery-card:hover .customize-badge {
+            opacity: 1;
+            transform: translateY(0);
+            animation: pulse 1s infinite;
+        }
+
+        .subscribe-section {
+            background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(5px); padding: 40px 30px;
+            border-radius: 16px; margin: 50px 0; text-align: center; 
+            border: 1px solid rgba(255,255,255,0.1);
+            animation: scaleIn 0.8s ease-out;
+        }
+        
+        @media (max-width: 768px) {
+            .subscribe-section { padding: 30px 20px; }
+        }
+        
+        .subscribe-section h2 { 
+            font-size: 28px; margin-bottom: 15px; color: #fff;
+            animation: slideInUp 0.6s ease-out;
+        }
+        
+        @media (max-width: 480px) {
+            .subscribe-section h2 { font-size: 22px; }
+        }
+        
+        .subscribe-buttons { 
+            display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;
+            animation: fadeIn 1s ease-out 0.4s both;
+        }
+        
+        @media (max-width: 480px) {
+            .subscribe-buttons { flex-direction: column; align-items: center; gap: 10px; }
+            .subscribe-buttons .btn { width: 100%; max-width: 200px; }
+        }
+        
+        .footer {
+            background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px); padding: 40px 0 25px;
+            margin-top: 60px; border-top: 1px solid rgba(255,255,255,0.1);
+            animation: fadeIn 1s ease-out;
+        }
+        .footer__grid { 
+            display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 30px; 
+        }
+        
+        @media (max-width: 992px) {
+            .footer__grid { grid-template-columns: repeat(2, 1fr); gap: 30px; }
+        }
+        
+        @media (max-width: 576px) {
+            .footer__grid { grid-template-columns: 1fr; gap: 25px; text-align: center; }
+        }
+        
+        .footer__logo { 
+            font-size: 24px; font-weight: 700; margin-bottom: 15px; color: #fff;
+            transition: transform 0.3s;
+        }
+        .footer__text { color: rgba(255,255,255,0.7); font-size: 13px; line-height: 1.6; }
+        .footer__title { 
+            font-size: 15px; font-weight: 600; margin-bottom: 15px; color: #fff;
+            transition: transform 0.3s;
+        }
+        .footer__list { list-style: none; }
+        .footer__list li { margin-bottom: 10px; transition: transform 0.3s; }
+        .footer__list a { 
+            color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; 
+            transition: all 0.3s;
+            display: inline-block;
+        }
+        .footer__list a:hover { color: #fff; }
+        .footer__bottom { 
+            border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; 
+            text-align: center; color: rgba(255,255,255,0.5); font-size: 12px;
+            animation: fadeIn 1s ease-out 0.5s both;
+        }
+
+        /* Стили для редактора кастомизации */
+        .customizer-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 10000;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .customizer-container {
+            width: 95%;
+            height: 95%;
+            margin: 2.5% auto;
+            background: #1a1a1a;
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            animation: scaleIn 0.4s ease-out;
+        }
+        
+        .customizer-header {
+            padding: 15px 20px;
+            background: #000;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+        }
+        
+        .customizer-header h2 {
+            font-size: 18px;
+            margin: 0;
+        }
+        
+        .customizer-header h2 i {
+            margin-right: 8px;
+            color: #ffd700;
+        }
+        
+        .customizer-close {
+            background: none;
+            border: none;
+            color: #999;
+            font-size: 28px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .customizer-main {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            flex-wrap: wrap;
+        }
+        
+        .customizer-tools {
+            width: 260px;
+            background: #222;
+            padding: 15px;
+            overflow-y: auto;
+            border-right: 1px solid #333;
+        }
+        
+        @media (max-width: 992px) {
+            .customizer-tools { width: 100%; border-right: none; border-bottom: 1px solid #333; max-height: 200px; }
+            .customizer-layers { width: 100%; border-left: none; border-top: 1px solid #333; max-height: 150px; }
+            .tool-buttons { grid-template-columns: repeat(4, 1fr); }
+        }
+        
+        .tool-section {
+            margin-bottom: 20px;
+        }
+        
+        .tool-section h3 {
+            color: #fff;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            opacity: 0.7;
+        }
+        
+        .tool-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+        
+        .tool-btn {
+            background: #333;
+            border: none;
+            color: white;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            font-size: 11px;
+        }
+        
+        .color-picker {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+        }
+        
+        .color-picker input[type="color"] {
+            width: 40px;
+            height: 35px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .brush-size {
+            margin-top: 8px;
+            color: white;
+        }
+        
+        .brush-size input[type="range"] {
+            width: 100%;
+            margin-top: 5px;
+        }
+        
+        .text-controls {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .text-controls input {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 5px;
+            background: #333;
+            color: white;
+            font-size: 12px;
+        }
+        
+        .stickers-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+        
+        .sticker-btn {
+            aspect-ratio: 1;
+            background: #333;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .customizer-canvas-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #111;
+            padding: 15px;
+            min-height: 300px;
+        }
+        
+        #customizerCanvas {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 8px;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.5);
+            background: #fff;
+            cursor: crosshair;
+        }
+        
+        .customizer-layers {
+            width: 240px;
+            background: #222;
+            padding: 15px;
+            border-left: 1px solid #333;
+            overflow-y: auto;
+        }
+        
+        .layers-list {
+            margin-bottom: 20px;
+        }
+        
+        .layer-item {
+            background: #333;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .layer-item.active {
+            background: #ffd700;
+            color: #000;
+        }
+        
+        .layer-delete {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .action-btn {
+            background: #333;
+            border: none;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .action-btn:first-child {
+            background: #ffd700;
+            color: #000;
+        }
+        
+        /* Анимации для модальных окон */
+        .cart-notification {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            z-index: 10001;
+            transition: transform 0.3s;
+            white-space: nowrap;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 480px) {
+            .cart-notification { white-space: normal; text-align: center; width: 90%; font-size: 12px; }
+        }
+        
+        .cart-notification.show {
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        /* Модальное окно корзины */
+        .cart-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 11000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .cart-modal.show {
+            display: flex;
+        }
+        
+        .cart-modal__content {
+            background: #1a1a1a;
+            width: 90%;
+            max-width: 450px;
+            border-radius: 16px;
+            overflow: hidden;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .cart-modal__header {
+            padding: 15px 20px;
+            background: #000;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .cart-modal__close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .cart-modal__body {
+            padding: 20px;
+            overflow-y: auto;
+            flex: 1;
+            color: white;
+        }
+        
+        .cart-empty {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+        
+        .cart-items {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .cart-item {
+            display: flex;
+            gap: 15px;
+            padding: 10px;
+            border: 1px solid #333;
+            border-radius: 8px;
+        }
+        
+        .cart-item__image {
+            width: 60px;
+            height: 60px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .cart-item__image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .cart-item__info {
+            flex: 1;
+        }
+        
+        .cart-item__title {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        
+        .cart-item__price {
+            color: #ffd700;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .cart-item__quantity {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 8px;
+        }
+        
+        .cart-item__quantity button {
+            width: 24px;
+            height: 24px;
+            border: 1px solid #333;
+            background: #333;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .cart-item__remove {
+            color: #ff4444;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        
+        .cart-modal__footer {
+            padding: 15px 20px;
+            border-top: 1px solid #333;
+        }
+        
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: white;
+        }
+        
+        .cart-checkout-btn {
+            width: 100%;
+            padding: 12px;
+            background: #ffd700;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        /* Модальное окно авторизации */
+        .auth-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 11000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .auth-modal.show {
+            display: flex;
+        }
+        
+        .auth-modal__content {
+            background: #1a1a1a;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        
+        .auth-modal__header {
+            padding: 15px 20px;
+            background: #000;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .auth-modal__close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .auth-modal__body {
+            padding: 25px;
+        }
+        
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .auth-form .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .auth-form .form-group label {
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .auth-form .form-group input {
+            padding: 10px;
+            border: 1px solid #333;
+            border-radius: 5px;
+            background: #2a2a2a;
+            color: white;
+        }
+        
+        .auth-btn {
+            background: #ffd700;
+            color: #000;
+            border: none;
+            padding: 12px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .auth-modal__switch {
+            margin-top: 15px;
+            text-align: center;
+            font-size: 13px;
+            color: #999;
+        }
+        
+        .auth-modal__switch button {
+            background: none;
+            border: none;
+            color: #ffd700;
+            cursor: pointer;
+        }
+        
+        @media (max-width: 480px) {
+            .customizer-canvas-container { min-height: 250px; }
+            .customizer-tools { max-height: 180px; }
+            .tool-buttons { grid-template-columns: repeat(3, 1fr); }
+        }
+    </style>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+</head>
+<body>
+    <header class="header">
+        <div class="container header__inner">
+            <div class="logo">DEALER<span>.CUSTOM</span></div>
+            <nav class="nav">
+                <a href="index.html">ГЛАВНАЯ</a>
+                <a href="catalog.html">КАТАЛОГ</a>
+                <a href="sell.html">ПРОДАТЬ</a>
+                <a href="custom.html" class="active">CUSTOM</a>
+                <a href="#contacts">КОНТАКТЫ</a>
+            </nav>
+            <div class="header-actions">
+                <div class="user-menu">
+                    <button class="user-menu__btn" id="userMenuBtn">
+                        <i class="fas fa-user"></i>
+                    </button>
+                    <div class="user-menu__dropdown" id="userDropdown">
+                        <a href="#" id="loginLink"><i class="fas fa-sign-in-alt"></i> Войти</a>
+                        <a href="#" id="registerLink"><i class="fas fa-user-plus"></i> Регистрация</a>
+                        <a href="#" id="profileLink" style="display: none;"><i class="fas fa-id-card"></i> Профиль</a>
+                        <a href="#" id="ordersLink" style="display: none;"><i class="fas fa-shopping-bag"></i> Заказы</a>
+                        <a href="#" id="logoutLink" style="display: none;"><i class="fas fa-sign-out-alt"></i> Выйти</a>
+                    </div>
+                </div>
+                <div class="cart-btn">
+                    <button id="cartBtn">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-counter" id="cartCounter">0</span>
+                    </button>
+                </div>
+                <button class="btn" id="openModalBtn"><i class="fas fa-pen"></i> ЗАКАЗАТЬ</button>
+                <button class="mobile-nav-toggle" id="mobileNavToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="categories-bar">
+                <a href="#" data-category="odezhda" class="active-category">ОДЕЖДА</a>
+                <a href="#" data-category="obuv">ОБУВЬ</a>
+                <a href="#" data-category="aksessuary">АКСЕССУАРЫ</a>
+                <a href="#" data-category="sumki">СУМКИ</a>
+                <a href="#" data-category="sport">ТОВАРЫ ДЛЯ СПОРТА</a>
+            </div>
+
+            <div class="breadcrumb">
+                <a href="#">DEALER</a> <span>/</span> <span>Главная</span>
+            </div>
+
+            <div class="content-wrapper">
+                <div class="gallery-header">
+    <h1 id="castomHeaderTitle"># ГАЛЕРЕЯ CUSTOM</h1>
+    <h2 id="castomHeaderSubtitle">Галерея Custom</h2>
+    <p id="castomHeaderDesc">Ниже вы можете увидеть примеры закастомизированных моделей</p>
+</div>
+
+                <div class="gallery-grid" id="productGallery">
+                </div>
+            </div>
+
+            <div class="subscribe-section">
+                <h2>Sign up to comment, edit, inspect and more.</h2>
+                <p>Присоединяйтесь к сообществу DEALER.CUSTOM</p>
+                <div class="subscribe-buttons">
+                    <button class="btn">Sign up</button>
+                    <button class="btn btn--outline">Continue</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer" id="contacts">
+        <div class="container">
+            <div class="footer__grid">
+                <div class="footer__col">
+                    <div class="footer__logo">DEALER<span>.CUSTOM</span></div>
+                    <p class="footer__text">Премиальное ателье индивидуального пошива и кастомизации. Создайте свой уникальный стиль.</p>
+                </div>
+                <div class="footer__col">
+                    <h4 class="footer__title">Меню</h4>
+                    <ul class="footer__list">
+                        <li><a href="#">О нас</a></li>
+                        <li><a href="#">Каталог</a></li>
+                        <li><a href="#">Custom</a></li>
+                        <li><a href="#">Контакты</a></li>
+                    </ul>
+                </div>
+                <div class="footer__col">
+                    <h4 class="footer__title">Поддержка</h4>
+                    <ul class="footer__list">
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Доставка</a></li>
+                        <li><a href="#">Оплата</a></li>
+                        <li><a href="#">Возврат</a></li>
+                    </ul>
+                </div>
+                <div class="footer__col">
+                    <h4 class="footer__title">Контакты</h4>
+                    <ul class="footer__list">
+                        <li><i class="fas fa-phone"></i> +7 (999) 777-77-77</li>
+                        <li><i class="fas fa-envelope"></i> custom@dealer.ru</li>
+                        <li><i class="fas fa-map-marker"></i> Москва, ул. Тверская, 15</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>Mob.Custom © 2025 DEALER.CUSTOM — Все права защищены</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Редактор кастомизации -->
+    <div id="customizerModal" class="customizer-modal">
+        <div class="customizer-container">
+            <div class="customizer-header">
+                <h2><i class="fas fa-paint-brush"></i> Редактор кастомизации</h2>
+                <button class="customizer-close" id="closeCustomizer">&times;</button>
+            </div>
+            
+            <div class="customizer-main">
+                <div class="customizer-tools">
+                    <div class="tool-section">
+                        <h3>Загрузить</h3>
+                        <div class="tool-buttons">
+                            <label for="uploadBgImage" class="tool-btn">
+                                <i class="fas fa-image"></i>
+                                <span>Фон</span>
+                            </label>
+                            <input type="file" id="uploadBgImage" accept="image/*" style="display: none;">
+                            
+                            <label for="uploadOverlayImage" class="tool-btn">
+                                <i class="fas fa-layer-group"></i>
+                                <span>Наклейка</span>
+                            </label>
+                            <input type="file" id="uploadOverlayImage" accept="image/*" style="display: none;">
+                        </div>
+                    </div>
+                    
+                    <div class="tool-section">
+                        <h3>Рисование</h3>
+                        <div class="tool-buttons">
+                            <button class="tool-btn" id="drawBrush">
+                                <i class="fas fa-pencil-alt"></i>
+                                <span>Кисть</span>
+                            </button>
+                            <button class="tool-btn" id="drawEraser">
+                                <i class="fas fa-eraser"></i>
+                                <span>Ластик</span>
+                            </button>
+                            <button class="tool-btn" id="clearCanvas">
+                                <i class="fas fa-trash"></i>
+                                <span>Очистить</span>
+                            </button>
+                        </div>
+                        
+                        <div class="color-picker">
+                            <label>Цвет:</label>
+                            <input type="color" id="brushColor" value="#000000">
+                        </div>
+                        
+                        <div class="brush-size">
+                            <label>Размер: <span id="sizeValue">5</span></label>
+                            <input type="range" id="brushSize" min="1" max="50" value="5">
+                        </div>
+                    </div>
+                    
+                    <div class="tool-section">
+                        <h3>Текст</h3>
+                        <div class="text-controls">
+                            <input type="text" id="textInput" placeholder="Введите текст">
+                            <button class="tool-btn" id="addText">
+                                <i class="fas fa-plus"></i> Добавить
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="tool-section">
+                        <h3>Наклейки</h3>
+                        <div class="stickers-grid">
+                            <button class="sticker-btn" data-sticker="⭐">⭐</button>
+                            <button class="sticker-btn" data-sticker="❤️">❤️</button>
+                            <button class="sticker-btn" data-sticker="🔥">🔥</button>
+                            <button class="sticker-btn" data-sticker="💎">💎</button>
+                            <button class="sticker-btn" data-sticker="👕">👕</button>
+                            <button class="sticker-btn" data-sticker="👖">👖</button>
+                            <button class="sticker-btn" data-sticker="🧥">🧥</button>
+                            <button class="sticker-btn" data-sticker="👟">👟</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="customizer-canvas-container">
+                    <canvas id="customizerCanvas" width="600" height="600"></canvas>
+                </div>
+                
+                <div class="customizer-layers">
+                    <h3>Слои</h3>
+                    <div class="layers-list" id="layersList">
+                        <div class="layer-item active" data-layer="bg">
+                            <i class="fas fa-image"></i> Фон
+                            <button class="layer-delete" onclick="if(window.customizer) customizer.deleteLayer('bg')">×</button>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="action-btn" id="saveDesign">
+                            <i class="fas fa-save"></i> Сохранить
+                        </button>
+                        <button class="action-btn" id="resetDesign">
+                            <i class="fas fa-undo"></i> Сбросить
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальные окна -->
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-modal__content">
+            <div class="cart-modal__header">
+                <h2>Корзина</h2>
+                <button class="cart-modal__close" id="closeCartModal">&times;</button>
+            </div>
+            <div class="cart-modal__body" id="cartBody">
+                <div class="cart-empty" id="cartEmpty">
+                    <i class="fas fa-shopping-cart"></i>
+                    <p>Корзина пуста</p>
+                </div>
+                <div class="cart-items" id="cartItems"></div>
+            </div>
+            <div class="cart-modal__footer" id="cartFooter" style="display: none;">
+                <div class="cart-total">
+                    <span>Итого:</span>
+                    <span id="cartTotalPrice">0 ₽</span>
+                </div>
+                <button class="cart-checkout-btn" id="checkoutBtn">Оформить заказ</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="auth-modal" id="authModal">
+        <div class="auth-modal__content">
+            <div class="auth-modal__header">
+                <h2 id="authModalTitle">Вход</h2>
+                <button class="auth-modal__close" id="closeAuthModal">&times;</button>
+            </div>
+            <div class="auth-modal__body">
+                <form id="loginForm" class="auth-form">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="loginEmail" required placeholder="Введите email">
+                    </div>
+                    <div class="form-group">
+                        <label>Пароль</label>
+                        <input type="password" id="loginPassword" required placeholder="Введите пароль">
+                    </div>
+                    <button type="submit" class="auth-btn">Войти</button>
+                </form>
+                
+                <form id="registerForm" class="auth-form" style="display: none;">
+                    <div class="form-group">
+                        <label>Имя</label>
+                        <input type="text" id="regName" required placeholder="Введите имя">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="regEmail" required placeholder="Введите email">
+                    </div>
+                    <div class="form-group">
+                        <label>Телефон</label>
+                        <input type="tel" id="regPhone" placeholder="+7 (___) ___-__-__">
+                    </div>
+                    <div class="form-group">
+                        <label>Пароль</label>
+                        <input type="password" id="regPassword" required placeholder="Введите пароль">
+                    </div>
+                    <div class="form-group">
+                        <label>Подтверждение</label>
+                        <input type="password" id="regConfirmPassword" required placeholder="Повторите пароль">
+                    </div>
+                    <button type="submit" class="auth-btn">Зарегистрироваться</button>
+                </form>
+                
+                <div class="auth-modal__switch">
+                    <span id="switchAuthText">Нет аккаунта?</span>
+                    <button id="switchAuthBtn">Зарегистрироваться</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Инициализация AOS
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 30
+        });
+
+        // БАЗА ДАННЫХ ТОВАРОВ С ID
+        const products = {
+            odezhda: [
+                { id: "prod_1", name: "Вечернее платье", desc: "Кастомная вышивка", price: 21500, img: "https://avatars.mds.yandex.net/i?id=2a0000019b6ad37dbebd9cd05095d605ad8e-14778405-yarec&n=13" },
+                { id: "prod_2", name: "Мужской костюм", desc: "Индивидуальный пошив", price: 34900, img: "https://img.joomcdn.net/8188d0822eefac3cf03f38cd8705d53e4e141935_original.jpeg" },
+                { id: "prod_3", name: "Кашемировое пальто", desc: "Кастомный крой", price: 29900, img: "https://basket-04.wbbasket.ru/vol646/part64616/64616340/images/big/1.webp" }
+            ],
+            obuv: [
+                { id: "prod_4", name: "Bad Bunny Campus", desc: "Bad Bunny x Adidas", price: 28900, img: "https://outmaxshop.ru/components/com_jshopping/files/img_products/40133/bad-bunny-x-adidas-campus-40133-1.jpg" },
+                { id: "prod_5", name: "Yeezy", desc: "Модель Yeezy 350", price: 35900, img: "https://avatars.mds.yandex.net/get-yastore/16104656/rmx69pt7tqhtcrdrswc99zm5zms7hxds/x1920" },
+                { id: "prod_6", name: "Adidas Classic", desc: "Классические Adidas", price: 12900, img: "https://main-cdn.sbermegamarket.ru/big2/hlr-system/-14/303/510/419/165/7/100066457496b13.jpg" }
+            ],
+            aksessuary: [
+                { id: "prod_7", name: "Стильные очки", desc: "Солнцезащитные очки", price: 8900, img: "https://img.joomcdn.net/65580ba4968f64ceaef35b312bad3f20a9a89135_original.jpeg" },
+                { id: "prod_8", name: "Кожаный ремень", desc: "Натуральная кожа", price: 4900, img: "https://basket-23.wbbasket.ru/vol4092/part409237/409237179/images/big/1.webp" },
+                { id: "prod_9", name: "Элегантные часы", desc: "Наручные часы", price: 15900, img: "https://ae01.alicdn.com/kf/S8be275065f894aa99d6bd0868c300084H.jpg" }
+            ],
+            sumki: [
+                { id: "prod_10", name: "Женская сумка", desc: "Кожаная сумка", price: 18900, img: "https://img.joomcdn.net/42f75094dcf27f12083b8ceff336144fd10ffc84_original.jpeg" },
+                { id: "prod_11", name: "Рюкзак", desc: "Кожаный рюкзак", price: 12900, img: "https://cdn1.ozone.ru/s3/multimedia-7/6688842019.jpg" },
+                { id: "prod_12", name: "Клатч", desc: "Вечерний клатч", price: 8900, img: "https://i.pinimg.com/736x/ce/ed/bc/ceedbc17c65bd219a7807da44908707d.jpg" }
+            ],
+            sport: [
+                { id: "prod_13", name: "Гантели", desc: "Набор гантелей", price: 3900, img: "https://avatars.mds.yandex.net/i?id=aa9c6b2c6914825faaa9d9046edd9cd8_l-5578456-images-thumbs&n=13" },
+                { id: "prod_14", name: "Бутылка", desc: "Спортивная бутылка", price: 1900, img: "https://www.domsporta.com/upload/iblock/3c9/f4ee196a-81b9-11f0-8301-00155d02a007_d6590fad-8894-11f0-8301-00155d02a007.jpeg" },
+                { id: "prod_15", name: "Эспандер", desc: "Эспандер для тренировок", price: 1200, img: "https://cache3.youla.io/files/images/780_780/5e/6a/5e6a2d4bf8efdc5def495736.jpg" }
+            ]
+        };
+
+        // ЛОГИКА РАБОТЫ ГАЛЕРЕИ
+        const categoryLinks = document.querySelectorAll('.categories-bar a');
+        const gallery = document.getElementById('productGallery');
+
+        function renderGallery(categoryKey) {
+            const categoryProducts = products[categoryKey];
+            if (!categoryProducts) return;
+
+            let htmlString = '';
+            for (const product of categoryProducts) {
+                htmlString += `
+                    <div class="gallery-card" onclick="openCustomizerWithImage('${product.img}', '${product.name}')">
+                        <div class="gallery-card__image">
+                            <img src="${product.img}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/300?text=Image+not+found';">
+                            <div class="customize-badge">
+                                <i class="fas fa-paint-brush"></i> Кастомизировать
+                            </div>
+                        </div>
+                        <div class="gallery-card__content">
+                            <h3>${product.name}</h3>
+                            <p>${product.desc}</p>
+                            <button class="btn btn--small add-to-cart-btn" data-id="${product.id}" data-name="${product.name}" data-price="${product.price}" data-image="${product.img}" style="margin-top: 10px; padding: 6px 12px; font-size: 11px;">
+                                <i class="fas fa-shopping-cart"></i> В корзину
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+            gallery.innerHTML = htmlString || '<p style="color:white; grid-column: 1/-1; text-align:center;">Товары в этой категории скоро появятся.</p>';
+            
+            // Добавляем обработчики для кнопок "В корзину"
+            document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const product = {
+                        id: this.dataset.id,
+                        name: this.dataset.name,
+                        price: parseInt(this.dataset.price),
+                        image: this.dataset.image
+                    };
+                    cartSystem.addItem(product);
+                });
+            });
+        }
+
+        function setActiveCategory(activeLink) {
+            categoryLinks.forEach(link => link.classList.remove('active-category'));
+            activeLink.classList.add('active-category');
+        }
+
+        categoryLinks.forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                const category = this.dataset.category;
+                renderGallery(category);
+                setActiveCategory(this);
+                
+                const cards = document.querySelectorAll('.gallery-card');
+                cards.forEach((card, index) => {
+                    card.style.animation = 'none';
+                    card.offsetHeight;
+                    card.style.animation = `scaleIn 0.6s ease-out ${index * 0.1}s both`;
+                });
+            });
+        });
+
+        renderGallery('odezhda');
+
+        // ========== СИСТЕМА КОРЗИНЫ ==========
+        class CartSystem {
+            constructor() {
+                this.items = [];
+                this.loadCart();
+                this.updateCartCounter();
+            }
+
+            loadCart() {
+                const savedCart = localStorage.getItem('cart_items');
+                this.items = savedCart ? JSON.parse(savedCart) : [];
+            }
+
+            saveCart() {
+                localStorage.setItem('cart_items', JSON.stringify(this.items));
+                this.updateCartCounter();
+            }
+
+            addItem(product) {
+                const existingItem = this.items.find(item => item.id === product.id);
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    this.items.push({ ...product, quantity: 1 });
+                }
+                this.saveCart();
+                this.showNotification('Товар добавлен в корзину');
+                this.renderCart();
+            }
+
+            removeItem(productId) {
+                this.items = this.items.filter(item => item.id !== productId);
+                this.saveCart();
+                this.showNotification('Товар удален из корзины');
+                this.renderCart();
+            }
+
+            updateQuantity(productId, quantity) {
+                const item = this.items.find(item => item.id === productId);
+                if (item) {
+                    if (quantity <= 0) {
+                        this.removeItem(productId);
+                    } else {
+                        item.quantity = quantity;
+                        this.saveCart();
+                        this.renderCart();
+                    }
+                }
+            }
+
+            getTotalPrice() {
+                return this.items.reduce((total, item) => total + (item.price * item.quantity), 0);
+            }
+
+            getTotalItems() {
+                return this.items.reduce((total, item) => total + item.quantity, 0);
+            }
+
+            updateCartCounter() {
+                const counter = document.getElementById('cartCounter');
+                if (counter) {
+                    const count = this.getTotalItems();
+                    counter.textContent = count;
+                    counter.style.display = count > 0 ? 'flex' : 'none';
+                }
+            }
+
+            showNotification(message) {
+                const notification = document.createElement('div');
+                notification.className = 'cart-notification';
+                notification.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+                document.body.appendChild(notification);
+                setTimeout(() => notification.classList.add('show'), 10);
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    setTimeout(() => notification.remove(), 300);
+                }, 2000);
+            }
+
+            renderCart() {
+                const cartItems = document.getElementById('cartItems');
+                const cartEmpty = document.getElementById('cartEmpty');
+                const cartFooter = document.getElementById('cartFooter');
+                const cartTotalPrice = document.getElementById('cartTotalPrice');
+                
+                if (!cartItems) return;
+                
+                if (this.items.length === 0) {
+                    cartEmpty.style.display = 'block';
+                    cartItems.style.display = 'none';
+                    if (cartFooter) cartFooter.style.display = 'none';
+                    return;
+                }
+                
+                cartEmpty.style.display = 'none';
+                cartItems.style.display = 'flex';
+                if (cartFooter) cartFooter.style.display = 'block';
+                
+                let html = '';
+                this.items.forEach(item => {
+                    html += `
+                        <div class="cart-item" data-id="${item.id}">
+                            <div class="cart-item__image">
+                                <img src="${item.image || 'https://via.placeholder.com/80'}" alt="${item.name}">
+                            </div>
+                            <div class="cart-item__info">
+                                <div class="cart-item__title">${item.name}</div>
+                                <div class="cart-item__price">${item.price} ₽</div>
+                                <div class="cart-item__quantity">
+                                    <button class="cart-quantity-minus" data-id="${item.id}">-</button>
+                                    <span>${item.quantity}</span>
+                                    <button class="cart-quantity-plus" data-id="${item.id}">+</button>
+                                    <span class="cart-item__remove" data-id="${item.id}">
+                                        <i class="fas fa-trash"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                cartItems.innerHTML = html;
+                if (cartTotalPrice) cartTotalPrice.textContent = this.getTotalPrice() + ' ₽';
+                
+                document.querySelectorAll('.cart-quantity-minus').forEach(btn => {
+                    btn.addEventListener('click', () => this.updateQuantity(btn.dataset.id, this.items.find(i => i.id === btn.dataset.id)?.quantity - 1));
+                });
+                document.querySelectorAll('.cart-quantity-plus').forEach(btn => {
+                    btn.addEventListener('click', () => this.updateQuantity(btn.dataset.id, this.items.find(i => i.id === btn.dataset.id)?.quantity + 1));
+                });
+                document.querySelectorAll('.cart-item__remove').forEach(btn => {
+                    btn.addEventListener('click', () => this.removeItem(btn.dataset.id));
+                });
+            }
+        }
+
+        // ========== СИСТЕМА АВТОРИЗАЦИИ ==========
+        class UserSystem {
+            constructor() {
+                this.currentUser = null;
+                this.loadUser();
+            }
+
+            loadUser() {
+                const savedUser = localStorage.getItem('current_user');
+                if (savedUser) {
+                    this.currentUser = JSON.parse(savedUser);
+                }
+            }
+
+            login(email, password) {
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                const user = users.find(u => u.email === email && u.password === password);
+                if (user) {
+                    this.currentUser = { id: user.id, name: user.name, email: user.email, phone: user.phone };
+                    localStorage.setItem('current_user', JSON.stringify(this.currentUser));
+                    return { success: true };
+                }
+                return { success: false, message: 'Неверный email или пароль' };
+            }
+
+            register(userData) {
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                if (users.find(u => u.email === userData.email)) {
+                    return { success: false, message: 'Пользователь уже существует' };
+                }
+                const newUser = { ...userData, id: 'user_' + Date.now() };
+                users.push(newUser);
+                localStorage.setItem('users', JSON.stringify(users));
+                this.currentUser = { id: newUser.id, name: newUser.name, email: newUser.email, phone: newUser.phone };
+                localStorage.setItem('current_user', JSON.stringify(this.currentUser));
+                return { success: true };
+            }
+
+            logout() {
+                this.currentUser = null;
+                localStorage.removeItem('current_user');
+                return { success: true };
+            }
+
+            isAuthenticated() {
+                return this.currentUser !== null;
+            }
+
+            getCurrentUser() {
+                return this.currentUser;
+            }
+        }
+
+        // Инициализация систем
+        const userSystem = new UserSystem();
+        const cartSystem = new CartSystem();
+
+        // Обновление интерфейса пользователя
+        function updateUserInterface() {
+            const isAuth = userSystem.isAuthenticated();
+            const loginLink = document.getElementById('loginLink');
+            const registerLink = document.getElementById('registerLink');
+            const profileLink = document.getElementById('profileLink');
+            const ordersLink = document.getElementById('ordersLink');
+            const logoutLink = document.getElementById('logoutLink');
+            
+            if (isAuth) {
+                if (loginLink) loginLink.style.display = 'none';
+                if (registerLink) registerLink.style.display = 'none';
+                if (profileLink) profileLink.style.display = 'flex';
+                if (ordersLink) ordersLink.style.display = 'flex';
+                if (logoutLink) logoutLink.style.display = 'flex';
+            } else {
+                if (loginLink) loginLink.style.display = 'flex';
+                if (registerLink) registerLink.style.display = 'flex';
+                if (profileLink) profileLink.style.display = 'none';
+                if (ordersLink) ordersLink.style.display = 'none';
+                if (logoutLink) logoutLink.style.display = 'none';
+            }
+        }
+
+        // Модальные окна
+        const authModal = document.getElementById('authModal');
+        const cartModal = document.getElementById('cartModal');
+        const closeAuthModal = document.getElementById('closeAuthModal');
+        const closeCartModal = document.getElementById('closeCartModal');
+        const cartBtn = document.getElementById('cartBtn');
+        const switchAuthBtn = document.getElementById('switchAuthBtn');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+
+        function showAuthModal() {
+            authModal.classList.add('show');
+        }
+
+        function showCartModal() {
+            cartSystem.renderCart();
+            cartModal.classList.add('show');
+        }
+
+        if (cartBtn) {
+            cartBtn.addEventListener('click', () => showCartModal());
+        }
+
+        if (closeCartModal) {
+            closeCartModal.addEventListener('click', () => cartModal.classList.remove('show'));
+        }
+
+        if (closeAuthModal) {
+            closeAuthModal.addEventListener('click', () => authModal.classList.remove('show'));
+        }
+
+        window.addEventListener('click', (e) => {
+            if (e.target === authModal) authModal.classList.remove('show');
+            if (e.target === cartModal) cartModal.classList.remove('show');
+        });
+
+        if (switchAuthBtn) {
+            switchAuthBtn.addEventListener('click', () => {
+                const isLogin = loginForm.style.display !== 'none';
+                loginForm.style.display = isLogin ? 'none' : 'flex';
+                registerForm.style.display = isLogin ? 'flex' : 'none';
+                document.getElementById('authModalTitle').textContent = isLogin ? 'Регистрация' : 'Вход';
+                switchAuthBtn.textContent = isLogin ? 'Войти' : 'Зарегистрироваться';
+                document.getElementById('switchAuthText').textContent = isLogin ? 'Уже есть аккаунт?' : 'Нет аккаунта?';
+            });
+        }
+
+        if (loginForm) {
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+                const result = userSystem.login(email, password);
+                if (result.success) {
+                    authModal.classList.remove('show');
+                    updateUserInterface();
+                    alert('Добро пожаловать!');
+                } else {
+                    alert(result.message);
+                }
+            });
+        }
+
+        if (registerForm) {
+            registerForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const password = document.getElementById('regPassword').value;
+                const confirm = document.getElementById('regConfirmPassword').value;
+                if (password !== confirm) {
+                    alert('Пароли не совпадают');
+                    return;
+                }
+                const userData = {
+                    name: document.getElementById('regName').value,
+                    email: document.getElementById('regEmail').value,
+                    phone: document.getElementById('regPhone').value,
+                    password: password
+                };
+                const result = userSystem.register(userData);
+                if (result.success) {
+                    authModal.classList.remove('show');
+                    updateUserInterface();
+                    alert('Регистрация успешна!');
+                } else {
+                    alert(result.message);
+                }
+            });
+        }
+
+        if (checkoutBtn) {
+            checkoutBtn.addEventListener('click', () => {
+                if (!userSystem.isAuthenticated()) {
+                    cartModal.classList.remove('show');
+                    showAuthModal();
+                    return;
+                }
+                alert('Заказ оформлен! С вами свяжется менеджер.');
+                cartSystem.items = [];
+                cartSystem.saveCart();
+                cartSystem.renderCart();
+                cartModal.classList.remove('show');
+            });
+        }
+
+        document.getElementById('loginLink')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('userDropdown').classList.remove('show');
+            showAuthModal();
+        });
+        
+        document.getElementById('registerLink')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('userDropdown').classList.remove('show');
+            loginForm.style.display = 'none';
+            registerForm.style.display = 'flex';
+            document.getElementById('authModalTitle').textContent = 'Регистрация';
+            switchAuthBtn.textContent = 'Войти';
+            document.getElementById('switchAuthText').textContent = 'Уже есть аккаунт?';
+            showAuthModal();
+        });
+        
+        document.getElementById('logoutLink')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            userSystem.logout();
+            document.getElementById('userDropdown').classList.remove('show');
+            updateUserInterface();
+            alert('Вы вышли из аккаунта');
+        });
+
+        document.getElementById('userMenuBtn')?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('show');
+        });
+
+        document.addEventListener('click', (e) => {
+            const dropdown = document.getElementById('userDropdown');
+            const btn = document.getElementById('userMenuBtn');
+            if (dropdown && btn && !btn.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        // Мобильное меню
+        const mobileToggle = document.getElementById('mobileNavToggle');
+        const nav = document.querySelector('.nav');
+        if (mobileToggle && nav) {
+            mobileToggle.addEventListener('click', () => {
+                if (nav.style.display === 'flex') {
+                    nav.style.display = 'none';
+                } else {
+                    nav.style.display = 'flex';
+                    nav.style.flexDirection = 'column';
+                    nav.style.position = 'absolute';
+                    nav.style.top = '100%';
+                    nav.style.left = '0';
+                    nav.style.width = '100%';
+                    nav.style.background = 'rgba(0,0,0,0.95)';
+                    nav.style.padding = '20px';
+                    nav.style.gap = '15px';
+                }
+            });
+        }
+
+        updateUserInterface();
+
+        // РЕДАКТОР КАСТОМИЗАЦИИ
+        class Customizer {
+            constructor() {
+                this.canvas = document.getElementById('customizerCanvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.isDrawing = false;
+                this.currentImage = null;
+                this.init();
+            }
+            
+            init() {
+                this.ctx.fillStyle = '#ffffff';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                this.currentTool = 'brush';
+                this.brushColor = '#000000';
+                this.brushSize = 5;
+                this.bindEvents();
+            }
+            
+            bindEvents() {
+                this.canvas.addEventListener('mousedown', (e) => this.startDrawing(e));
+                this.canvas.addEventListener('mousemove', (e) => this.draw(e));
+                this.canvas.addEventListener('mouseup', () => this.stopDrawing());
+                this.canvas.addEventListener('mouseleave', () => this.stopDrawing());
+                
+                this.canvas.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    const touch = e.touches[0];
+                    const mouseEvent = new MouseEvent('mousedown', { clientX: touch.clientX, clientY: touch.clientY });
+                    this.canvas.dispatchEvent(mouseEvent);
+                });
+                
+                this.canvas.addEventListener('touchmove', (e) => {
+                    e.preventDefault();
+                    const touch = e.touches[0];
+                    const mouseEvent = new MouseEvent('mousemove', { clientX: touch.clientX, clientY: touch.clientY });
+                    this.canvas.dispatchEvent(mouseEvent);
+                });
+                
+                this.canvas.addEventListener('touchend', (e) => {
+                    e.preventDefault();
+                    const mouseEvent = new MouseEvent('mouseup', {});
+                    this.canvas.dispatchEvent(mouseEvent);
+                });
+                
+                document.getElementById('drawBrush').addEventListener('click', () => {
+                    this.currentTool = 'brush';
+                    document.querySelectorAll('.tool-btn').forEach(btn => btn.classList.remove('active'));
+                    document.getElementById('drawBrush').classList.add('active');
+                });
+                
+                document.getElementById('drawEraser').addEventListener('click', () => {
+                    this.currentTool = 'eraser';
+                    document.querySelectorAll('.tool-btn').forEach(btn => btn.classList.remove('active'));
+                    document.getElementById('drawEraser').classList.add('active');
+                });
+                
+                document.getElementById('clearCanvas').addEventListener('click', () => {
+                    if (confirm('Очистить холст?')) {
+                        this.ctx.fillStyle = '#ffffff';
+                        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                        if (this.currentImage) {
+                            const img = new Image();
+                            img.onload = () => this.ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
+                            img.src = this.currentImage;
+                        }
+                    }
+                });
+                
+                document.getElementById('brushColor').addEventListener('input', (e) => this.brushColor = e.target.value);
+                document.getElementById('brushSize').addEventListener('input', (e) => {
+                    this.brushSize = e.target.value;
+                    document.getElementById('sizeValue').textContent = e.target.value;
+                });
+                
+                document.getElementById('uploadBgImage').addEventListener('change', (e) => this.loadImage(e.target.files[0], 'bg'));
+                document.getElementById('uploadOverlayImage').addEventListener('change', (e) => this.loadImage(e.target.files[0], 'overlay'));
+                document.getElementById('addText').addEventListener('click', () => {
+                    const text = document.getElementById('textInput').value;
+                    if (text) this.addText(text);
+                });
+                
+                document.querySelectorAll('.sticker-btn').forEach(btn => {
+                    btn.addEventListener('click', () => this.addSticker(btn.dataset.sticker));
+                });
+                
+                document.getElementById('saveDesign').addEventListener('click', () => {
+                    const dataUrl = this.canvas.toDataURL('image/png');
+                    const link = document.createElement('a');
+                    link.download = 'my-custom-design.png';
+                    link.href = dataUrl;
+                    link.click();
+                    alert('Дизайн сохранен!');
+                });
+                
+                document.getElementById('resetDesign').addEventListener('click', () => {
+                    if (confirm('Сбросить все изменения?')) this.resetCanvas();
+                });
+            }
+            
+            loadImageFromUrl(url) {
+                const img = new Image();
+                img.crossOrigin = 'Anonymous';
+                img.onload = () => {
+                    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                    this.ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
+                    this.currentImage = url;
+                };
+                img.onerror = () => alert('Не удалось загрузить изображение');
+                img.src = url;
+            }
+            
+            startDrawing(e) {
+                this.isDrawing = true;
+                const pos = this.getMousePos(e);
+                this.ctx.beginPath();
+                this.ctx.moveTo(pos.x, pos.y);
+            }
+            
+            draw(e) {
+                if (!this.isDrawing) return;
+                const pos = this.getMousePos(e);
+                this.ctx.lineWidth = this.brushSize;
+                this.ctx.lineCap = 'round';
+                this.ctx.lineJoin = 'round';
+                this.ctx.strokeStyle = this.currentTool === 'brush' ? this.brushColor : '#ffffff';
+                this.ctx.lineTo(pos.x, pos.y);
+                this.ctx.stroke();
+                this.ctx.beginPath();
+                this.ctx.moveTo(pos.x, pos.y);
+            }
+            
+            stopDrawing() {
+                this.isDrawing = false;
+                this.ctx.beginPath();
+            }
+            
+            getMousePos(e) {
+                const rect = this.canvas.getBoundingClientRect();
+                const scaleX = this.canvas.width / rect.width;
+                const scaleY = this.canvas.height / rect.height;
+                const clientX = e.clientX !== undefined ? e.clientX : e.touches?.[0]?.clientX;
+                const clientY = e.clientY !== undefined ? e.clientY : e.touches?.[0]?.clientY;
+                return {
+                    x: (clientX - rect.left) * scaleX,
+                    y: (clientY - rect.top) * scaleY
+                };
+            }
+            
+            loadImage(file, type) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        if (type === 'bg') {
+                            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                            this.ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
+                            this.currentImage = e.target.result;
+                        } else {
+                            const x = (this.canvas.width - img.width) / 2;
+                            const y = (this.canvas.height - img.height) / 2;
+                            this.ctx.drawImage(img, x, y, img.width, img.height);
+                        }
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+            
+            addText(text) {
+                this.ctx.font = '30px Inter';
+                this.ctx.fillStyle = this.brushColor;
+                this.ctx.fillText(text, 100, 100);
+            }
+            
+            addSticker(sticker) {
+                this.ctx.font = '60px Arial';
+                this.ctx.fillText(sticker, 200, 200);
+            }
+            
+            resetCanvas() {
+                this.ctx.fillStyle = '#ffffff';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                if (this.currentImage) {
+                    const img = new Image();
+                    img.onload = () => this.ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
+                    img.src = this.currentImage;
+                }
+            }
+            
+            deleteLayer(layerId) {
+                console.log('Delete layer:', layerId);
+            }
+        }
+
+        let customizer = null;
+
+        function openCustomizerWithImage(imageUrl, productName) {
+            const modal = document.getElementById('customizerModal');
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            
+            if (!customizer) customizer = new Customizer();
+            document.querySelector('.customizer-header h2').innerHTML = `<i class="fas fa-paint-brush"></i> Кастомизация: ${productName}`;
+            setTimeout(() => customizer.loadImageFromUrl(imageUrl), 100);
+        }
+
+        document.getElementById('closeCustomizer').addEventListener('click', () => {
+            document.getElementById('customizerModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+
+        window.addEventListener('click', (e) => {
+            const modal = document.getElementById('customizerModal');
+            if (e.target === modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        document.getElementById('openModalBtn').addEventListener('click', () => {
+            alert('Форма заказа будет доступна в следующем обновлении');
+        });
+    </script>
+    <script>
+    // Загрузка данных из админки для каждой страницы
+    function loadPageContent() {
+        // Загружаем данные из localStorage
+        const saved = localStorage.getItem('siteData');
+        if (saved) {
+            const data = JSON.parse(saved);
+            
+            // Для services.html
+            if (window.location.pathname.includes('services.html')) {
+                const sections = data.pages?.services?.sections;
+                if (sections) {
+                    if (document.querySelector('.page-header span')) 
+                        document.querySelector('.page-header span').textContent = sections.headerSubtitle || 'UNRIVALED VERSATILITY';
+                    if (document.querySelector('.page-header h1')) 
+                        document.querySelector('.page-header h1').textContent = sections.headerTitle || 'Наши услуги';
+                }
+            }
+            
+            // Для portfolio.html
+            if (window.location.pathname.includes('portfolio.html')) {
+                const sections = data.pages?.portfolio?.sections;
+                if (sections) {
+                    if (document.querySelector('.page-title')) 
+                        document.querySelector('.page-title').textContent = sections.headerTitle || 'Наше портфолио';
+                    if (document.querySelector('.page-subtitle')) 
+                        document.querySelector('.page-subtitle').textContent = sections.headerSubtitle || 'Более 5000 довольных клиентов';
+                }
+            }
+            
+            // Для preloved.html
+            if (window.location.pathname.includes('preloved.html')) {
+                const sections = data.pages?.preloved?.sections;
+                if (sections) {
+                    if (document.querySelector('.preloved-hero .brand')) 
+                        document.querySelector('.preloved-hero .brand').textContent = sections.heroBrand || 'pre-loved by dealer';
+                    if (document.querySelector('.preloved-hero h1')) 
+                        document.querySelector('.preloved-hero h1').innerHTML = sections.heroTitle || 'для тех, кто ценит осознанное потребление';
+                }
+            }
+            
+            // Для castom.html
+            if (window.location.pathname.includes('castom.html')) {
+                const sections = data.pages?.custom?.sections;
+                if (sections) {
+                    if (document.querySelector('.gallery-header h1')) 
+                        document.querySelector('.gallery-header h1').innerHTML = sections.headerTitle || '# ГАЛЕРЕЯ CUSTOM';
+                    if (document.querySelector('.gallery-header h2')) 
+                        document.querySelector('.gallery-header h2').textContent = sections.headerSubtitle || 'Галерея Custom';
+                    if (document.querySelector('.gallery-header p')) 
+                        document.querySelector('.gallery-header p').textContent = sections.headerDesc || 'Ниже вы можете увидеть примеры закастомизированных моделей';
+                }
+            }
+            
+            // Для sell.html
+            if (window.location.pathname.includes('sell.html')) {
+                const sections = data.pages?.sell?.sections;
+                if (sections) {
+                    if (document.querySelector('.dealer-content h1')) 
+                        document.querySelector('.dealer-content h1').textContent = sections.heroTitle || 'ПРОДАЙ СВОЮ ВЕЩЬ';
+                    if (document.querySelector('.dealer-content p')) 
+                        document.querySelector('.dealer-content p').textContent = sections.heroDesc || 'Реализуем позиции, которые потеряли актуальность в вашем гардеробе';
+                }
+            }
+        }
+        
+        // Загружаем настройки сайта (телефон, email и т.д.)
+        const settings = JSON.parse(localStorage.getItem('siteData') || '{}').settings;
+        if (settings) {
+            const phoneElements = document.querySelectorAll('[data-field="phone"]');
+            phoneElements.forEach(el => el.textContent = settings.phone);
+        }
+    }
+    
+    document.addEventListener('DOMContentLoaded', loadPageContent);
+</script>
+<script>
+    function loadCastomContent() {
+        const saved = localStorage.getItem('siteData');
+        if (saved) {
+            const data = JSON.parse(saved);
+            const sections = data.pages?.castom?.sections;
+            if (sections) {
+                if (document.getElementById('castomHeaderTitle')) 
+                    document.getElementById('castomHeaderTitle').innerHTML = sections.headerTitle || '# ГАЛЕРЕЯ CUSTOM';
+                if (document.getElementById('castomHeaderSubtitle')) 
+                    document.getElementById('castomHeaderSubtitle').textContent = sections.headerSubtitle || 'Галерея Custom';
+                if (document.getElementById('castomHeaderDesc')) 
+                    document.getElementById('castomHeaderDesc').textContent = sections.headerDesc || 'Ниже вы можете увидеть примеры закастомизированных моделей';
+            }
+        }
+    }
+    document.addEventListener('DOMContentLoaded', loadCastomContent);
+</script>
+</body>
+</html>

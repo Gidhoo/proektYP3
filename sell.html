@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEALER | Продать вещь</title>
+    <!-- Шрифт Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #000000;
+            line-height: 1.4;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Размытый фон на всю страницу */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://image.cnbcfm.com/api/v1/image/104421595-jimmy_choo.jpg');
+            background-size: cover;
+            background-position: center;
+            filter: blur(8px);
+            opacity: 0.5;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Шапка */
+        .header {
+            padding: 20px 0;
+            background: transparent;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header__inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #000;
+        }
+
+        .nav {
+            display: flex;
+            gap: 50px;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: #000;
+            font-weight: 500;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: opacity 0.2s;
+        }
+
+        .nav a:hover {
+            opacity: 0.6;
+        }
+
+        .nav a.active {
+            font-weight: 700;
+            border-bottom: 1px solid #000;
+            padding-bottom: 3px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            border: 1px solid #000;
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn--primary {
+            background: #000;
+            color: #fff;
+            border: 1px solid #000;
+        }
+
+        .btn--primary:hover {
+            background: #333;
+            border-color: #333;
+        }
+
+        .btn:hover {
+            background: #000;
+            color: #fff;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .mobile-nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Основной контент */
+        .dealer-content {
+            max-width: 600px;
+            margin: 80px 0 60px;
+        }
+
+        .dealer-content h1 {
+            font-size: 64px;
+            font-weight: 700;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+            line-height: 1.1;
+        }
+
+        .dealer-content p {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 40px;
+            line-height: 1.6;
+            max-width: 450px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+        }
+
+        /* Категории и бренды */
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 60px;
+            margin: 80px 0;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(5px);
+            padding: 40px;
+            border-radius: 4px;
+        }
+
+        .category-block h3 {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #000;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .category-block h3::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 30px;
+            height: 1px;
+            background: #000;
+        }
+
+        .category-block ul {
+            list-style: none;
+        }
+
+        .category-block li {
+            margin-bottom: 10px;
+        }
+
+        .category-block a {
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .category-block a:hover {
+            color: #000;
+        }
+
+        /* Бренды */
+        .brands-block {
+            margin: 60px 0;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(5px);
+            padding: 40px;
+            border-radius: 4px;
+        }
+
+        .brands-block h3 {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #000;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .brands-block h3::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 30px;
+            height: 1px;
+            background: #000;
+        }
+
+        .brands-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .brands-grid a {
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .brands-grid a:hover {
+            color: #000;
+        }
+
+        /* Фокус недели */
+        .focus-block {
+            margin: 60px 0;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(5px);
+            padding: 40px;
+            border-radius: 4px;
+        }
+
+        .focus-block h4 {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #000;
+            margin-bottom: 25px;
+        }
+
+        .focus-item {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .focus-item img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .focus-item p {
+            font-weight: 600;
+            font-size: 20px;
+            color: #000;
+        }
+
+        .btn-link {
+            text-decoration: none;
+            color: #000;
+            font-size: 14px;
+            font-weight: 500;
+            border-bottom: 1px solid #000;
+            padding-bottom: 3px;
+            display: inline-block;
+            transition: opacity 0.2s;
+            margin-left: 20px;
+        }
+
+        .btn-link:hover {
+            opacity: 0.6;
+        }
+
+        /* Футер */
+        .footer {
+            border-top: 1px solid rgba(0,0,0,0.1);
+            padding: 30px 0;
+            margin-top: 60px;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            color: #666;
+            font-size: 12px;
+        }
+
+        /* Модальное окно */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+        }
+
+        .modal__content {
+            background: #fff;
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 40px;
+            position: relative;
+            border-radius: 8px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal__close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 28px;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.2s;
+        }
+
+        .modal__close:hover {
+            color: #000;
+        }
+
+        .modal h2 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .modal input,
+        .modal textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #eaeaea;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+
+        .modal input:focus,
+        .modal textarea:focus {
+            outline: none;
+            border-color: #000;
+        }
+
+        /* Стили для загрузки фото */
+        .file-upload {
+            margin-bottom: 20px;
+        }
+
+        .file-label {
+            display: block;
+            padding: 30px;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #f9f9f9;
+        }
+
+        .file-label:hover {
+            border-color: #000;
+            background: #f0f0f0;
+        }
+
+        .file-label i {
+            font-size: 32px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .file-label span {
+            display: block;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .preview-container {
+            display: none;
+            margin-top: 10px;
+            position: relative;
+        }
+
+        .preview-container.show {
+            display: block;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        .remove-photo {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: #ff4444;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .remove-photo:hover {
+            background: #cc0000;
+        }
+
+        .form-message {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 4px;
+            display: none;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .form-message.success {
+            display: block;
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .form-message.error {
+            display: block;
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .loading {
+            text-align: center;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .loading i {
+            font-size: 30px;
+            color: #000;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Адаптивность */
+        @media screen and (max-width: 992px) {
+            .categories-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .brands-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .dealer-content h1 {
+                font-size: 48px;
+            }
+            
+            .nav {
+                display: none;
+            }
+            
+            .mobile-nav-toggle {
+                display: block;
+            }
+        }
+
+        @media screen and (max-width: 576px) {
+            .button-group {
+                flex-direction: column;
+            }
+            
+            .focus-item {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .dealer-content h1 {
+                font-size: 36px;
+            }
+            
+            .container {
+                padding: 0 20px;
+            }
+            
+            .modal__content {
+                margin: 20px;
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container header__inner">
+            <div class="logo">DEALER</div>
+            <nav class="nav">
+                <a href="index.html">ГЛАВНАЯ</a>
+                <a href="catalog.html">КАТАЛОГ</a>
+                <a href="sell.html" class="active">ПРОДАТЬ</a>
+                <a href="#contacts">КОНТАКТЫ</a>
+            </nav>
+            <button class="mobile-nav-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <!-- Контент поверх размытого фона -->
+            <div class="dealer-content">
+    <h1 id="sellHeroTitle">ПРОДАЙ СВОЮ ВЕЩЬ</h1>
+    <p id="sellHeroDesc">Реализуем позиции, которые потеряли актуальность в вашем гардеробе</p>
+    <div class="button-group">
+        <a href="#" class="btn btn--primary" id="openModalBtn">Оставить заявку</a>
+        <a href="#" class="btn">Узнать больше</a>
+    </div>
+</div>
+
+            <!-- Категории -->
+            <div class="categories-grid">
+                <div class="category-block">
+                    <h3>РАЗДЕЛЫ ЧТО МОЖНО ПРОДАТЬ</h3>
+                    <ul>
+                        <li><a href="#">Смотреть все</a></li>
+                        <li><a href="#">Custom Pre-Loved</a></li>
+                        <li><a href="#">В наличии</a></li>
+                    </ul>
+                </div>
+                <div class="category-block">
+                    <h3>КАТЕГОРИИ ЧТО МОЖНО ПРОДАТЬ</h3>
+                    <ul>
+                        <li><a href="#">Смотреть все</a></li>
+                        <li><a href="#">Свитера, трикотаж</a></li>
+                        <li><a href="#">Худи, свитшоты</a></li>
+                        <li><a href="#">Футболки, поло</a></li>
+                        <li><a href="#">Кофты на молнии</a></li>
+                        <li><a href="#">Лонгсливы</a></li>
+                        <li><a href="#">В наличии</a></li>
+                    </ul>
+                </div>
+                <div class="category-block">
+                    <h3>ОТ РЕДАКЦИИ ЧТО МОЖНО ПРОДАТЬ</h3>
+                    <ul>
+                        <li><a href="#">На свидание</a></li>
+                        <li><a href="#">Самые редкие модели</a></li>
+                        <li><a href="#">Российские дизайнеры</a></li>
+                        <li><a href="#">Образы для делового ужина</a></li>
+                        <li><a href="#">Перед тренировкой</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Бренды -->
+            <div class="brands-block">
+                <h3>ВСЕ БРЕНДЫ</h3>
+                <div class="brands-grid">
+                    <a href="#">Gucci</a>
+                    <a href="#">Adidas</a>
+                    <a href="#">Jacquemus</a>
+                    <a href="#">Nike</a>
+                    <a href="#">Dior</a>
+                    <a href="#">Prada</a>
+                    <a href="#">Dolce & Gabbana</a>
+                </div>
+            </div>
+
+            <!-- Фокус недели -->
+            <div class="focus-block">
+                <h4>ФОКУС НЕДЕЛИ</h4>
+                <div class="focus-item">
+                    <img src="https://avatars.mds.yandex.net/get-yastore/14579075/jw6qphlm84bch7q7xh4fqxvz8lfcxlgt/x1920" alt="Adidas Ozweego">
+                    <p>Adidas Ozweego</p>
+                    <a href="#" class="btn-link">Перейти к модели →</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>© 2025 DEALER. Все права защищены.</p>
+                <p>Сделано с заботой</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Модальное окно -->
+    <div id="sellModal" class="modal">
+        <div class="modal__content">
+            <span class="modal__close">&times;</span>
+            <h2>Продать вещь</h2>
+            
+            <!-- Индикатор загрузки -->
+            <div class="loading" id="loading">
+                <i class="fas fa-spinner"></i>
+            </div>
+            
+            <form id="sellForm">
+                <input type="text" id="name" placeholder="Ваше имя *" required>
+                <input type="tel" id="phone" placeholder="Телефон *" required>
+                <input type="email" id="email" placeholder="Email">
+                <input type="text" id="itemName" placeholder="Название вещи *" required>
+                <input type="text" id="brand" placeholder="Бренд">
+                <textarea id="description" placeholder="Описание вещи (состояние, размер, цвет) *" rows="3" required></textarea>
+                
+                <!-- Загрузка фото -->
+                <div class="file-upload">
+                    <label for="photo" class="file-label" id="fileLabel">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <span>Нажмите для загрузки фото</span>
+                        <span style="font-size: 12px; color: #999; margin-top: 5px;">Максимум 5 МБ</span>
+                    </label>
+                    <input type="file" id="photo" class="file-input" accept="image/*">
+                    
+                    <!-- Превью фото -->
+                    <div class="preview-container" id="previewContainer">
+                        <img class="preview-image" id="previewImage" src="">
+                        <button type="button" class="remove-photo" id="removePhoto">×</button>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn--primary" id="submitBtn" style="width: 100%;">Отправить заявку</button>
+            </form>
+            
+            <!-- Сообщение об отправке -->
+            <div id="formMessage" class="form-message"></div>
+        </div>
+    </div>
+
+    <script>
+        // Конфигурация Telegram
+        const TELEGRAM_CONFIG = {
+            BOT_TOKEN: '8637443515:AAFVvbYdYrpDRhrbq6UsUJqEGDRWqU0XS_0',
+            CHAT_ID: '1551325264'
+        };
+
+        // Функция отправки в Telegram
+        async function sendToTelegram(formData, photoBase64 = null) {
+            const url = `https://api.telegram.org/bot${TELEGRAM_CONFIG.BOT_TOKEN}/sendMessage`;
+            
+            let message = `📦 <b>НОВАЯ ЗАЯВКА НА ПРОДАЖУ</b>\n\n`;
+            message += `👤 <b>Имя:</b> ${formData.name}\n`;
+            message += `📞 <b>Телефон:</b> ${formData.phone}\n`;
+            message += `📧 <b>Email:</b> ${formData.email || 'не указан'}\n`;
+            message += `🎯 <b>Вещь:</b> ${formData.itemName}\n`;
+            message += `🏷️ <b>Бренд:</b> ${formData.brand || 'не указан'}\n`;
+            message += `📝 <b>Описание:</b> ${formData.description}\n`;
+            message += `📸 <b>Фото:</b> ${photoBase64 ? 'прикреплено' : 'нет'}\n`;
+            message += `🕐 <b>Время:</b> ${new Date().toLocaleString('ru-RU')}`;
+
+            try {
+                // Сначала отправляем текстовое сообщение
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CONFIG.CHAT_ID,
+                        text: message,
+                        parse_mode: 'HTML'
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Ошибка отправки в Telegram');
+                }
+
+                // Если есть фото, отправляем его отдельно
+                if (photoBase64) {
+                    // Конвертируем base64 в blob
+                    const byteCharacters = atob(photoBase64.split(',')[1]);
+                    const byteNumbers = new Array(byteCharacters.length);
+                    for (let i = 0; i < byteCharacters.length; i++) {
+                        byteNumbers[i] = byteCharacters.charCodeAt(i);
+                    }
+                    const byteArray = new Uint8Array(byteNumbers);
+                    const blob = new Blob([byteArray], { type: 'image/jpeg' });
+                    
+                    // Создаем FormData для отправки фото
+                    const formData = new FormData();
+                    formData.append('chat_id', TELEGRAM_CONFIG.CHAT_ID);
+                    formData.append('photo', blob, 'photo.jpg');
+                    formData.append('caption', `Фото к заявке от ${formData.name}`);
+
+                    // Отправляем фото
+                    await fetch(`https://api.telegram.org/bot${TELEGRAM_CONFIG.BOT_TOKEN}/sendPhoto`, {
+                        method: 'POST',
+                        body: formData
+                    });
+                }
+
+                return true;
+            } catch (error) {
+                console.error('Telegram error:', error);
+                return false;
+            }
+        }
+
+        // Функция для показа уведомления
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('formMessage');
+            messageDiv.textContent = text;
+            messageDiv.className = 'form-message ' + type;
+            messageDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        // Функция для валидации телефона
+        function validatePhone(phone) {
+            const digits = phone.replace(/\D/g, '');
+            return digits.length >= 10;
+        }
+
+        // Маска для телефона
+        function phoneMask(e) {
+            let x = e.target.value.replace(/\D/g, '').match(/(\d{0,1})(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/);
+            e.target.value = !x[2] ? x[1] : '+7 (' + x[2] + ') ' + (x[3] ? x[3] : '') + (x[4] ? '-' + x[4] : '') + (x[5] ? '-' + x[5] : '');
+        }
+
+        // Получаем элементы
+        const modal = document.getElementById('sellModal');
+        const openBtn = document.getElementById('openModalBtn');
+        const closeBtn = document.querySelector('.modal__close');
+        const form = document.getElementById('sellForm');
+        const phoneInput = document.getElementById('phone');
+        const fileInput = document.getElementById('photo');
+        const fileLabel = document.getElementById('fileLabel');
+        const previewContainer = document.getElementById('previewContainer');
+        const previewImage = document.getElementById('previewImage');
+        const removePhotoBtn = document.getElementById('removePhoto');
+        const submitBtn = document.getElementById('submitBtn');
+        const loading = document.getElementById('loading');
+
+        // Переменная для хранения фото в base64
+        let currentPhotoBase64 = null;
+
+        // Маска для телефона
+        if (phoneInput) {
+            phoneInput.addEventListener('input', phoneMask);
+        }
+
+        // Открытие модального окна
+        openBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        });
+
+        // Закрытие модального окна
+        closeBtn.addEventListener('click', function() {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            form.reset();
+            currentPhotoBase64 = null;
+            previewContainer.classList.remove('show');
+        });
+
+        // Закрытие по клику вне окна
+        window.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                form.reset();
+                currentPhotoBase64 = null;
+                previewContainer.classList.remove('show');
+            }
+        });
+
+        // Обработка загрузки фото
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                // Проверка размера файла (максимум 5 МБ)
+                if (file.size > 5 * 1024 * 1024) {
+                    showMessage('Файл слишком большой. Максимальный размер 5 МБ', 'error');
+                    fileInput.value = '';
+                    return;
+                }
+
+                // Проверка типа файла
+                if (!file.type.startsWith('image/')) {
+                    showMessage('Пожалуйста, выберите изображение', 'error');
+                    fileInput.value = '';
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    currentPhotoBase64 = e.target.result;
+                    previewImage.src = e.target.result;
+                    previewContainer.classList.add('show');
+                    fileLabel.style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Удаление фото
+        removePhotoBtn.addEventListener('click', function() {
+            fileInput.value = '';
+            currentPhotoBase64 = null;
+            previewContainer.classList.remove('show');
+            fileLabel.style.display = 'block';
+        });
+
+        // Отправка формы
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Получаем значения полей
+            const name = document.getElementById('name').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const itemName = document.getElementById('itemName').value.trim();
+            const brand = document.getElementById('brand').value.trim();
+            const description = document.getElementById('description').value.trim();
+
+            // Валидация
+            if (!name) {
+                showMessage('Введите ваше имя', 'error');
+                return;
+            }
+
+            if (!phone) {
+                showMessage('Введите номер телефона', 'error');
+                return;
+            }
+
+            if (!validatePhone(phone)) {
+                showMessage('Введите корректный номер телефона', 'error');
+                return;
+            }
+
+            if (!itemName) {
+                showMessage('Введите название вещи', 'error');
+                return;
+            }
+
+            if (!description) {
+                showMessage('Введите описание вещи', 'error');
+                return;
+            }
+
+            // Показываем загрузку и блокируем кнопку
+            loading.classList.add('show');
+            submitBtn.disabled = true;
+
+            // Формируем данные для отправки
+            const formData = {
+                name: name,
+                phone: phone,
+                email: email,
+                itemName: itemName,
+                brand: brand,
+                description: description
+            };
+
+            // Отправляем в Telegram
+            const success = await sendToTelegram(formData, currentPhotoBase64);
+
+            // Скрываем загрузку
+            loading.classList.remove('show');
+            submitBtn.disabled = false;
+
+            if (success) {
+                // Показываем сообщение об успехе
+                showMessage('Спасибо! Ваша заявка отправлена', 'success');
+                
+                // Очищаем форму
+                form.reset();
+                currentPhotoBase64 = null;
+                previewContainer.classList.remove('show');
+                fileLabel.style.display = 'block';
+
+                // Закрываем модальное окно через 2 секунды
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }, 2000);
+            } else {
+                showMessage('Ошибка при отправке. Попробуйте позже', 'error');
+            }
+        });
+
+        // Мобильное меню
+        const mobileToggle = document.querySelector('.mobile-nav-toggle');
+        const nav = document.querySelector('.nav');
+        const header = document.querySelector('.header');
+
+        if (mobileToggle && nav && header) {
+            mobileToggle.addEventListener('click', function() {
+                const mobileMenu = document.querySelector('.mobile-menu');
+                if (!mobileMenu) {
+                    const navClone = nav.cloneNode(true);
+                    navClone.classList.add('mobile-menu');
+                    navClone.style.display = 'flex';
+                    navClone.style.flexDirection = 'column';
+                    navClone.style.position = 'absolute';
+                    navClone.style.top = '100%';
+                    navClone.style.left = '0';
+                    navClone.style.width = '100%';
+                    navClone.style.background = '#fff';
+                    navClone.style.padding = '20px';
+                    navClone.style.borderBottom = '1px solid #eaeaea';
+                    navClone.style.zIndex = '1000';
+                    header.appendChild(navClone);
+                } else {
+                    mobileMenu.remove();
+                }
+            });
+        }
+    </script>
+    <script>
+    // Загрузка текста из админки для sell.html
+    function loadSellContent() {
+        const saved = localStorage.getItem('siteData');
+        if (saved) {
+            const data = JSON.parse(saved);
+            const sections = data.pages?.sell?.sections;
+            if (sections) {
+                const titleEl = document.getElementById('sellHeroTitle');
+                const descEl = document.getElementById('sellHeroDesc');
+                if (titleEl) titleEl.textContent = sections.heroTitle || 'ПРОДАЙ СВОЮ ВЕЩЬ';
+                if (descEl) descEl.textContent = sections.heroDesc || 'Реализуем позиции, которые потеряли актуальность в вашем гардеробе';
+            }
+        }
+    }
+    document.addEventListener('DOMContentLoaded', loadSellContent);
+</script>
+</body>
+</html>

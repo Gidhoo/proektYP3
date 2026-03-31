@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель | Управление контентом</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f0f1a;
+            color: #e0e0e0;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .admin-sidebar {
+            width: 280px;
+            background: #1a1a2a;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            border-right: 1px solid #2a2a3a;
+        }
+
+        .sidebar-header {
+            padding: 25px;
+            border-bottom: 1px solid #2a2a3a;
+            background: linear-gradient(135deg, #0088cc 0%, #006699 100%);
+        }
+
+        .sidebar-header h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .sidebar-header h2 i {
+            margin-right: 10px;
+        }
+
+        .sidebar-header p {
+            font-size: 12px;
+            color: rgba(255,255,255,0.7);
+            margin-top: 8px;
+        }
+
+        .sidebar-nav {
+            padding: 20px 0;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 25px;
+            color: #aaa;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.05);
+            color: white;
+        }
+
+        .nav-item.active {
+            background: rgba(0,136,204,0.15);
+            color: #0088cc;
+            border-left-color: #0088cc;
+        }
+
+        .nav-item i {
+            width: 22px;
+            font-size: 18px;
+        }
+
+        .nav-item span {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .admin-main {
+            flex: 1;
+            margin-left: 280px;
+            padding: 30px;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #2a2a3a;
+        }
+
+        .admin-header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            background: linear-gradient(135deg, #fff 0%, #0088cc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .admin-user {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .admin-user span {
+            color: #aaa;
+        }
+
+        .logout-btn {
+            background: #ff4757;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #e84118;
+            transform: translateY(-2px);
+        }
+
+        /* Карточки страниц */
+        .pages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .page-card {
+            background: #1e1e2e;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #2a2a3a;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .page-card:hover {
+            transform: translateY(-5px);
+            border-color: #0088cc;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .page-card__preview {
+            height: 120px;
+            background: linear-gradient(135deg, #2a2a3a 0%, #1a1a2a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .page-card__preview i {
+            font-size: 40px;
+            color: #0088cc;
+        }
+
+        .page-card__content {
+            padding: 20px;
+        }
+
+        .page-card__title {
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 5px;
+        }
+
+        .page-card__url {
+            font-size: 12px;
+            color: #0088cc;
+            font-family: monospace;
+            margin-bottom: 10px;
+        }
+
+        .page-card__stats {
+            display: flex;
+            gap: 15px;
+            font-size: 12px;
+            color: #666;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #2a2a3a;
+        }
+
+        /* Редактор */
+        .editor-panel {
+            background: #1e1e2e;
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid #2a2a3a;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .editor-panel.active {
+            display: block;
+        }
+
+        .editor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #2a2a3a;
+        }
+
+        .editor-header h2 {
+            font-size: 22px;
+            color: white;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: #0088cc;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .edit-section {
+            margin-bottom: 25px;
+            background: #2a2a3a;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .edit-section__header {
+            padding: 12px 20px;
+            background: #1e1e2e;
+            font-weight: 600;
+            font-size: 14px;
+            color: #0088cc;
+            border-bottom: 1px solid #2a2a3a;
+        }
+
+        .edit-section__body {
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 13px;
+            color: #aaa;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            background: #1e1e2e;
+            border: 1px solid #3a3a4a;
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #0088cc;
+        }
+
+        .save-btn {
+            background: #0088cc;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 15px;
+        }
+
+        .save-btn:hover {
+            background: #006699;
+            transform: translateY(-2px);
+        }
+
+        /* Таблицы */
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .items-table th,
+        .items-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #2a2a3a;
+        }
+
+        .items-table th {
+            color: #0088cc;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .items-table td {
+            color: #ccc;
+            font-size: 13px;
+        }
+
+        .items-table img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .edit-btn, .delete-btn {
+            padding: 5px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+
+        .edit-btn {
+            background: #ffa500;
+            color: white;
+            margin-right: 8px;
+        }
+
+        .delete-btn {
+            background: #ff4757;
+            color: white;
+        }
+
+        .add-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .add-btn:hover {
+            background: #218838;
+        }
+
+        .alert {
+            padding: 12px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert.success {
+            background: rgba(40,167,69,0.2);
+            border: 1px solid #28a745;
+            color: #28a745;
+            display: block;
+        }
+
+        .alert.error {
+            background: rgba(255,71,87,0.2);
+            border: 1px solid #ff4757;
+            color: #ff4757;
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .admin-sidebar {
+                width: 70px;
+            }
+            .sidebar-header h2 span,
+            .sidebar-header p,
+            .nav-item span {
+                display: none;
+            }
+            .admin-main {
+                margin-left: 70px;
+            }
+            .nav-item {
+                justify-content: center;
+                padding: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <div class="admin-sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-crown"></i> <span>ADMIN</span></h2>
+                <p><span>Управление сайтом</span></p>
+            </div>
+            <div class="sidebar-nav">
+                <div class="nav-item active" data-page="pages">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Страницы</span>
+                </div>
+                <div class="nav-item" data-page="products">
+                    <i class="fas fa-tshirt"></i>
+                    <span>Товары</span>
+                </div>
+                <div class="nav-item" data-page="portfolio">
+                    <i class="fas fa-images"></i>
+                    <span>Портфолио</span>
+                </div>
+                <div class="nav-item" data-page="services">
+                    <i class="fas fa-cogs"></i>
+                    <span>Услуги</span>
+                </div>
+                <div class="nav-item" data-page="settings">
+                    <i class="fas fa-sliders-h"></i>
+                    <span>Настройки</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="admin-main">
+            <div class="admin-header">
+                <h1 id="pageTitle">Управление страницами</h1>
+                <div class="admin-user">
+                    <span id="adminName">Администратор</span>
+                    <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Выйти</button>
+                </div>
+            </div>
+
+            <div id="alertMessage" class="alert"></div>
+
+            <!-- Страницы -->
+            <div id="pagesView" class="editor-panel active">
+                <div class="pages-grid" id="pagesGrid"></div>
+            </div>
+
+            <!-- Редактор страницы -->
+            <div id="editorView" class="editor-panel">
+                <div class="editor-header">
+                    <button class="back-btn" onclick="backToPages()"><i class="fas fa-arrow-left"></i> Назад</button>
+                    <h2 id="editorTitle">Редактирование</h2>
+                </div>
+                <div id="editorContent"></div>
+            </div>
+
+            <!-- Товары -->
+            <div id="productsView" class="editor-panel">
+                <div class="editor-header">
+                    <h2>Управление товарами</h2>
+                </div>
+                <button class="add-btn" onclick="addProduct()"><i class="fas fa-plus"></i> Добавить товар</button>
+                <div id="productsList"></div>
+            </div>
+
+            <!-- Портфолио -->
+            <div id="portfolioView" class="editor-panel">
+                <div class="editor-header">
+                    <h2>Управление портфолио</h2>
+                </div>
+                <button class="add-btn" onclick="addPortfolio()"><i class="fas fa-plus"></i> Добавить работу</button>
+                <div id="portfolioList"></div>
+            </div>
+
+            <!-- Услуги -->
+            <div id="servicesView" class="editor-panel">
+                <div class="editor-header">
+                    <h2>Управление услугами</h2>
+                </div>
+                <button class="add-btn" onclick="addService()"><i class="fas fa-plus"></i> Добавить услугу</button>
+                <div id="servicesList"></div>
+            </div>
+
+            <!-- Настройки -->
+            <div id="settingsView" class="editor-panel">
+                <div class="editor-header">
+                    <h2>Настройки сайта</h2>
+                </div>
+                <form id="settingsForm">
+                    <div class="edit-section">
+                        <div class="edit-section__header">Основные настройки</div>
+                        <div class="edit-section__body">
+                            <div class="form-group"><label>Название сайта</label><input type="text" name="siteTitle" id="siteTitleInput"></div>
+                            <div class="form-group"><label>Телефон</label><input type="text" name="phone" id="phoneInput"></div>
+                            <div class="form-group"><label>Email</label><input type="email" name="email" id="emailInput"></div>
+                            <div class="form-group"><label>Адрес</label><input type="text" name="address" id="addressInput"></div>
+                            <div class="form-group"><label>Текст подвала</label><textarea name="footerText" id="footerTextInput" rows="3"></textarea></div>
+                        </div>
+                    </div>
+                    <div class="edit-section">
+                        <div class="edit-section__header">Telegram настройки</div>
+                        <div class="edit-section__body">
+                            <div class="form-group"><label>Bot Token</label><input type="text" name="telegramBotToken" id="botTokenInput"></div>
+                            <div class="form-group"><label>Chat ID</label><input type="text" name="telegramChatId" id="chatIdInput"></div>
+                        </div>
+                    </div>
+                    <button type="submit" class="save-btn"><i class="fas fa-save"></i> Сохранить настройки</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Данные сайта (синхронизированы с index.html)
+        let siteData = {
+    pages: {
+        index: { name: "Главная", url: "index.html", sections: { 
+            hero: { badge: "Премиум ателье", title: "Индивидуальный пошив на заказ", subtitle: "Создайте свою уникальную вещь" }, 
+            popularTitle: "Самые популярные сейчас", 
+            popularSubtitle: "Что чаще всего заказывают в этом сезоне", 
+            newTitle: "Новинки", 
+            newSubtitle: "Свежие поступления", 
+            eveningTitle: "Для вечерних прогулок", 
+            eveningSubtitle: "Элегантные вечерние образы" 
+        } },
+        services: { name: "Услуги", url: "services.html", sections: { 
+            headerTitle: "Наши услуги", 
+            headerSubtitle: "UNRIVALED VERSATILITY" 
+        } },
+        portfolio: { name: "Портфолио", url: "portfolio.html", sections: { 
+            headerTitle: "Наше портфолио", 
+            headerSubtitle: "Более 5000 довольных клиентов" 
+        } },
+        preloved: { name: "Pre-loved", url: "preloved.html", sections: { 
+            heroTitle: "для тех, кто ценит осознанное потребление", 
+            heroBrand: "pre-loved by dealer" 
+        } },
+        castom: { name: "Custom", url: "castom.html", sections: { 
+            headerTitle: "# ГАЛЕРЕЯ CUSTOM", 
+            headerSubtitle: "Галерея Custom", 
+            headerDesc: "Примеры закастомизированных моделей" 
+        } },
+        sell: { name: "Продать", url: "sell.html", sections: { 
+            heroTitle: "ПРОДАЙ СВОЮ ВЕЩЬ", 
+            heroDesc: "Реализуем позиции, которые потеряли актуальность в вашем гардеробе" 
+        } }
+    },
+            products: [],
+            portfolio: [],
+            servicesList: [],
+            settings: {
+                siteTitle: "ИЗЫСКАННЫЙ СИЛУЭТ",
+                phone: "+7 (999) 777-77-77",
+                email: "info@siluet.ru",
+                address: "Москва, ул. Тверская, 15",
+                footerText: "Премиальное ателье индивидуального пошива. Работаем с 2010 года.",
+                telegramBotToken: "8637443515:AAFVvbYdYrpDRhrbq6UsUJqEGDRWqU0XS_0",
+                telegramChatId: "1551325264"
+            }
+        };
+
+        // Загрузка данных
+        function loadData() {
+            const saved = localStorage.getItem('siteData');
+            if (saved) siteData = { ...siteData, ...JSON.parse(saved) };
+            
+            const savedProducts = localStorage.getItem('siteData_products');
+            if (savedProducts) siteData.products = JSON.parse(savedProducts);
+            else initDefaultProducts();
+            
+            const savedPortfolio = localStorage.getItem('siteData_portfolio');
+            if (savedPortfolio) siteData.portfolio = JSON.parse(savedPortfolio);
+            else initDefaultPortfolio();
+            
+            const savedServices = localStorage.getItem('siteData_services');
+            if (savedServices) siteData.servicesList = JSON.parse(savedServices);
+            else initDefaultServices();
+        }
+
+function initDefaultProducts() {
+    siteData.products = [
+        { id: 1, name: "Вечернее платье", desc: "шелк, кружево", price: 21500, image: "https://cdn-sh1.vigbo.com/shops/190987/products/21460549/images/3-f854bb73c0a91c38a22bf4bbee9ef7d9.jpg", category: "evening" },
+        { id: 2, name: "Мужской костюм", desc: "шерсть, итальянский пошив", price: 34900, image: "https://img.joomcdn.net/8188d0822eefac3cf03f38cd8705d53e4e141935_original.jpeg", category: "suit" },
+        { id: 3, name: "Кашемировое пальто", desc: "кашемир 100%", price: 29900, image: "https://basket-04.wbbasket.ru/vol646/part64616/64616340/images/big/1.webp", category: "coat" },
+        { id: 4, name: "Свадебное платье", desc: "шелк, ручная вышивка", price: 45000, image: "https://sofoly.ru/wp-content/uploads/2025/12/02Gallery13-product-1_3-600x750.jpg", category: "wedding" },
+        { id: 5, name: "Демисезонное пальто", desc: "шерсть, кашемир", price: 32900, image: "https://basket-12.wbbasket.ru/vol1710/part171072/171072456/images/big/1.webp", category: "new" },
+        { id: 6, name: "Зимнее пальто", desc: "верблюжья шерсть", price: 38900, image: "https://avatars.mds.yandex.net/get-mpic/5209134/2a00000195e3e8fb4fd32075b08814e1eafd/orig", category: "new" },
+        { id: 7, name: "Классическое пальто", desc: "английская шерсть", price: 35900, image: "https://main-cdn.sbermegamarket.ru/big1/hlr-system/-10/030/095/673/523/47/600016055232b0.jpg", category: "new" },
+        { id: 8, name: "Вечернее платье", desc: "бархат, атлас", price: 28900, image: "https://img.joomcdn.net/2e4ee8a2c39503040bb112db6127340277461fad_original.jpeg", category: "evening" },
+        { id: 9, name: "Платье в пол", desc: "шифон, пайетки", price: 31500, image: "https://img.joomcdn.net/c586358b22b509db5f52240091b48069e14368ae_1024_1024.jpeg", category: "evening" },
+        { id: 10, name: "Коктейльное платье", desc: "кружево, атлас", price: 25900, image: "https://img.joomcdn.net/c0ed31f57e79c6f9faed6596b76438ee841ebf0a_original.jpeg", category: "evening" }
+    ];
+    saveProducts();
+}
+function initDefaultPortfolio() {
+    siteData.portfolio = [
+        { id: 1, name: "Вечернее платье", desc: "Шелк, кружево", image: "https://cdn-sh1.vigbo.com/shops/190987/products/21460549/images/3-f854bb73c0a91c38a22bf4bbee9ef7d9.jpg", category: "evening" },
+        { id: 2, name: "Мужской костюм", desc: "Шерсть, итальянский пошив", image: "https://img.joomcdn.net/8188d0822eefac3cf03f38cd8705d53e4e141935_original.jpeg", category: "suit" },
+        { id: 3, name: "Свадебное платье", desc: "Атлас, кружево", image: "https://ir.ozone.ru/s3/multimedia-1-8/c1000/7419719276.jpg", category: "wedding" }
+    ];
+    savePortfolio();
+}
+
+function initDefaultServices() {
+    siteData.servicesList = [
+        { id: 1, name: "Пошив женской одежды", price: "от 5 000 ₽", desc: "Индивидуальный пошив женской одежды любой сложности.", image: "https://cdn-sh1.vigbo.com/shops/190987/products/21460549/images/3-f854bb73c0a91c38a22bf4bbee9ef7d9.jpg" },
+        { id: 2, name: "Мужские костюмы на заказ", price: "от 15 000 ₽", desc: "Классические и современные мужские костюмы, сшитые по вашим меркам.", image: "https://img.joomcdn.net/8188d0822eefac3cf03f38cd8705d53e4e141935_original.jpeg" },
+        { id: 3, name: "Пошив пальто", price: "от 12 000 ₽", desc: "Элегантные и теплые пальто на любой сезон.", image: "https://basket-04.wbbasket.ru/vol646/part64616/64616340/images/big/1.webp" },
+        { id: 4, name: "Ремонт и реставрация", price: "от 500 ₽", desc: "Профессиональный ремонт одежды любой сложности.", image: "https://main-cdn.sbermegamarket.ru/big1/hlr-system/-10/030/095/673/523/47/600016055232b0.jpg" }
+    ];
+    saveServices();
+}
+
+        function saveProducts() { localStorage.setItem('siteData_products', JSON.stringify(siteData.products)); saveMainData(); }
+        function savePortfolio() { localStorage.setItem('siteData_portfolio', JSON.stringify(siteData.portfolio)); saveMainData(); }
+        function saveServices() { localStorage.setItem('siteData_services', JSON.stringify(siteData.servicesList)); saveMainData(); }
+        function saveMainData() { localStorage.setItem('siteData', JSON.stringify(siteData)); }
+
+        // Проверка авторизации
+        function checkAuth() {
+            const user = JSON.parse(localStorage.getItem('current_user') || 'null');
+            if (!user || !user.isAdmin) {
+                window.location.href = 'index.html';
+                return false;
+            }
+            document.getElementById('adminName').textContent = user.name;
+            return true;
+        }
+
+        function logout() {
+            localStorage.removeItem('current_user');
+            window.location.href = 'index.html';
+        }
+
+        function showAlert(msg, type) {
+            const alertEl = document.getElementById('alertMessage');
+            alertEl.textContent = msg;
+            alertEl.className = `alert ${type}`;
+            setTimeout(() => { alertEl.style.display = 'none'; alertEl.className = 'alert'; }, 3000);
+        }
+
+        // Страницы
+       function renderPages() {
+    const container = document.getElementById('pagesGrid');
+    container.innerHTML = Object.entries(siteData.pages).map(([key, page]) => `
+        <div class="page-card" onclick="openPageEditor('${key}')">
+            <div class="page-card__preview"><i class="fas fa-file-alt"></i></div>
+            <div class="page-card__content">
+                <h3 class="page-card__title">${page.name}</h3>
+                <div class="page-card__url">${page.url}</div>
+                <div class="page-card__stats"><span><i class="fas fa-edit"></i> Редактировать текст</span></div>
+            </div>
+        </div>
+    `).join('');
+}
+        function openPageEditor(pageKey) {
+            const page = siteData.pages[pageKey];
+            document.getElementById('pagesView').style.display = 'none';
+            document.getElementById('editorView').classList.add('active');
+            document.getElementById('editorTitle').textContent = `Редактирование: ${page.name}`;
+            
+            let html = `<form id="pageEditForm">`;
+            for (const [sectionKey, sectionData] of Object.entries(page.sections)) {
+                if (typeof sectionData === 'object') {
+                    html += `<div class="edit-section"><div class="edit-section__header">${sectionKey}</div><div class="edit-section__body">`;
+                    for (const [field, value] of Object.entries(sectionData)) {
+                        html += `<div class="form-group"><label>${field}</label><input type="text" name="${sectionKey}_${field}" value="${escapeHtml(value)}"></div>`;
+                    }
+                    html += `</div></div>`;
+                } else {
+                    html += `<div class="edit-section"><div class="edit-section__header">${sectionKey}</div><div class="edit-section__body">
+                        <div class="form-group"><label>Текст</label><textarea name="${sectionKey}" rows="3">${escapeHtml(sectionData)}</textarea></div>
+                    </div></div>`;
+                }
+            }
+            html += `<button type="submit" class="save-btn">Сохранить</button></form>`;
+            document.getElementById('editorContent').innerHTML = html;
+            
+            document.getElementById('pageEditForm').onsubmit = (e) => {
+                e.preventDefault();
+                const formData = new FormData(e.target);
+                const updated = {};
+                for (const [key, value] of formData.entries()) {
+                    const parts = key.split('_');
+                    if (parts.length === 2) {
+                        if (!updated[parts[0]]) updated[parts[0]] = {};
+                        updated[parts[0]][parts[1]] = value;
+                    } else updated[key] = value;
+                }
+                page.sections = updated;
+                saveMainData();
+                showAlert('Страница сохранена!', 'success');
+            };
+        }
+
+        // Товары
+        function renderProducts() {
+            const container = document.getElementById('productsList');
+            container.innerHTML = `
+                <table class="items-table">
+                    <thead><tr><th>ID</th><th>Фото</th><th>Название</th><th>Цена</th><th>Категория</th><th>Действия</th></tr></thead>
+                    <tbody>
+                        ${siteData.products.map(p => `
+                            <tr>
+                                <td>${p.id}</td>
+                                <td><img src="${p.image}" onerror="this.src='https://via.placeholder.com/50'"></td>
+                                <td><strong>${escapeHtml(p.name)}</strong><br><small>${escapeHtml(p.desc)}</small></td>
+                                <td>${p.price} ₽</td>
+                                <td>
+                                    <select onchange="updateProductCategory(${p.id}, this.value)">
+                                        <option value="new" ${p.category === 'new' ? 'selected' : ''}>Новинки</option>
+                                        <option value="evening" ${p.category === 'evening' ? 'selected' : ''}>Вечерние</option>
+                                        <option value="suit" ${p.category === 'suit' ? 'selected' : ''}>Костюмы</option>
+                                        <option value="coat" ${p.category === 'coat' ? 'selected' : ''}>Пальто</option>
+                                        <option value="wedding" ${p.category === 'wedding' ? 'selected' : ''}>Свадебные</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <button class="edit-btn" onclick="editProduct(${p.id})">✏️</button>
+                                    <button class="delete-btn" onclick="deleteProduct(${p.id})">🗑️</button>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        window.updateProductCategory = function(id, category) {
+            const product = siteData.products.find(p => p.id === id);
+            if (product) {
+                product.category = category;
+                saveProducts();
+                showAlert('Категория обновлена!', 'success');
+            }
+        };
+
+        window.addProduct = function() {
+            const name = prompt('Название товара:');
+            if (!name) return;
+            const desc = prompt('Описание:');
+            const price = parseInt(prompt('Цена:'));
+            const image = prompt('URL фото:', 'https://via.placeholder.com/300');
+            const category = prompt('Категория (new/evening/suit/coat/wedding):', 'new');
+            
+            const newProduct = { id: Date.now(), name, desc, price, image, category };
+            siteData.products.push(newProduct);
+            saveProducts();
+            renderProducts();
+            showAlert('Товар добавлен!', 'success');
+        };
+
+        window.editProduct = function(id) {
+            const p = siteData.products.find(x => x.id === id);
+            const newName = prompt('Название:', p.name); if (newName) p.name = newName;
+            const newDesc = prompt('Описание:', p.desc); if (newDesc) p.desc = newDesc;
+            const newPrice = parseInt(prompt('Цена:', p.price)); if (!isNaN(newPrice)) p.price = newPrice;
+            const newImage = prompt('URL фото:', p.image); if (newImage) p.image = newImage;
+            saveProducts();
+            renderProducts();
+            showAlert('Товар обновлен!', 'success');
+        };
+
+        window.deleteProduct = function(id) {
+            if (confirm('Удалить товар?')) {
+                siteData.products = siteData.products.filter(p => p.id !== id);
+                saveProducts();
+                renderProducts();
+                showAlert('Товар удален', 'success');
+            }
+        };
+
+        // Портфолио
+        function renderPortfolio() {
+            const container = document.getElementById('portfolioList');
+            container.innerHTML = `
+                <table class="items-table">
+                    <thead><tr><th>ID</th><th>Фото</th><th>Название</th><th>Описание</th><th>Действия</th></tr></thead>
+                    <tbody>
+                        ${siteData.portfolio.map(item => `
+                            <tr>
+                                <td>${item.id}</td>
+                                <td><img src="${item.image}" onerror="this.src='https://via.placeholder.com/50'"></td>
+                                <td><strong>${escapeHtml(item.name)}</strong></td>
+                                <td>${escapeHtml(item.desc)}</td>
+                                <td>
+                                    <button class="edit-btn" onclick="editPortfolio(${item.id})">✏️</button>
+                                    <button class="delete-btn" onclick="deletePortfolio(${item.id})">🗑️</button>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        window.addPortfolio = function() {
+            const name = prompt('Название работы:');
+            if (!name) return;
+            const desc = prompt('Описание:');
+            const image = prompt('URL фото:', 'https://via.placeholder.com/300');
+            const newItem = { id: Date.now(), name, desc, image, category: "evening" };
+            siteData.portfolio.push(newItem);
+            savePortfolio();
+            renderPortfolio();
+            showAlert('Работа добавлена!', 'success');
+        };
+
+        window.editPortfolio = function(id) {
+            const item = siteData.portfolio.find(x => x.id === id);
+            const newName = prompt('Название:', item.name); if (newName) item.name = newName;
+            const newDesc = prompt('Описание:', item.desc); if (newDesc) item.desc = newDesc;
+            const newImage = prompt('URL фото:', item.image); if (newImage) item.image = newImage;
+            savePortfolio();
+            renderPortfolio();
+            showAlert('Работа обновлена!', 'success');
+        };
+
+        window.deletePortfolio = function(id) {
+            if (confirm('Удалить работу?')) {
+                siteData.portfolio = siteData.portfolio.filter(p => p.id !== id);
+                savePortfolio();
+                renderPortfolio();
+                showAlert('Работа удалена', 'success');
+            }
+        };
+
+        // Услуги
+        function renderServices() {
+            const container = document.getElementById('servicesList');
+            container.innerHTML = `
+                <table class="items-table">
+                    <thead><tr><th>ID</th><th>Фото</th><th>Название</th><th>Цена</th><th>Описание</th><th>Действия</th></tr></thead>
+                    <tbody>
+                        ${siteData.servicesList.map(s => `
+                            <tr>
+                                <td>${s.id}</td>
+                                <td><img src="${s.image}" onerror="this.src='https://via.placeholder.com/50'"></td>
+                                <td><strong>${escapeHtml(s.name)}</strong></td>
+                                <td>${s.price}</td>
+                                <td>${escapeHtml(s.desc)}</td>
+                                <td>
+                                    <button class="edit-btn" onclick="editService(${s.id})">✏️</button>
+                                    <button class="delete-btn" onclick="deleteService(${s.id})">🗑️</button>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        window.addService = function() {
+            const name = prompt('Название услуги:');
+            if (!name) return;
+            const price = prompt('Цена:', 'от 5000 ₽');
+            const desc = prompt('Описание:');
+            const image = prompt('URL фото:', 'https://via.placeholder.com/300');
+            const newService = { id: Date.now(), name, price, desc, image };
+            siteData.servicesList.push(newService);
+            saveServices();
+            renderServices();
+            showAlert('Услуга добавлена!', 'success');
+        };
+
+        window.editService = function(id) {
+            const s = siteData.servicesList.find(x => x.id === id);
+            const newName = prompt('Название:', s.name); if (newName) s.name = newName;
+            const newPrice = prompt('Цена:', s.price); if (newPrice) s.price = newPrice;
+            const newDesc = prompt('Описание:', s.desc); if (newDesc) s.desc = newDesc;
+            const newImage = prompt('URL фото:', s.image); if (newImage) s.image = newImage;
+            saveServices();
+            renderServices();
+            showAlert('Услуга обновлена!', 'success');
+        };
+
+        window.deleteService = function(id) {
+            if (confirm('Удалить услугу?')) {
+                siteData.servicesList = siteData.servicesList.filter(s => s.id !== id);
+                saveServices();
+                renderServices();
+                showAlert('Услуга удалена', 'success');
+            }
+        };
+
+        // Настройки
+        function renderSettings() {
+            document.getElementById('siteTitleInput').value = siteData.settings.siteTitle;
+            document.getElementById('phoneInput').value = siteData.settings.phone;
+            document.getElementById('emailInput').value = siteData.settings.email;
+            document.getElementById('addressInput').value = siteData.settings.address;
+            document.getElementById('footerTextInput').value = siteData.settings.footerText;
+            document.getElementById('botTokenInput').value = siteData.settings.telegramBotToken;
+            document.getElementById('chatIdInput').value = siteData.settings.telegramChatId;
+        }
+
+        function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m])); }
+
+        function backToPages() {
+            document.getElementById('editorView').classList.remove('active');
+            document.getElementById('pagesView').style.display = 'block';
+        }
+
+        function switchSection(section) {
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            document.querySelector(`.nav-item[data-page="${section}"]`).classList.add('active');
+            
+            document.getElementById('pagesView').style.display = 'none';
+            document.getElementById('editorView').classList.remove('active');
+            document.getElementById('productsView').classList.remove('active');
+            document.getElementById('portfolioView').classList.remove('active');
+            document.getElementById('servicesView').classList.remove('active');
+            document.getElementById('settingsView').classList.remove('active');
+            
+            const titles = { pages: 'Управление страницами', products: 'Управление товарами', portfolio: 'Управление портфолио', services: 'Управление услугами', settings: 'Настройки сайта' };
+            document.getElementById('pageTitle').textContent = titles[section];
+            
+            if (section === 'pages') { document.getElementById('pagesView').style.display = 'block'; renderPages(); }
+            else if (section === 'products') { document.getElementById('productsView').classList.add('active'); renderProducts(); }
+            else if (section === 'portfolio') { document.getElementById('portfolioView').classList.add('active'); renderPortfolio(); }
+            else if (section === 'services') { document.getElementById('servicesView').classList.add('active'); renderServices(); }
+            else if (section === 'settings') { document.getElementById('settingsView').classList.add('active'); renderSettings(); }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!checkAuth()) return;
+            loadData();
+            renderPages();
+            
+            document.querySelectorAll('.nav-item').forEach(item => item.addEventListener('click', () => switchSection(item.dataset.page)));
+            document.getElementById('settingsForm').onsubmit = (e) => {
+                e.preventDefault();
+                siteData.settings = {
+                    siteTitle: document.getElementById('siteTitleInput').value,
+                    phone: document.getElementById('phoneInput').value,
+                    email: document.getElementById('emailInput').value,
+                    address: document.getElementById('addressInput').value,
+                    footerText: document.getElementById('footerTextInput').value,
+                    telegramBotToken: document.getElementById('botTokenInput').value,
+                    telegramChatId: document.getElementById('chatIdInput').value
+                };
+                saveMainData();
+                showAlert('Настройки сохранены!', 'success');
+            };
+            
+            switchSection('pages');
+        });
+
+        window.backToPages = backToPages;
+        window.openPageEditor = openPageEditor;
+        window.editProduct = editProduct;
+        window.deleteProduct = deleteProduct;
+        window.editPortfolio = editPortfolio;
+        window.deletePortfolio = deletePortfolio;
+        window.editService = editService;
+        window.deleteService = deleteService;
+    </script>
+</body>
+</html>

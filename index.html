@@ -1,0 +1,2262 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+    <meta name="theme-color" content="#ffffff">
+    <title>Изысканный Силуэт | Ателье премиум-класса</title>
+    <!-- Шрифт Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&display=swap" rel="stylesheet">
+    <!-- Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- AOS для анимаций -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Подключаем CSS -->
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Стили для фона с GIF */
+        body {
+            background-image: url('https://i.pinimg.com/originals/5e/d5/40/5ed540dfbb39e1cac9b8c8545b959263.gif');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: inherit;
+            filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+            z-index: -1;
+            pointer-events: none;
+        }
+        .header, .footer, main, .modal__content, .admin-panel {
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 12px;
+            margin: 10px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .header:hover, .footer:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 40px rgba(0, 0, 0, 0.15);
+        }
+        main {
+            background-color: transparent;
+            backdrop-filter: none;
+            box-shadow: none;
+        }
+        .hero {
+            background-size: cover !important;
+            background-position: center !important;
+            animation: fadeIn 1.5s ease-out;
+        }
+        
+        /* ========== УЛУЧШЕННЫЕ СТИЛИ ДЛЯ КАРТОЧЕК ТОВАРОВ ========== */
+        .product-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            position: relative;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+        }
+        
+        .product-card__image {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 3/4;
+        }
+        
+        .product-card__image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .product-card:hover .product-card__image img {
+            transform: scale(1.05);
+        }
+        
+        .product-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: #ff4757;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            z-index: 2;
+        }
+        
+        .product-card__content {
+            padding: 18px;
+        }
+        
+        .product-card__title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a1a2e;
+            margin-bottom: 6px;
+        }
+        
+        .product-card__desc {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 12px;
+        }
+        
+        .product-card__price {
+            margin-bottom: 15px;
+        }
+        
+        .price-current {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0088cc;
+        }
+        
+        .price-old {
+            font-size: 14px;
+            color: #999;
+            text-decoration: line-through;
+            margin-left: 8px;
+        }
+        
+        /* Красивая кнопка "В корзину" */
+        .add-to-cart-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #0088cc 0%, #006699 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 12px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,136,204,0.3);
+        }
+        
+        .add-to-cart-btn i {
+            font-size: 14px;
+            transition: transform 0.3s ease;
+        }
+        
+        .add-to-cart-btn:hover {
+            background: linear-gradient(135deg, #006699 0%, #004466 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,136,204,0.4);
+        }
+        
+        .add-to-cart-btn:hover i {
+            transform: translateX(3px);
+        }
+        
+        .add-to-cart-btn:active {
+            transform: translateY(0);
+        }
+        
+        /* ========== МОБИЛЬНАЯ АДАПТИВНОСТЬ ========== */
+        @media screen and (max-width: 1200px) {
+            .container { padding: 0 30px; }
+            .hero__title { font-size: 54px; }
+        }
+        
+        @media screen and (max-width: 992px) {
+            .container { padding: 0 25px; }
+            .grid-4 { grid-template-columns: repeat(2, 1fr); }
+            .grid-3 { grid-template-columns: repeat(2, 1fr); }
+            .footer__grid { grid-template-columns: repeat(2, 1fr); }
+            .nav { display: none !important; }
+            .mobile-nav-toggle { display: block !important; }
+            .product-card__content { padding: 14px; }
+            .product-card__title { font-size: 16px; }
+            .price-current { font-size: 18px; }
+            .add-to-cart-btn { padding: 10px 16px; font-size: 13px; }
+        }
+        
+        @media screen and (max-width: 768px) {
+            .container { padding: 0 20px; }
+            .hero { height: 500px; }
+            .hero__title { font-size: 40px; }
+            .hero__title span { font-size: 32px; }
+            .hero__buttons { flex-direction: column; gap: 12px; }
+            .hero__buttons .btn { width: 100%; text-align: center; }
+            .grid-4, .grid-3 { gap: 20px; }
+            .brand-block { flex-direction: column; text-align: center; gap: 30px; padding: 40px; }
+            .brand-block__right { text-align: center; }
+            .special__grid, .special__products-grid, .special__promo-grid, .special__links-grid { grid-template-columns: 1fr; }
+            .footer__grid { grid-template-columns: 1fr; gap: 40px; }
+        }
+        
+        @media screen and (max-width: 576px) {
+            .container { padding: 0 15px; }
+            .hero { height: 450px; }
+            .hero__title { font-size: 32px; }
+            .hero__title span { font-size: 24px; }
+            .grid-4, .grid-3 { grid-template-columns: 1fr; gap: 20px; }
+            .section__title { font-size: 28px; }
+            .product-card__content { padding: 12px; }
+        }
+        
+        @media screen and (max-width: 480px) {
+            .container { padding: 0 12px; }
+            .logo { font-size: 14px; }
+            .logo i { font-size: 18px; }
+            .user-menu__btn span { display: none; }
+            .user-menu__btn { padding: 6px 10px; }
+            .btn--header { padding: 6px 12px; font-size: 11px; }
+            .btn--header i { display: none; }
+            .hero { height: 400px; }
+            .hero__title { font-size: 28px; }
+            .hero__title span { font-size: 20px; }
+            .section__title { font-size: 24px; }
+            .telegram-support { width: calc(100% - 40px); right: 20px; bottom: 20px; }
+            .add-to-cart-btn span { display: inline; }
+        }
+        
+        /* ========== МОБИЛЬНОЕ МЕНЮ ========== */
+        .mobile-nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+            color: #333;
+            transition: transform 0.3s;
+        }
+        .mobile-nav-toggle:hover { transform: scale(1.1); }
+        
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 80px;
+            left: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 20px;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 2000;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            animation: slideDownMenu 0.3s ease-out;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        .mobile-menu a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            font-size: 16px;
+            padding: 14px 16px;
+            border-radius: 12px;
+            transition: all 0.3s;
+            text-align: center;
+            background: rgba(255,255,255,0.9);
+            border: 1px solid #eee;
+        }
+        .mobile-menu a:hover, .mobile-menu a.active {
+            background: #0088cc;
+            color: white;
+            border-color: #0088cc;
+        }
+        @keyframes slideDownMenu {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* ========== ВЫПАДАЮЩАЯ ПАНЕЛЬ ПОЛЬЗОВАТЕЛЯ ========== */
+        .user-menu { position: relative; margin: 0 5px; }
+        .user-menu__btn {
+            background: none;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            padding: 8px 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            background: rgba(255,255,255,0.9);
+        }
+        .user-menu__btn:hover {
+            border-color: #0088cc;
+            background: #f5f5f5;
+            transform: translateY(-2px);
+        }
+        .user-menu__btn i { font-size: 16px; color: #0088cc; transition: transform 0.3s; }
+        .user-menu__btn:hover i { transform: rotate(360deg); }
+        .user-menu__name { font-size: 14px; font-weight: 500; }
+        
+        .user-menu__dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            width: 260px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            margin-top: 10px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+        .user-menu__dropdown.show { opacity: 1; visibility: visible; transform: translateY(0); }
+        .user-menu__header {
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .user-menu__header i { font-size: 32px; color: #0088cc; }
+        .user-menu__welcome { font-size: 12px; color: #666; }
+        .user-menu__user-name { font-weight: 600; color: #333; }
+        .user-menu__items { padding: 8px; }
+        .user-menu__item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            color: #333;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+        .user-menu__item:hover { background: #f5f5f5; color: #0088cc; transform: translateX(5px); }
+        .user-menu__item i { width: 18px; color: #666; transition: transform 0.3s; }
+        .user-menu__item:hover i { transform: scale(1.2); color: #0088cc; }
+        .user-menu__divider { height: 1px; background: #eee; margin: 8px 0; }
+        
+        /* ========== КОРЗИНА ========== */
+        .cart-btn { position: relative; margin: 0 5px; }
+        .cart-btn button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            font-size: 20px;
+            color: #333;
+            transition: color 0.3s, transform 0.3s;
+            padding: 8px;
+        }
+        .cart-btn button:hover { color: #0088cc; transform: scale(1.1); }
+        .cart-counter {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #0088cc;
+            color: white;
+            font-size: 10px;
+            font-weight: 600;
+            min-width: 18px;
+            height: 18px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 4px;
+        }
+        
+        /* ========== КНОПКИ ========== */
+        .btn {
+            display: inline-block;
+            padding: 10px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+            text-align: center;
+        }
+        @media (max-width: 768px) { .btn { padding: 8px 16px; font-size: 12px; } }
+        .btn--primary { background: #0088cc; color: white; }
+        .btn--primary:hover { background: #006699; transform: translateY(-2px); }
+        .btn--outline { background: transparent; border: 1px solid #0088cc; color: #0088cc; }
+        .btn--outline:hover { background: #0088cc; color: white; }
+        .btn--large { padding: 14px 32px; font-size: 16px; }
+        .btn--small { padding: 6px 12px; font-size: 12px; }
+        .btn--header { padding: 8px 20px; }
+        
+        /* ========== МОДАЛЬНЫЕ ОКНА ========== */
+        .modal, .auth-modal, .profile-modal, .cart-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+            z-index: 11000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal.show, .auth-modal.show, .profile-modal.show, .cart-modal.show { display: flex; }
+        
+        .modal__content, .auth-modal__content, .profile-modal__content, .cart-modal__content {
+            background: white;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 20px;
+            overflow: hidden;
+            max-height: 85vh;
+            overflow-y: auto;
+            animation: slideInUp 0.4s ease-out;
+        }
+        @media (max-width: 480px) {
+            .modal__content, .auth-modal__content, .profile-modal__content, .cart-modal__content { width: 95%; margin: 20px; }
+        }
+        
+        .modal__header, .auth-modal__header, .profile-modal__header, .cart-modal__header {
+            padding: 20px;
+            background: #0088cc;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal__close, .auth-modal__close, .profile-modal__close, .cart-modal__close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .modal__close:hover, .auth-modal__close:hover, .profile-modal__close:hover, .cart-modal__close:hover { transform: rotate(90deg); }
+        .modal__body, .auth-modal__body, .profile-modal__body, .cart-modal__body { padding: 25px; }
+        
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 500; font-size: 13px; color: #666; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #0088cc;
+            box-shadow: 0 0 0 2px rgba(0,136,204,0.2);
+        }
+        
+        .auth-form { display: flex; flex-direction: column; gap: 15px; }
+        .auth-btn {
+            background: #0088cc;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .auth-btn:hover { background: #006699; transform: translateY(-2px); }
+        .auth-modal__switch { margin-top: 20px; text-align: center; font-size: 14px; }
+        .auth-modal__switch button {
+            background: none;
+            border: none;
+            color: #0088cc;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        
+        .profile-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .profile-tab {
+            padding: 10px 20px;
+            border: none;
+            background: #f5f5f5;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        .profile-tab.active { background: #0088cc; color: white; }
+        .profile-tab-content { display: none; }
+        .profile-tab-content.active { display: block; animation: fadeIn 0.3s; }
+        .profile-btn {
+            background: #0088cc;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            width: 100%;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+        
+        /* Админские стили для редактирования */
+        .admin-edit-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ff4757;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 4px 10px;
+            font-size: 11px;
+            cursor: pointer;
+            z-index: 10;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .product-card:hover .admin-edit-btn,
+        .portfolio-item:hover .admin-edit-btn {
+            opacity: 1;
+        }
+        .admin-edit-btn:hover {
+            background: #ff6b81;
+            transform: scale(1.05);
+        }
+        
+        /* Админ-панель в профиле */
+        .admin-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+        }
+        .admin-section h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #ff4757;
+        }
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        .admin-table th, .admin-table td {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+        }
+        .admin-table th {
+            background: #f8f9fa;
+        }
+        .admin-table input, .admin-table select {
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 100%;
+        }
+        .admin-save-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .admin-save-btn:hover {
+            background: #45a049;
+        }
+        
+        .cart-empty { text-align: center; padding: 40px 20px; color: #999; }
+        .cart-items { display: flex; flex-direction: column; gap: 15px; }
+        .cart-item {
+            display: flex;
+            gap: 15px;
+            padding: 10px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+        }
+        .cart-item__image { width: 70px; height: 70px; border-radius: 5px; overflow: hidden; }
+        .cart-item__image img { width: 100%; height: 100%; object-fit: cover; }
+        .cart-item__info { flex: 1; }
+        .cart-item__title { font-weight: 600; margin-bottom: 5px; }
+        .cart-item__price { color: #0088cc; font-weight: 600; }
+        .cart-item__quantity { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
+        .cart-item__quantity button {
+            width: 24px;
+            height: 24px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .cart-item__remove { color: #ff4444; cursor: pointer; margin-left: 10px; }
+        .cart-modal__footer { padding: 20px; border-top: 1px solid #eee; }
+        .cart-total { display: flex; justify-content: space-between; font-weight: 600; font-size: 18px; margin-bottom: 15px; }
+        .cart-checkout-btn {
+            width: 100%;
+            padding: 12px;
+            background: #0088cc;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .cart-notification {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            z-index: 12000;
+            transition: transform 0.3s;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+        @media (max-width: 480px) {
+            .cart-notification { white-space: normal; text-align: center; width: 90%; font-size: 12px; }
+        }
+        .cart-notification.show { transform: translateX(-50%) translateY(0); }
+        
+        /* ========== TELEGRAM ПОДДЕРЖКА ========== */
+        .telegram-support {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 320px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.2);
+            z-index: 10000;
+            overflow: hidden;
+            transition: all 0.3s;
+            transform: translateY(calc(100% - 60px));
+            opacity: 0.95;
+        }
+        .telegram-support:hover { transform: translateY(0); opacity: 1; }
+        .telegram-support.expanded { transform: translateY(0); opacity: 1; }
+        @media (max-width: 480px) { .telegram-support { width: calc(100% - 40px); } }
+        .telegram-support__header {
+            background: #0088cc;
+            color: white;
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .telegram-support__header i:first-child { font-size: 18px; animation: pulse 2s infinite; }
+        .telegram-support__header i:last-child { margin-left: auto; transition: transform 0.3s; }
+        .telegram-support.expanded .telegram-support__header i:last-child { transform: rotate(180deg); }
+        .telegram-support__body { display: flex; flex-direction: column; }
+        .telegram-support:not(.expanded) .telegram-support__body { display: none; }
+        .telegram-support__messages {
+            height: 280px;
+            overflow-y: auto;
+            padding: 12px;
+            background: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .message { display: flex; gap: 8px; max-width: 85%; }
+        .message--bot { align-self: flex-start; }
+        .message--user { align-self: flex-end; flex-direction: row-reverse; }
+        .message__avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #0088cc;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+        .message--user .message__avatar { background: #333; }
+        .message__content {
+            background: white;
+            padding: 8px 12px;
+            border-radius: 16px;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+        .message--user .message__content { background: #0088cc; color: white; }
+        .telegram-support__input { display: flex; padding: 10px; background: white; border-top: 1px solid #eee; }
+        .telegram-support__input input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 12px;
+            outline: none;
+        }
+        .telegram-support__input input:focus { border-color: #0088cc; }
+        .telegram-support__input button {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: #0088cc;
+            color: white;
+            border-radius: 50%;
+            margin-left: 8px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+        .telegram-support__input button:hover {
+            background: #006699;
+            transform: scale(1.1);
+        }
+        
+        /* ========== АНИМАЦИИ ========== */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideInUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes slideInLeft { from { transform: translateX(-50px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes slideInRight { from { transform: translateX(50px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    </style>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+</head>
+<body>
+    <header class="header">
+        <div class="container header__inner">
+            <div class="logo">
+                <i class="fas fa-cut"></i>
+                <span>ИЗЫСКАННЫЙ СИЛУЭТ</span>
+            </div>
+            <nav class="nav">
+                <a href="index.html" class="active">Главная</a>
+                <a href="services.html">Услуги</a>
+                <a href="portfolio.html">Портфолио</a>
+                <a href="preloved.html">Pre-loved</a>
+                <a href="castom.html">Custom</a>
+                <a href="sell.html">Продать</a>
+                <a href="#contacts">Контакты</a>
+            </nav>
+            <div class="header-actions" style="display: flex; align-items: center; gap: 10px;">
+                <div class="user-menu">
+                    <button class="user-menu__btn" id="userMenuBtn">
+                        <i class="fas fa-user"></i>
+                        <span class="user-menu__name" id="userName">Войти</span>
+                    </button>
+                    <div class="user-menu__dropdown" id="userDropdown">
+                        <div class="user-menu__header">
+                            <i class="fas fa-user-circle"></i>
+                            <div>
+                                <div class="user-menu__welcome">Здравствуйте,</div>
+                                <div class="user-menu__user-name" id="dropdownUserName">Гость</div>
+                            </div>
+                        </div>
+                        <div class="user-menu__items">
+                            <a href="#" class="user-menu__item" id="profileLink"><i class="fas fa-id-card"></i> Мой профиль</a>
+                            <a href="#" class="user-menu__item" id="ordersLink"><i class="fas fa-shopping-bag"></i> Мои заказы</a>
+                            <a href="adminka.html" class="user-menu__item" id="adminPanelLink" style="display: none;"><i class="fas fa-crown"></i> Админ-панель</a>
+                            <div class="user-menu__divider"></div>
+                            <a href="#" class="user-menu__item" id="loginLink"><i class="fas fa-sign-in-alt"></i> Войти</a>
+                            <a href="#" class="user-menu__item" id="registerLink"><i class="fas fa-user-plus"></i> Регистрация</a>
+                            <a href="#" class="user-menu__item" id="logoutLink" style="display: none;"><i class="fas fa-sign-out-alt"></i> Выйти</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="cart-btn">
+                    <button id="cartBtn"><i class="fas fa-shopping-cart"></i><span class="cart-counter" id="cartCounter">0</span></button>
+                </div>
+                <a href="#" class="btn btn--primary btn--header" id="openModalBtn"><i class="fas fa-calendar-check"></i> Записаться</a>
+                <button class="mobile-nav-toggle" id="mobileNavToggle"><i class="fas fa-bars"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero" style="background-image: url('https://resizer.mail.ru/p/9f49faca-8282-57b9-90ab-ee0a9f364cd8/AQAFi116BKdbSzallgmR2TGojVVDIr0mEhlmAOpQaHsQ7xIPcReqjL3QprFtmQV7zWB5qR5IDw3bZRnRkxz3ONjjJBs.jpg');">
+            <div class="hero__overlay"></div>
+            <div class="container hero__container">
+                <div class="hero__content">
+                    <span class="hero__badge" id="heroBadge" data-aos="fade-down">Премиум ателье</span>
+                    <h1 class="hero__title" id="heroTitle" data-aos="zoom-in">Индивидуальный<br><span>пошив на заказ</span></h1>
+                    <p class="hero__subtitle" id="heroSubtitle" data-aos="fade-up" data-aos-delay="100">Создайте свою уникальную вещь с помощью наших мастеров</p>
+                    <div class="hero__buttons" data-aos="fade-up" data-aos-delay="200">
+                        <a href="#" class="btn btn--primary btn--large" id="heroBtn"><i class="fas fa-calendar-check"></i> Записаться</a>
+                        <a href="portfolio.html" class="btn btn--outline btn--large"><i class="fas fa-images"></i> Портфолио</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="container">
+            <!-- Популярные услуги -->
+            <section class="section">
+                <div class="section__header" data-aos="fade-down">
+                    <h2 class="section__title" id="popularTitle">Самые популярные сейчас</h2>
+                    <p class="section__subtitle" id="popularSubtitle">Что чаще всего заказывают в этом сезоне</p>
+                </div>
+                <div class="grid-4" id="popularGrid"></div>
+            </section>
+
+            <!-- Новинки коллекции -->
+            <section class="section">
+                <div class="section__header" data-aos="fade-down">
+                    <h2 class="section__title" id="newTitle">Новинки</h2>
+                    <p class="section__subtitle" id="newSubtitle">Свежие поступления в нашем портфолио</p>
+                </div>
+                <div class="grid-3" id="newGrid"></div>
+            </section>
+
+            <!-- Для вечерних прогулок -->
+            <section class="section">
+                <div class="section__header" data-aos="fade-down">
+                    <h2 class="section__title" id="eveningTitle">Для вечерних прогулок</h2>
+                    <p class="section__subtitle" id="eveningSubtitle">Элегантные вечерние образы</p>
+                </div>
+                <div class="grid-3" id="eveningGrid"></div>
+            </section>
+
+            <section class="brand-block" data-aos="fade-up">
+                <div><h3 class="brand-block__title">Взгляните на</h3><p class="brand-block__big">SILHOUETTE</p></div>
+                <div class="brand-block__right"><p class="brand-block__subtitle">эксклюзивная линейка</p><p class="brand-block__small">премиального пошива</p><a href="#" class="btn btn--outline btn--small" style="margin-top: 20px;"><i class="fas fa-arrow-right"></i> Подробнее</a></div>
+            </section>
+
+            <section class="special-section">
+                <div class="special__header" data-aos="fade-down"><h2 class="special__title">Особенные категории</h2></div>
+                <div class="special__grid">
+                    <div class="special__item" data-aos="flip-left" data-aos-delay="100"><div class="special__icon"><i class="fas fa-magic"></i></div><h3>закастомизируем ваш гардероб</h3><p class="special__brand">dealer.custom</p><a href="castom.html" class="special__link">смотреть <i class="fas fa-arrow-right"></i></a></div>
+                    <div class="special__item" data-aos="flip-right" data-aos-delay="200"><div class="special__icon"><i class="fas fa-history"></i></div><h3>для тех, кто ценит осознанное потребление</h3><p class="special__brand">pre-loved by dealer</p><a href="preloved.html" class="special__link">смотреть <i class="fas fa-arrow-right"></i></a></div>
+                </div>
+                <div class="special__products">
+                    <h3 class="special__subtitle" data-aos="fade-right">В наличии</h3>
+                    <div class="special__products-grid" id="specialGrid"></div>
+                </div>
+                <div class="special__promo-grid">
+                    <div class="special__promo" data-aos="fade-right" data-aos-delay="100"><h3>Продай свою вещь вместе с нами</h3><p>Реализуем позиции, которые потеряли актуальность в вашем гардеробе</p><a href="sell.html" class="btn btn--outline btn--small">Оставить заявку</a></div>
+                    <div class="special__promo special__promo--dark" data-aos="fade-left" data-aos-delay="200"><h3>Скидка 7%</h3><p>Получите скидку 7% на первую примерку при подписке на наши новости</p><a href="#" class="btn btn--primary btn--small">Подписаться</a></div>
+                </div>
+                <div class="special__brand-block" data-aos="zoom-in"><div class="special__brand-logo"><i class="fas fa-cut"></i> ИЗЫСКАННЫЙ СИЛУЭТ</div><p class="special__brand-description">Ваш поставщик в мир эксклюзивного пошива с доставкой по всей России</p><div class="special__brand-buttons"><a href="portfolio.html" class="btn btn--primary">КАТАЛОГ</a><a href="#" class="btn btn--outline">МЕНЮ</a><a href="#" class="btn btn--outline">ПОДДЕРЖКА</a></div></div>
+                <div class="special__links-grid">
+                    <div class="special__links-col" data-aos="fade-up" data-aos-delay="100"><h4>Категории</h4><ul><li><a href="#">Одежда</a></li><li><a href="#">Обучение</a></li><li><a href="#">Аксессуары</a></li><li><a href="#">Сумки</a></li><li><a href="#">Pre-loved</a></li><li><a href="#">Custom</a></li></ul></div>
+                    <div class="special__links-col" data-aos="fade-up" data-aos-delay="200"><h4>Информация</h4><ul><li><a href="#">О нас</a></li><li><a href="#">Продать свою одежду</a></li><li><a href="#">Консьерж</a></li><li><a href="#">Клиентский сервис</a></li></ul></div>
+                    <div class="special__links-col" data-aos="fade-up" data-aos-delay="300"><h4>Помощь</h4><ul><li><a href="#">Доставка</a></li><li><a href="#">Оплата</a></li><li><a href="#">Частые вопросы</a></li><li><a href="#">Отправить заказ</a></li></ul></div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer id="contacts" class="footer">
+        <div class="container">
+            <div class="footer__grid">
+                <div class="footer__col" data-aos="fade-up" data-aos-delay="100"><div class="footer__logo"><i class="fas fa-cut"></i> ИЗЫСКАННЫЙ СИЛУЭТ</div><p class="footer__text">Премиальное ателье индивидуального пошива. Работаем с 2010 года.</p><div class="footer__social"><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-vk"></i></a><a href="#"><i class="fab fa-telegram"></i></a><a href="#"><i class="fab fa-whatsapp"></i></a></div></div>
+                <div class="footer__col" data-aos="fade-up" data-aos-delay="200"><h4 class="footer__title">Навигация</h4><ul class="footer__list"><li><a href="index.html">Главная</a></li><li><a href="services.html">Услуги</a></li><li><a href="portfolio.html">Портфолио</a></li><li><a href="preloved.html">Pre-loved</a></li><li><a href="castom.html">Custom</a></li><li><a href="sell.html">Продать</a></li><li><a href="#contacts">Контакты</a></li></ul></div>
+                <div class="footer__col" data-aos="fade-up" data-aos-delay="300"><h4 class="footer__title">Услуги</h4><ul class="footer__list"><li><a href="#" class="service-link" data-service="dress">Вечерние платья</a></li><li><a href="#" class="service-link" data-service="wedding">Свадебные платья</a></li><li><a href="#" class="service-link" data-service="suit">Мужские костюмы</a></li><li><a href="#" class="service-link" data-service="coat">Пальто</a></li></ul></div>
+                <div class="footer__col" data-aos="fade-up" data-aos-delay="400"><h4 class="footer__title">Контакты</h4><ul class="footer__list"><li><i class="fas fa-phone-alt"></i> +7 (999) 777-77-77</li><li><i class="fas fa-envelope"></i> info@siluet.ru</li><li><i class="fas fa-map-marker-alt"></i> Москва, ул. Тверская, 15</li></ul></div>
+            </div>
+            <div class="footer__bottom" data-aos="fade-up" data-aos-delay="500"><p>© 2025 Изысканный Силуэт — ателье индивидуального пошива</p><p>Сделано с заботой о качестве</p></div>
+        </div>
+    </footer>
+
+    <!-- Модальные окна -->
+    <div id="appointmentModal" class="modal"><div class="modal__content"><span class="modal__close">&times;</span><h2 class="modal__title">Запись на примерку</h2><form id="appointmentForm"><div class="form-group"><label for="name">Ваше имя *</label><input type="text" id="name" required placeholder="Введите ваше имя"></div><div class="form-group"><label for="phone">Телефон *</label><input type="tel" id="phone" required placeholder="+7 (___) ___-__-__"></div><div class="form-group"><label for="email">Email</label><input type="email" id="email" placeholder="example@mail.ru"></div><div class="form-group"><label for="service">Услуга</label><select id="service"><option value="consultation">Консультация</option><option value="dress">Пошив платья</option><option value="suit">Пошив костюма</option><option value="coat">Пошив пальто</option><option value="repair">Ремонт одежды</option></select></div><div class="form-group"><label for="date">Желаемая дата</label><input type="date" id="date"></div><div class="form-group"><label for="time">Желаемое время</label><input type="time" id="time"></div><div class="form-group"><label for="comment">Комментарий</label><textarea id="comment" rows="3" placeholder="Ваши пожелания..."></textarea></div><button type="submit" class="btn btn--primary btn--large"><i class="fas fa-paper-plane"></i> Отправить заявку</button></form><div id="formMessage" class="form-message"></div></div></div>
+
+    <div id="telegram-support" class="telegram-support"><div class="telegram-support__header" id="toggleSupport"><i class="fab fa-telegram"></i><span>Чат поддержки</span><i class="fas fa-chevron-up"></i></div><div class="telegram-support__body"><div class="telegram-support__messages" id="supportMessages"><div class="message message--bot"><div class="message__avatar"><i class="fas fa-robot"></i></div><div class="message__content">Здравствуйте! Чем я могу помочь? Напишите ваш вопрос, и администратор ответит вам в Telegram.</div></div></div><div class="telegram-support__input"><input type="text" id="supportMessageInput" placeholder="Ваш вопрос..." maxlength="500"><button id="sendSupportMessage"><i class="fas fa-paper-plane"></i></button></div></div></div>
+
+    <div class="auth-modal" id="authModal"><div class="auth-modal__content"><div class="auth-modal__header"><h2 id="authModalTitle">Вход в личный кабинет</h2><button class="auth-modal__close" id="closeAuthModal">&times;</button></div><div class="auth-modal__body"><form id="loginForm" class="auth-form"><div class="form-group"><label for="loginEmail">Email</label><input type="email" id="loginEmail" required placeholder="Введите email"></div><div class="form-group"><label for="loginPassword">Пароль</label><input type="password" id="loginPassword" required placeholder="Введите пароль"></div><button type="submit" class="auth-btn">Войти</button></form><form id="registerForm" class="auth-form" style="display: none;"><div class="form-group"><label for="regName">Имя</label><input type="text" id="regName" required placeholder="Введите имя"></div><div class="form-group"><label for="regEmail">Email</label><input type="email" id="regEmail" required placeholder="Введите email"></div><div class="form-group"><label for="regPhone">Телефон</label><input type="tel" id="regPhone" placeholder="+7 (___) ___-__-__"></div><div class="form-group"><label for="regPassword">Пароль</label><input type="password" id="regPassword" required placeholder="Введите пароль"></div><div class="form-group"><label for="regConfirmPassword">Подтверждение пароля</label><input type="password" id="regConfirmPassword" required placeholder="Повторите пароль"></div><button type="submit" class="auth-btn">Зарегистрироваться</button></form><div class="auth-modal__switch"><span id="switchAuthText">Нет аккаунта?</span><button id="switchAuthBtn">Зарегистрироваться</button></div></div></div></div>
+
+    <div class="profile-modal" id="profileModal"><div class="profile-modal__content"><div class="profile-modal__header"><h2>Личный кабинет</h2><button class="profile-modal__close" id="closeProfileModal">&times;</button></div><div class="profile-modal__body"><div class="profile-tabs"><button class="profile-tab active" data-tab="profile">Профиль</button><button class="profile-tab" data-tab="orders">Мои заказы</button><button class="profile-tab" id="adminTabBtn" data-tab="admin" style="display: none; background: #ff4757; color: white;">👑 Админ-панель</button></div><div class="profile-tab-content active" id="profileTab"><form id="profileForm"><div class="form-group"><label>Имя</label><input type="text" id="profileName" required></div><div class="form-group"><label>Email</label><input type="email" id="profileEmail" required readonly></div><div class="form-group"><label>Телефон</label><input type="tel" id="profilePhone"></div><button type="submit" class="profile-btn">Сохранить изменения</button></form></div><div class="profile-tab-content" id="ordersTab"><div id="ordersList"></div></div><div class="profile-tab-content" id="adminTab"><div id="adminPanelContent"></div></div></div></div></div>
+
+    <div class="cart-modal" id="cartModal"><div class="cart-modal__content"><div class="cart-modal__header"><h2>Корзина</h2><button class="cart-modal__close" id="closeCartModal">&times;</button></div><div class="cart-modal__body" id="cartBody"><div class="cart-empty" id="cartEmpty"><i class="fas fa-shopping-cart"></i><p>Корзина пуста</p></div><div class="cart-items" id="cartItems"></div></div><div class="cart-modal__footer" id="cartFooter" style="display: none;"><div class="cart-total"><span>Итого:</span><span id="cartTotalPrice">0 ₽</span></div><button class="cart-checkout-btn" id="checkoutBtn">Оформить заказ</button></div></div></div>
+
+    <script>
+        // Инициализация AOS
+        AOS.init({ duration: 1000, once: true, offset: 50 });
+        
+        // ========== TELEGRAM КОНФИГУРАЦИЯ ==========
+        const TELEGRAM_CONFIG = {
+            BOT_TOKEN: '8637443515:AAFVvbYdYrpDRhrbq6UsUJqEGDRWqU0XS_0',
+            CHAT_ID: '1551325264'
+        };
+        
+        // ========== КЛАСС ДЛЯ ОТПРАВКИ В TELEGRAM ==========
+        class TelegramNotifier {
+            static async sendMessage(text) {
+                const url = `https://api.telegram.org/bot${TELEGRAM_CONFIG.BOT_TOKEN}/sendMessage`;
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ chat_id: TELEGRAM_CONFIG.CHAT_ID, text: text, parse_mode: 'HTML' })
+                    });
+                    return response.ok;
+                } catch (error) {
+                    console.error('Telegram error:', error);
+                    return false;
+                }
+            }
+        
+            static async sendAppointment(formData) {
+                const message = `📝 <b>НОВАЯ ЗАЯВКА НА ЗАПИСЬ</b>\n\n` +
+                    `👤 <b>Имя:</b> ${formData.name}\n` +
+                    `📞 <b>Телефон:</b> ${formData.phone}\n` +
+                    `📧 <b>Email:</b> ${formData.email || 'не указан'}\n` +
+                    `💼 <b>Услуга:</b> ${this.getServiceName(formData.service)}\n` +
+                    `📅 <b>Дата:</b> ${formData.date || 'не указана'}\n` +
+                    `⏰ <b>Время:</b> ${formData.time || 'не указано'}\n` +
+                    `💬 <b>Комментарий:</b> ${formData.comment || 'нет'}\n\n` +
+                    `🕐 ${new Date().toLocaleString('ru-RU')}`;
+                return this.sendMessage(message);
+            }
+        
+            static async sendSupportMessage(userId, text) {
+                const message = `💬 <b>СООБЩЕНИЕ ИЗ ЧАТА ПОДДЕРЖКИ</b>\n\n` +
+                    `👤 <b>ID пользователя:</b> ${userId}\n` +
+                    `💭 <b>Сообщение:</b> ${text}\n` +
+                    `🕐 ${new Date().toLocaleString('ru-RU')}`;
+                return this.sendMessage(message);
+            }
+        
+            static getServiceName(service) {
+                const services = { 'consultation': 'Консультация', 'dress': 'Пошив платья', 'suit': 'Пошив костюма', 'coat': 'Пошив пальто', 'repair': 'Ремонт одежды' };
+                return services[service] || service;
+            }
+        }
+        
+        // ========== ДАННЫЕ САЙТА ==========
+        let siteData = {
+            pages: {
+                index: {
+                    name: "Главная",
+                    url: "index.html",
+                    sections: {
+                        hero: {
+                            title: "Индивидуальный пошив на заказ",
+                            subtitle: "Создайте свою уникальную вещь с помощью наших мастеров",
+                            badge: "Премиум ателье"
+                        },
+                        popularTitle: "Самые популярные сейчас",
+                        popularSubtitle: "Что чаще всего заказывают в этом сезоне",
+                        newTitle: "Новинки",
+                        newSubtitle: "Свежие поступления в нашем портфолио",
+                        eveningTitle: "Для вечерних прогулок",
+                        eveningSubtitle: "Элегантные вечерние образы"
+                    }
+                },
+                services: {
+                    name: "Услуги",
+                    url: "services.html",
+                    sections: {
+                        headerTitle: "Наши услуги",
+                        headerSubtitle: "UNRIVALED VERSATILITY"
+                    }
+                },
+                portfolio: {
+                    name: "Портфолио",
+                    url: "portfolio.html",
+                    sections: {
+                        headerTitle: "Наше портфолио",
+                        headerSubtitle: "Более 5000 довольных клиентов и 15 лет работы"
+                    }
+                },
+                preloved: {
+                    name: "Pre-loved",
+                    url: "preloved.html",
+                    sections: {
+                        heroTitle: "для тех, кто ценит осознанное потребление",
+                        heroBrand: "pre-loved by dealer"
+                    }
+                },
+                custom: {
+                    name: "Custom",
+                    url: "castom.html",
+                    sections: {
+                        headerTitle: "# ГАЛЕРЕЯ CUSTOM",
+                        headerSubtitle: "Галерея Custom",
+                        headerDesc: "Ниже вы можете увидеть примеры закастомизированных моделей"
+                    }
+                },
+                sell: {
+                    name: "Продать вещь",
+                    url: "sell.html",
+                    sections: {
+                        heroTitle: "ПРОДАЙ СВОЮ ВЕЩЬ",
+                        heroDesc: "Реализуем позиции, которые потеряли актуальность в вашем гардеробе"
+                    }
+                }
+            },
+            products: [
+                { id: 1, name: "Вечернее платье", desc: "шелк, кружево", price: 21500, image: "https://cdn-sh1.vigbo.com/shops/190987/products/21460549/images/3-f854bb73c0a91c38a22bf4bbee9ef7d9.jpg", category: "evening" },
+                { id: 2, name: "Мужской костюм", desc: "шерсть, итальянский пошив", price: 34900, image: "https://img.joomcdn.net/8188d0822eefac3cf03f38cd8705d53e4e141935_original.jpeg", category: "suit" },
+                { id: 3, name: "Кашемировое пальто", desc: "кашемир 100%", price: 29900, image: "https://basket-04.wbbasket.ru/vol646/part64616/64616340/images/big/1.webp", category: "coat" },
+                { id: 4, name: "Свадебное платье", desc: "шелк, ручная вышивка", price: 45000, image: "https://sofoly.ru/wp-content/uploads/2025/12/02Gallery13-product-1_3-600x750.jpg", category: "wedding" },
+                { id: 5, name: "Демисезонное пальто", desc: "шерсть, кашемир", price: 32900, image: "https://basket-12.wbbasket.ru/vol1710/part171072/171072456/images/big/1.webp", category: "new" },
+                { id: 6, name: "Зимнее пальто", desc: "верблюжья шерсть", price: 38900, image: "https://avatars.mds.yandex.net/get-mpic/5209134/2a00000195e3e8fb4fd32075b08814e1eafd/orig", category: "new" },
+                { id: 7, name: "Классическое пальто", desc: "английская шерсть", price: 35900, image: "https://main-cdn.sbermegamarket.ru/big1/hlr-system/-10/030/095/673/523/47/600016055232b0.jpg", category: "new" },
+                { id: 8, name: "Вечернее платье", desc: "бархат, атлас", price: 28900, image: "https://img.joomcdn.net/2e4ee8a2c39503040bb112db6127340277461fad_original.jpeg", category: "evening" },
+                { id: 9, name: "Платье в пол", desc: "шифон, пайетки", price: 31500, image: "https://img.joomcdn.net/c586358b22b509db5f52240091b48069e14368ae_1024_1024.jpeg", category: "evening" },
+                { id: 10, name: "Коктейльное платье", desc: "кружево, атлас", price: 25900, image: "https://img.joomcdn.net/c0ed31f57e79c6f9faed6596b76438ee841ebf0a_original.jpeg", category: "evening" }
+            ],
+            portfolio: [
+                { id: 1, name: "Вечернее платье", desc: "Шелк, кружево", image: "https://cdn-sh1.vigbo.com/shops/190987/products/21460549/images/3-f854bb73c0a91c38a22bf4bbee9ef7d9.jpg", category: "evening" },
+                { id: 2, name: "Мужской костюм", desc: "Шерсть, итальянский пошив", image: "https://img.joomcdn.net/8188d0822eefac3cf03f38cd8705d53e4e141935_original.jpeg", category: "suit" },
+                { id: 3, name: "Свадебное платье", desc: "Атлас, кружево", image: "https://ir.ozone.ru/s3/multimedia-1-8/c1000/7419719276.jpg", category: "wedding" }
+            ],
+            servicesList: [
+                { id: 1, name: "Пошив женской одежды", price: "от 5 000 ₽", desc: "Индивидуальный пошив женской одежды любой сложности.", image: "https://cdn-sh1.vigbo.com/shops/190987/products/21460549/images/3-f854bb73c0a91c38a22bf4bbee9ef7d9.jpg" },
+                { id: 2, name: "Мужские костюмы на заказ", price: "от 15 000 ₽", desc: "Классические и современные мужские костюмы, сшитые по вашим меркам.", image: "https://img.joomcdn.net/8188d0822eefac3cf03f38cd8705d53e4e141935_original.jpeg" },
+                { id: 3, name: "Пошив пальто", price: "от 12 000 ₽", desc: "Элегантные и теплые пальто на любой сезон.", image: "https://basket-04.wbbasket.ru/vol646/part64616/64616340/images/big/1.webp" },
+                { id: 4, name: "Ремонт и реставрация", price: "от 500 ₽", desc: "Профессиональный ремонт одежды любой сложности.", image: "https://main-cdn.sbermegamarket.ru/big1/hlr-system/-10/030/095/673/523/47/600016055232b0.jpg" }
+            ],
+            settings: {
+                siteTitle: "Изысканный Силуэт",
+                phone: "+7 (999) 777-77-77",
+                email: "info@siluet.ru",
+                address: "Москва, ул. Тверская, 15",
+                footerText: "Премиальное ателье индивидуального пошива. Работаем с 2010 года.",
+                telegramBotToken: "8637443515:AAFVvbYdYrpDRhrbq6UsUJqEGDRWqU0XS_0",
+                telegramChatId: "1551325264"
+            }
+        };
+        
+        // Загрузка данных из localStorage
+        function loadSiteData() {
+            const saved = localStorage.getItem('siteData');
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                siteData = { ...siteData, ...parsed };
+            }
+            
+            const savedProducts = localStorage.getItem('siteData_products');
+            if (savedProducts) siteData.products = JSON.parse(savedProducts);
+            
+            const savedPortfolio = localStorage.getItem('siteData_portfolio');
+            if (savedPortfolio) siteData.portfolio = JSON.parse(savedPortfolio);
+            
+            const savedServices = localStorage.getItem('siteData_services');
+            if (savedServices) siteData.servicesList = JSON.parse(savedServices);
+            
+            localStorage.setItem('siteData', JSON.stringify(siteData));
+        }
+        
+        function saveSiteData() {
+            localStorage.setItem('siteData', JSON.stringify(siteData));
+            localStorage.setItem('siteData_products', JSON.stringify(siteData.products));
+            localStorage.setItem('siteData_portfolio', JSON.stringify(siteData.portfolio));
+            localStorage.setItem('siteData_services', JSON.stringify(siteData.servicesList));
+        }
+        
+        // ========== СИСТЕМА АВТОРИЗАЦИИ ==========
+        class UserSystem {
+            constructor() {
+                this.currentUser = null;
+                this.users = this.loadUsers();
+                this.initAdmin();
+            }
+        
+            initAdmin() {
+                const adminExists = this.users.find(u => u.email === 'admin@gmail.com');
+                if (!adminExists) {
+                    this.users.push({
+                        id: 'admin_' + Date.now(),
+                        name: 'Администратор',
+                        email: 'admin@gmail.com',
+                        phone: '+7 (999) 777-77-77',
+                        password: 'admin123',
+                        registeredAt: new Date().toISOString(),
+                        isAdmin: true,
+                        orders: [],
+                        cart: []
+                    });
+                    this.saveUsers();
+                    console.log('✅ Администратор добавлен в базу пользователей');
+                }
+            }
+        
+            loadUsers() {
+                const users = localStorage.getItem('users');
+                return users ? JSON.parse(users) : [];
+            }
+        
+            saveUsers() {
+                localStorage.setItem('users', JSON.stringify(this.users));
+            }
+        
+            register(userData) {
+                const existingUser = this.users.find(u => u.email === userData.email);
+                if (existingUser) {
+                    return { success: false, message: 'Пользователь с таким email уже существует' };
+                }
+                const newUser = {
+                    id: 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+                    name: userData.name,
+                    email: userData.email,
+                    phone: userData.phone || '',
+                    password: userData.password,
+                    registeredAt: new Date().toISOString(),
+                    isAdmin: false,
+                    orders: [],
+                    cart: []
+                };
+                this.users.push(newUser);
+                this.saveUsers();
+                this.login(userData.email, userData.password);
+                return { success: true, message: 'Регистрация успешна' };
+            }
+        
+            login(email, password) {
+                const user = this.users.find(u => u.email === email && u.password === password);
+                if (user) {
+                    this.currentUser = {
+                        id: user.id,
+                        name: user.name,
+                        email: user.email,
+                        phone: user.phone,
+                        isAdmin: user.isAdmin || false
+                    };
+                    localStorage.setItem('current_user', JSON.stringify(this.currentUser));
+                    return { success: true, message: 'Вход выполнен успешно', isAdmin: this.currentUser.isAdmin };
+                }
+                return { success: false, message: 'Неверный email или пароль' };
+            }
+        
+            logout() {
+                this.currentUser = null;
+                localStorage.removeItem('current_user');
+                return { success: true };
+            }
+        
+            isAuthenticated() {
+                if (this.currentUser) return true;
+                const savedUser = localStorage.getItem('current_user');
+                if (savedUser) {
+                    this.currentUser = JSON.parse(savedUser);
+                    return true;
+                }
+                return false;
+            }
+        
+            getCurrentUser() {
+                if (!this.currentUser) {
+                    const savedUser = localStorage.getItem('current_user');
+                    if (savedUser) this.currentUser = JSON.parse(savedUser);
+                }
+                return this.currentUser;
+            }
+        
+            updateUser(updatedData) {
+                if (this.currentUser) {
+                    this.currentUser.name = updatedData.name;
+                    this.currentUser.phone = updatedData.phone;
+                    localStorage.setItem('current_user', JSON.stringify(this.currentUser));
+                    const userIndex = this.users.findIndex(u => u.id === this.currentUser.id);
+                    if (userIndex !== -1) {
+                        this.users[userIndex].name = updatedData.name;
+                        this.users[userIndex].phone = updatedData.phone;
+                        this.saveUsers();
+                    }
+                    return { success: true };
+                }
+                return { success: false };
+            }
+        }
+        
+        // ========== СИСТЕМА КОРЗИНЫ ==========
+        class CartSystem {
+            constructor(userSystem) {
+                this.userSystem = userSystem;
+                this.items = [];
+                this.loadCart();
+                this.updateCounter();
+            }
+        
+            loadCart() {
+                const user = this.userSystem.getCurrentUser();
+                if (user) {
+                    const saved = localStorage.getItem(`cart_${user.id}`);
+                    this.items = saved ? JSON.parse(saved) : [];
+                } else {
+                    const saved = localStorage.getItem('temp_cart');
+                    this.items = saved ? JSON.parse(saved) : [];
+                }
+            }
+        
+            saveCart() {
+                const user = this.userSystem.getCurrentUser();
+                if (user) {
+                    localStorage.setItem(`cart_${user.id}`, JSON.stringify(this.items));
+                } else {
+                    localStorage.setItem('temp_cart', JSON.stringify(this.items));
+                }
+                this.updateCounter();
+            }
+        
+            addItem(product) {
+                const existing = this.items.find(i => i.id === product.id);
+                if (existing) {
+                    existing.quantity += 1;
+                } else {
+                    this.items.push({ ...product, id: Date.now() + '_' + Math.random(), quantity: 1 });
+                }
+                this.saveCart();
+                this.showNotification('Товар добавлен в корзину');
+                this.renderCart();
+            }
+        
+            removeItem(id) {
+                this.items = this.items.filter(i => i.id !== id);
+                this.saveCart();
+                this.showNotification('Товар удален');
+                this.renderCart();
+            }
+        
+            updateQuantity(id, qty) {
+                const item = this.items.find(i => i.id === id);
+                if (item) {
+                    if (qty <= 0) {
+                        this.removeItem(id);
+                    } else {
+                        item.quantity = qty;
+                        this.saveCart();
+                        this.renderCart();
+                    }
+                }
+            }
+        
+            getTotalPrice() {
+                return this.items.reduce((sum, i) => sum + (i.price * i.quantity), 0);
+            }
+        
+            getTotalItems() {
+                return this.items.reduce((sum, i) => sum + i.quantity, 0);
+            }
+        
+            updateCounter() {
+                const counter = document.getElementById('cartCounter');
+                if (counter) {
+                    const count = this.getTotalItems();
+                    counter.textContent = count;
+                    counter.style.display = count > 0 ? 'flex' : 'none';
+                }
+            }
+        
+            showNotification(msg) {
+                const notif = document.createElement('div');
+                notif.className = 'cart-notification';
+                notif.innerHTML = `<i class="fas fa-check-circle"></i> ${msg}`;
+                document.body.appendChild(notif);
+                setTimeout(() => notif.classList.add('show'), 10);
+                setTimeout(() => {
+                    notif.classList.remove('show');
+                    setTimeout(() => notif.remove(), 300);
+                }, 2000);
+            }
+        
+            renderCart() {
+                const cartItems = document.getElementById('cartItems');
+                const cartEmpty = document.getElementById('cartEmpty');
+                const cartFooter = document.getElementById('cartFooter');
+                const cartTotal = document.getElementById('cartTotalPrice');
+                if (!cartItems) return;
+                if (this.items.length === 0) {
+                    if (cartEmpty) cartEmpty.style.display = 'block';
+                    if (cartItems) cartItems.style.display = 'none';
+                    if (cartFooter) cartFooter.style.display = 'none';
+                    return;
+                }
+                if (cartEmpty) cartEmpty.style.display = 'none';
+                if (cartItems) cartItems.style.display = 'flex';
+                if (cartFooter) cartFooter.style.display = 'block';
+                let html = '';
+                this.items.forEach(item => {
+                    html += `<div class="cart-item"><div class="cart-item__image"><img src="${item.image || 'https://via.placeholder.com/80'}" alt="${item.name}"></div><div class="cart-item__info"><div class="cart-item__title">${item.name}</div><div class="cart-item__price">${item.price.toLocaleString()} ₽</div><div class="cart-item__quantity"><button class="cart-qty-minus" data-id="${item.id}">-</button><span>${item.quantity}</span><button class="cart-qty-plus" data-id="${item.id}">+</button><span class="cart-item__remove" data-id="${item.id}"><i class="fas fa-trash"></i></span></div></div></div>`;
+                });
+                cartItems.innerHTML = html;
+                if (cartTotal) cartTotal.textContent = this.getTotalPrice().toLocaleString() + ' ₽';
+                document.querySelectorAll('.cart-qty-minus').forEach(btn => {
+                    btn.addEventListener('click', () => this.updateQuantity(btn.dataset.id, this.items.find(i => i.id === btn.dataset.id)?.quantity - 1));
+                });
+                document.querySelectorAll('.cart-qty-plus').forEach(btn => {
+                    btn.addEventListener('click', () => this.updateQuantity(btn.dataset.id, this.items.find(i => i.id === btn.dataset.id)?.quantity + 1));
+                });
+                document.querySelectorAll('.cart-item__remove').forEach(btn => {
+                    btn.addEventListener('click', () => this.removeItem(btn.dataset.id));
+                });
+            }
+        
+            clearCart() {
+                this.items = [];
+                this.saveCart();
+                this.renderCart();
+            }
+        
+            checkout() {
+                const user = this.userSystem.getCurrentUser();
+                if (!user) return false;
+                const order = {
+                    id: 'order_' + Date.now(),
+                    userId: user.id,
+                    userInfo: { name: user.name, email: user.email, phone: user.phone },
+                    items: [...this.items],
+                    total: this.getTotalPrice(),
+                    date: new Date().toLocaleString('ru-RU'),
+                    status: 'новый'
+                };
+                const orders = JSON.parse(localStorage.getItem('atelier_orders') || '[]');
+                orders.push(order);
+                localStorage.setItem('atelier_orders', JSON.stringify(orders));
+                this.clearCart();
+                return order;
+            }
+        }
+        
+        // ========== ЗАГРУЗКА ЗАКАЗОВ ==========
+        function loadUserOrders() {
+            const ordersList = document.getElementById('ordersList');
+            const user = userSystem.getCurrentUser();
+            if (!ordersList || !user) return;
+            const allOrders = JSON.parse(localStorage.getItem('atelier_orders') || '[]');
+            const userOrders = allOrders.filter(o => o.userId === user.id);
+            if (userOrders.length === 0) {
+                ordersList.innerHTML = '<p style="text-align: center; color: #999;">У вас пока нет заказов</p>';
+                return;
+            }
+            let html = '';
+            userOrders.reverse().forEach(order => {
+                html += `<div class="order-item"><div class="order-item__header"><span class="order-item__id">Заказ #${order.id.slice(-8)}</span><span class="order-item__status">${order.status}</span></div><div class="order-item__total">${order.total.toLocaleString()} ₽</div><div class="order-item__date">${order.date}</div><div class="order-item__items">${order.items.length} товаров</div></div>`;
+            });
+            ordersList.innerHTML = html;
+        }
+        
+        // ========== ОТРИСОВКА ТОВАРОВ ==========
+        function renderProducts() {
+            const products = siteData.products || [];
+            
+            const popularGrid = document.getElementById('popularGrid');
+            if (popularGrid) {
+                popularGrid.innerHTML = products.slice(0, 4).map(p => `
+                    <div class="product-card">
+                        <div class="product-card__image">
+                            <img src="${p.image}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/300'">
+                            <div class="product-badge">${p.category === 'evening' ? 'Хит сезона' : p.category === 'suit' ? 'Популярное' : 'Новинка'}</div>
+                        </div>
+                        <div class="product-card__content">
+                            <h3 class="product-card__title">${p.name}</h3>
+                            <p class="product-card__desc">${p.desc}</p>
+                            <div class="product-card__price">
+                                <span class="price-current">${p.price.toLocaleString()} ₽</span>
+                            </div>
+                            <button class="add-to-cart-btn" data-name="${p.name}" data-price="${p.price}" data-image="${p.image}">
+                                <i class="fas fa-shopping-cart"></i> В корзину
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            const newGrid = document.getElementById('newGrid');
+            if (newGrid && products.length >= 7) {
+                newGrid.innerHTML = products.slice(4, 7).map(p => `
+                    <div class="product-card">
+                        <div class="product-card__image">
+                            <img src="${p.image}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/300'">
+                        </div>
+                        <div class="product-card__content">
+                            <h3 class="product-card__title">${p.name}</h3>
+                            <p class="product-card__desc">${p.desc}</p>
+                            <div class="product-card__price">
+                                <span class="price-current">${p.price.toLocaleString()} ₽</span>
+                            </div>
+                            <button class="add-to-cart-btn" data-name="${p.name}" data-price="${p.price}" data-image="${p.image}">
+                                <i class="fas fa-shopping-cart"></i> В корзину
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            const eveningGrid = document.getElementById('eveningGrid');
+            if (eveningGrid && products.length >= 10) {
+                eveningGrid.innerHTML = products.slice(7, 10).map(p => `
+                    <div class="product-card">
+                        <div class="product-card__image">
+                            <img src="${p.image}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/300'">
+                        </div>
+                        <div class="product-card__content">
+                            <h3 class="product-card__title">${p.name}</h3>
+                            <p class="product-card__desc">${p.desc}</p>
+                            <div class="product-card__price">
+                                <span class="price-current">${p.price.toLocaleString()} ₽</span>
+                            </div>
+                            <button class="add-to-cart-btn" data-name="${p.name}" data-price="${p.price}" data-image="${p.image}">
+                                <i class="fas fa-shopping-cart"></i> В корзину
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            const specialGrid = document.getElementById('specialGrid');
+            if (specialGrid && products.length >= 12) {
+                specialGrid.innerHTML = products.slice(10, 12).map(p => `
+                    <div class="special-product">
+                        <img src="${p.image}" class="special-product__img" onerror="this.src='https://via.placeholder.com/100'">
+                        <div class="special-product__info">
+                            <h4>${p.name}</h4>
+                            <p class="special-product__brand">${p.desc}</p>
+                            <p class="special-product__price">${p.price.toLocaleString()} ₽</p>
+                            <button class="add-to-cart-btn" data-name="${p.name}" data-price="${p.price}" data-image="${p.image}">
+                                <i class="fas fa-shopping-cart"></i> В корзину
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            reattachCartButtons();
+        }
+        
+        function reattachCartButtons() {
+            document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+                const newBtn = btn.cloneNode(true);
+                btn.parentNode.replaceChild(newBtn, btn);
+                newBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    cartSystem.addItem({
+                        name: this.dataset.name,
+                        price: parseInt(this.dataset.price),
+                        image: this.dataset.image
+                    });
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => this.style.transform = 'scale(1)', 200);
+                });
+            });
+        }
+        
+        // ========== АДМИН-ПАНЕЛЬ ==========
+        function renderAdminPanel() {
+            const adminContent = document.getElementById('adminPanelContent');
+            if (!adminContent) return;
+            
+            const user = userSystem.getCurrentUser();
+            if (!user || !user.isAdmin) return;
+            
+            adminContent.innerHTML = `
+                <div class="admin-section">
+                    <h3>📦 Управление товарами</h3>
+                    <button class="btn btn--small btn--primary" onclick="openAddProductModal()" style="margin-bottom: 15px;"><i class="fas fa-plus"></i> Добавить товар</button>
+                    <table class="admin-table">
+                        <thead>汽<th>ID</th><th>Фото</th><th>Название</th><th>Цена</th><th>Действия</th></thead>
+                        <tbody id="adminProductsList"></tbody>
+                    </table>
+                </div>
+                <div class="admin-section">
+                    <h3>🖼️ Управление портфолио</h3>
+                    <button class="btn btn--small btn--primary" onclick="openAddPortfolioModal()" style="margin-bottom: 15px;"><i class="fas fa-plus"></i> Добавить работу</button>
+                    <table class="admin-table">
+                        <thead>汽<th>ID</th><th>Фото</th><th>Название</th><th>Действия</th></thead>
+                        <tbody id="adminPortfolioList"></tbody>
+                    </table>
+                </div>
+                <div class="admin-section">
+                    <h3>📋 Заявки на запись</h3>
+                    <table class="admin-table">
+                        <thead>汽<th>Имя</th><th>Телефон</th><th>Услуга</th><th>Дата</th><th>Статус</th><th>Действия</th></thead>
+                        <tbody id="adminAppointmentsList"></tbody>
+                    </table>
+                </div>
+                <div class="admin-section">
+                    <h3>📦 Заказы</h3>
+                    <table class="admin-table">
+                        <thead>汽<th>ID</th><th>Клиент</th><th>Сумма</th><th>Статус</th><th>Действия</th></thead>
+                        <tbody id="adminOrdersList"></tbody>
+                    </table>
+                </div>
+                <div class="admin-section">
+                    <h3>👥 Пользователи</h3>
+                    <table class="admin-table">
+                        <thead>汽<th>Имя</th><th>Email</th><th>Телефон</th><th>Дата регистрации</th><th>Действия</th></thead>
+                        <tbody id="adminUsersList"></tbody>
+                    </table>
+                </div>
+            `;
+            
+            renderAdminProductsList();
+            renderAdminPortfolioList();
+            renderAdminAppointmentsList();
+            renderAdminOrdersList();
+            renderAdminUsersList();
+        }
+        
+        function renderAdminProductsList() {
+            const container = document.getElementById('adminProductsList');
+            if (!container) return;
+            container.innerHTML = siteData.products.map(p => `
+                <tr>
+                    <td>${p.id}</td>
+                    <td><img src="${p.image}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;" onerror="this.src='https://via.placeholder.com/40'"></td>
+                    <td><strong>${p.name}</strong><br><small>${p.desc}</small></td>
+                    <td>${p.price} ₽</td>
+                    <td>
+                        <button class="btn-edit" onclick="editProduct(${p.id})">✏️</button>
+                        <button class="btn-delete" onclick="deleteProduct(${p.id})">🗑️</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        
+        function renderAdminPortfolioList() {
+            const container = document.getElementById('adminPortfolioList');
+            if (!container) return;
+            container.innerHTML = siteData.portfolio.map(item => `
+                <tr>
+                    <td>${item.id}</td>
+                    <td><img src="${item.image}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;" onerror="this.src='https://via.placeholder.com/40'"></td>
+                    <td><strong>${item.name}</strong><br><small>${item.desc}</small></td>
+                    <td>
+                        <button class="btn-edit" onclick="editPortfolio(${item.id})">✏️</button>
+                        <button class="btn-delete" onclick="deletePortfolio(${item.id})">🗑️</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        
+        function renderAdminAppointmentsList() {
+            const container = document.getElementById('adminAppointmentsList');
+            if (!container) return;
+            const apps = JSON.parse(localStorage.getItem('atelierAppointments') || '[]');
+            container.innerHTML = apps.map(a => `
+                <tr>
+                    <td>${a.name}</td>
+                    <td>${a.phone}</td>
+                    <td>${a.service}</td>
+                    <td>${a.date || 'не указана'}</td>
+                    <td>
+                        <select onchange="updateAppStatus(${a.id}, this.value)">
+                            <option ${a.status === 'новая' ? 'selected' : ''}>новая</option>
+                            <option ${a.status === 'подтверждена' ? 'selected' : ''}>подтверждена</option>
+                            <option ${a.status === 'завершена' ? 'selected' : ''}>завершена</option>
+                        </select>
+                    </td>
+                    <td><button class="btn-delete" onclick="deleteApp(${a.id})">🗑️</button></td>
+                </tr>
+            `).join('') || '<tr><td colspan="6">Нет заявок</td></tr>';
+        }
+        
+        function renderAdminOrdersList() {
+            const container = document.getElementById('adminOrdersList');
+            if (!container) return;
+            const orders = JSON.parse(localStorage.getItem('atelier_orders') || '[]');
+            container.innerHTML = orders.map(o => `
+                <tr>
+                    <td>${o.id.slice(-8)}</td>
+                    <td>${o.userInfo?.name || 'Гость'}</td>
+                    <td>${o.total} ₽</td>
+                    <td>
+                        <select onchange="updateOrderStatus('${o.id}', this.value)">
+                            <option ${o.status === 'новый' ? 'selected' : ''}>новый</option>
+                            <option ${o.status === 'в обработке' ? 'selected' : ''}>в обработке</option>
+                            <option ${o.status === 'готов' ? 'selected' : ''}>готов</option>
+                            <option ${o.status === 'выполнен' ? 'selected' : ''}>выполнен</option>
+                        </select>
+                    </td>
+                    <td><button class="btn-delete" onclick="deleteOrder('${o.id}')">🗑️</button></td>
+                </tr>
+            `).join('') || '<tr><td colspan="5">Нет заказов</td></tr>';
+        }
+        
+        function renderAdminUsersList() {
+            const container = document.getElementById('adminUsersList');
+            if (!container) return;
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            container.innerHTML = users.filter(u => !u.isAdmin).map(u => `
+                <tr>
+                    <td>${u.name}</td>
+                    <td>${u.email}</td>
+                    <td>${u.phone || 'не указан'}</td>
+                    <td>${new Date(u.registeredAt || Date.now()).toLocaleDateString()}</td>
+                    <td><button class="btn-delete" onclick="deleteUser('${u.id}')">🗑️</button></td>
+                </tr>
+            `).join('') || '<tr><td colspan="5">Нет пользователей</td></tr>';
+        }
+        
+        // CRUD операции
+        window.openAddProductModal = function() {
+            const name = prompt('Введите название товара:');
+            if (!name) return;
+            const desc = prompt('Введите описание:');
+            const price = parseInt(prompt('Введите цену:'));
+            const image = prompt('Введите URL фото:', 'https://via.placeholder.com/300');
+            const category = prompt('Категория (evening/suit/coat/wedding/new):', 'new');
+            
+            const newProduct = {
+                id: Date.now(),
+                name: name,
+                desc: desc,
+                price: price,
+                image: image,
+                category: category
+            };
+            siteData.products.push(newProduct);
+            saveSiteData();
+            renderProducts();
+            renderAdminProductsList();
+            alert('✅ Товар добавлен!');
+        };
+        
+        window.editProduct = function(id) {
+            const p = siteData.products.find(x => x.id === id);
+            const newName = prompt('Название:', p.name);
+            if (newName) p.name = newName;
+            const newDesc = prompt('Описание:', p.desc);
+            if (newDesc) p.desc = newDesc;
+            const newPrice = parseInt(prompt('Цена:', p.price));
+            if (!isNaN(newPrice)) p.price = newPrice;
+            const newImage = prompt('URL фото:', p.image);
+            if (newImage) p.image = newImage;
+            const newCategory = prompt('Категория (evening/suit/coat/wedding/new):', p.category);
+            if (newCategory) p.category = newCategory;
+            
+            saveSiteData();
+            renderProducts();
+            renderAdminProductsList();
+            alert('✅ Товар обновлен!');
+        };
+        
+        window.deleteProduct = function(id) {
+            if (confirm('Удалить товар?')) {
+                siteData.products = siteData.products.filter(p => p.id !== id);
+                saveSiteData();
+                renderProducts();
+                renderAdminProductsList();
+                alert('✅ Товар удален');
+            }
+        };
+        
+        window.openAddPortfolioModal = function() {
+            const name = prompt('Введите название работы:');
+            if (!name) return;
+            const desc = prompt('Введите описание:');
+            const image = prompt('Введите URL фото:', 'https://via.placeholder.com/300');
+            const category = prompt('Категория (evening/wedding/suit/coat):', 'evening');
+            
+            const newItem = {
+                id: Date.now(),
+                name: name,
+                desc: desc,
+                image: image,
+                category: category
+            };
+            siteData.portfolio.push(newItem);
+            saveSiteData();
+            renderAdminPortfolioList();
+            alert('✅ Работа добавлена!');
+        };
+        
+        window.editPortfolio = function(id) {
+            const item = siteData.portfolio.find(x => x.id === id);
+            const newName = prompt('Название:', item.name);
+            if (newName) item.name = newName;
+            const newDesc = prompt('Описание:', item.desc);
+            if (newDesc) item.desc = newDesc;
+            const newImage = prompt('URL фото:', item.image);
+            if (newImage) item.image = newImage;
+            
+            saveSiteData();
+            renderAdminPortfolioList();
+            alert('✅ Работа обновлена!');
+        };
+        
+        window.deletePortfolio = function(id) {
+            if (confirm('Удалить работу?')) {
+                siteData.portfolio = siteData.portfolio.filter(p => p.id !== id);
+                saveSiteData();
+                renderAdminPortfolioList();
+                alert('✅ Работа удалена');
+            }
+        };
+        
+        window.updateAppStatus = function(id, status) {
+            let apps = JSON.parse(localStorage.getItem('atelierAppointments') || '[]');
+            const app = apps.find(a => a.id === id);
+            if (app) app.status = status;
+            localStorage.setItem('atelierAppointments', JSON.stringify(apps));
+            renderAdminAppointmentsList();
+            alert('Статус обновлен');
+        };
+        
+        window.deleteApp = function(id) {
+            if (confirm('Удалить заявку?')) {
+                let apps = JSON.parse(localStorage.getItem('atelierAppointments') || '[]');
+                apps = apps.filter(a => a.id !== id);
+                localStorage.setItem('atelierAppointments', JSON.stringify(apps));
+                renderAdminAppointmentsList();
+                alert('Заявка удалена');
+            }
+        };
+        
+        window.updateOrderStatus = function(id, status) {
+            let orders = JSON.parse(localStorage.getItem('atelier_orders') || '[]');
+            const order = orders.find(o => o.id === id);
+            if (order) order.status = status;
+            localStorage.setItem('atelier_orders', JSON.stringify(orders));
+            renderAdminOrdersList();
+            alert('Статус обновлен');
+        };
+        
+        window.deleteOrder = function(id) {
+            if (confirm('Удалить заказ?')) {
+                let orders = JSON.parse(localStorage.getItem('atelier_orders') || '[]');
+                orders = orders.filter(o => o.id !== id);
+                localStorage.setItem('atelier_orders', JSON.stringify(orders));
+                renderAdminOrdersList();
+                alert('Заказ удален');
+            }
+        };
+        
+        window.deleteUser = function(id) {
+            if (confirm('Удалить пользователя?')) {
+                let users = JSON.parse(localStorage.getItem('users') || '[]');
+                users = users.filter(u => u.id !== id);
+                localStorage.setItem('users', JSON.stringify(users));
+                renderAdminUsersList();
+                alert('Пользователь удален');
+            }
+        };
+        
+        // ========== ОБНОВЛЕНИЕ ИНТЕРФЕЙСА ==========
+        function updateUserInterface() {
+            const user = userSystem.getCurrentUser();
+            const userName = document.getElementById('userName');
+            const dropdownUserName = document.getElementById('dropdownUserName');
+            const loginLink = document.getElementById('loginLink');
+            const registerLink = document.getElementById('registerLink');
+            const profileLink = document.getElementById('profileLink');
+            const ordersLink = document.getElementById('ordersLink');
+            const logoutLink = document.getElementById('logoutLink');
+            const adminTabBtn = document.getElementById('adminTabBtn');
+            const adminPanelLink = document.getElementById('adminPanelLink');
+            const profileName = document.getElementById('profileName');
+            const profileEmail = document.getElementById('profileEmail');
+            const profilePhone = document.getElementById('profilePhone');
+
+            if (user && userName) {
+                userName.textContent = user.name.split(' ')[0];
+                if (dropdownUserName) dropdownUserName.textContent = user.name;
+                if (loginLink) loginLink.style.display = 'none';
+                if (registerLink) registerLink.style.display = 'none';
+                if (profileLink) profileLink.style.display = 'flex';
+                if (ordersLink) ordersLink.style.display = 'flex';
+                if (logoutLink) logoutLink.style.display = 'flex';
+                if (adminPanelLink && user.isAdmin) adminPanelLink.style.display = 'flex';
+                if (adminPanelLink && !user.isAdmin) adminPanelLink.style.display = 'none';
+                if (adminTabBtn && user.isAdmin) adminTabBtn.style.display = 'flex';
+                if (adminTabBtn && !user.isAdmin) adminTabBtn.style.display = 'none';
+                if (profileName) profileName.value = user.name;
+                if (profileEmail) profileEmail.value = user.email;
+                if (profilePhone) profilePhone.value = user.phone || '';
+            } else {
+                if (userName) userName.textContent = 'Войти';
+                if (dropdownUserName) dropdownUserName.textContent = 'Гость';
+                if (loginLink) loginLink.style.display = 'flex';
+                if (registerLink) registerLink.style.display = 'flex';
+                if (profileLink) profileLink.style.display = 'none';
+                if (ordersLink) ordersLink.style.display = 'none';
+                if (logoutLink) logoutLink.style.display = 'none';
+                if (adminPanelLink) adminPanelLink.style.display = 'none';
+                if (adminTabBtn) adminTabBtn.style.display = 'none';
+            }
+        }
+        
+        // ========== МОДАЛЬНЫЕ ОКНА ==========
+        function showAuthModal(type = 'login') {
+            const authModal = document.getElementById('authModal');
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const modalTitle = document.getElementById('authModalTitle');
+            const switchBtn = document.getElementById('switchAuthBtn');
+            const switchText = document.getElementById('switchAuthText');
+        
+            if (type === 'login') {
+                loginForm.style.display = 'flex';
+                registerForm.style.display = 'none';
+                modalTitle.textContent = 'Вход в личный кабинет';
+                switchText.textContent = 'Нет аккаунта?';
+                switchBtn.textContent = 'Зарегистрироваться';
+            } else {
+                loginForm.style.display = 'none';
+                registerForm.style.display = 'flex';
+                modalTitle.textContent = 'Регистрация';
+                switchText.textContent = 'Уже есть аккаунт?';
+                switchBtn.textContent = 'Войти';
+            }
+            authModal.classList.add('show');
+        }
+        
+        function showProfileModal(tab = 'profile') {
+            const profileModal = document.getElementById('profileModal');
+            const tabs = document.querySelectorAll('.profile-tab');
+            const contents = document.querySelectorAll('.profile-tab-content');
+            tabs.forEach(t => {
+                t.classList.remove('active');
+                if (t.dataset.tab === tab) t.classList.add('active');
+            });
+            contents.forEach(c => c.classList.remove('active'));
+            document.getElementById(`${tab}Tab`).classList.add('active');
+            if (tab === 'orders') loadUserOrders();
+            if (tab === 'admin' && userSystem.getCurrentUser()?.isAdmin) renderAdminPanel();
+            profileModal.classList.add('show');
+        }
+        
+        // ========== ЗАГРУЗКА КОНТЕНТА ИЗ АДМИНКИ ==========
+        function loadIndexContent() {
+            const saved = localStorage.getItem('siteData');
+            if (saved) {
+                const data = JSON.parse(saved);
+                const sections = data.pages?.index?.sections;
+                if (sections) {
+                    const heroBadge = document.getElementById('heroBadge');
+                    const heroTitle = document.getElementById('heroTitle');
+                    const heroSubtitle = document.getElementById('heroSubtitle');
+                    const popularTitle = document.getElementById('popularTitle');
+                    const popularSubtitle = document.getElementById('popularSubtitle');
+                    const newTitle = document.getElementById('newTitle');
+                    const newSubtitle = document.getElementById('newSubtitle');
+                    const eveningTitle = document.getElementById('eveningTitle');
+                    const eveningSubtitle = document.getElementById('eveningSubtitle');
+                    
+                    if (heroBadge) heroBadge.textContent = sections.hero?.badge || 'Премиум ателье';
+                    if (heroTitle) heroTitle.innerHTML = sections.hero?.title || 'Индивидуальный<br><span>пошив на заказ</span>';
+                    if (heroSubtitle) heroSubtitle.textContent = sections.hero?.subtitle || 'Создайте свою уникальную вещь с помощью наших мастеров';
+                    if (popularTitle) popularTitle.textContent = sections.popularTitle || 'Самые популярные сейчас';
+                    if (popularSubtitle) popularSubtitle.textContent = sections.popularSubtitle || 'Что чаще всего заказывают в этом сезоне';
+                    if (newTitle) newTitle.textContent = sections.newTitle || 'Новинки';
+                    if (newSubtitle) newSubtitle.textContent = sections.newSubtitle || 'Свежие поступления в нашем портфолио';
+                    if (eveningTitle) eveningTitle.textContent = sections.eveningTitle || 'Для вечерних прогулок';
+                    if (eveningSubtitle) eveningSubtitle.textContent = sections.eveningSubtitle || 'Элегантные вечерние образы';
+                }
+            }
+        }
+        
+        // ========== ИНИЦИАЛИЗАЦИЯ ==========
+        loadSiteData();
+        const userSystem = new UserSystem();
+        const cartSystem = new CartSystem(userSystem);
+        
+        renderProducts();
+        
+        const cartBtn = document.getElementById('cartBtn');
+        const cartModal = document.getElementById('cartModal');
+        const closeCartModal = document.getElementById('closeCartModal');
+        const closeAuthModal = document.getElementById('closeAuthModal');
+        const closeProfileModal = document.getElementById('closeProfileModal');
+        const profileModal = document.getElementById('profileModal');
+        const authModal = document.getElementById('authModal');
+        
+        if (cartBtn) cartBtn.onclick = () => { cartSystem.renderCart(); cartModal.classList.add('show'); };
+        if (closeCartModal) closeCartModal.onclick = () => cartModal.classList.remove('show');
+        if (closeAuthModal) closeAuthModal.onclick = () => authModal.classList.remove('show');
+        if (closeProfileModal) closeProfileModal.onclick = () => profileModal.classList.remove('show');
+        
+        window.onclick = (e) => {
+            if (e.target === cartModal) cartModal.classList.remove('show');
+            if (e.target === authModal) authModal.classList.remove('show');
+            if (e.target === profileModal) profileModal.classList.remove('show');
+        };
+        
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const switchAuthBtn = document.getElementById('switchAuthBtn');
+        
+        if (loginForm) {
+            loginForm.onsubmit = (e) => {
+                e.preventDefault();
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+                const result = userSystem.login(email, password);
+                if (result.success) {
+                    authModal.classList.remove('show');
+                    updateUserInterface();
+                    cartSystem.loadCart();
+                    cartSystem.renderCart();
+                    alert(result.isAdmin ? 'Добро пожаловать, Администратор! В профиле появилась вкладка "Админ-панель".' : 'Добро пожаловать!');
+                } else {
+                    alert(result.message);
+                }
+            };
+        }
+        
+        if (registerForm) {
+            registerForm.onsubmit = (e) => {
+                e.preventDefault();
+                const password = document.getElementById('regPassword').value;
+                const confirm = document.getElementById('regConfirmPassword').value;
+                if (password !== confirm) {
+                    alert('Пароли не совпадают');
+                    return;
+                }
+                const userData = {
+                    name: document.getElementById('regName').value,
+                    email: document.getElementById('regEmail').value,
+                    phone: document.getElementById('regPhone').value,
+                    password: password
+                };
+                const result = userSystem.register(userData);
+                if (result.success) {
+                    authModal.classList.remove('show');
+                    updateUserInterface();
+                    cartSystem.loadCart();
+                    alert('Регистрация успешна!');
+                } else {
+                    alert(result.message);
+                }
+            };
+        }
+        
+        if (switchAuthBtn) {
+            switchAuthBtn.onclick = () => {
+                const isLogin = loginForm.style.display !== 'none';
+                showAuthModal(isLogin ? 'register' : 'login');
+            };
+        }
+        
+        const profileForm = document.getElementById('profileForm');
+        if (profileForm) {
+            profileForm.onsubmit = (e) => {
+                e.preventDefault();
+                const result = userSystem.updateUser({
+                    name: document.getElementById('profileName').value,
+                    phone: document.getElementById('profilePhone').value
+                });
+                if (result.success) {
+                    updateUserInterface();
+                    alert('Данные сохранены');
+                }
+            };
+        }
+        
+        document.getElementById('loginLink')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('userDropdown').classList.remove('show');
+            showAuthModal('login');
+        });
+        
+        document.getElementById('registerLink')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('userDropdown').classList.remove('show');
+            showAuthModal('register');
+        });
+        
+        document.getElementById('profileLink')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('userDropdown').classList.remove('show');
+            if (userSystem.isAuthenticated()) {
+                showProfileModal('profile');
+            } else {
+                showAuthModal('login');
+            }
+        });
+        
+        document.getElementById('ordersLink')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('userDropdown').classList.remove('show');
+            if (userSystem.isAuthenticated()) {
+                showProfileModal('orders');
+            } else {
+                showAuthModal('login');
+            }
+        });
+        
+        document.getElementById('logoutLink')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            userSystem.logout();
+            document.getElementById('userDropdown').classList.remove('show');
+            updateUserInterface();
+            cartSystem.loadCart();
+            cartSystem.renderCart();
+            alert('Вы вышли из аккаунта');
+        });
+        
+        const userMenuBtn = document.getElementById('userMenuBtn');
+        const userDropdown = document.getElementById('userDropdown');
+        if (userMenuBtn && userDropdown) {
+            userMenuBtn.onclick = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                userDropdown.classList.toggle('show');
+            };
+            document.addEventListener('click', (e) => {
+                if (!userMenuBtn.contains(e.target) && !userDropdown.contains(e.target)) {
+                    userDropdown.classList.remove('show');
+                }
+            });
+        }
+        
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        if (checkoutBtn) {
+            checkoutBtn.onclick = () => {
+                if (!userSystem.isAuthenticated()) {
+                    cartModal.classList.remove('show');
+                    showAuthModal('login');
+                    return;
+                }
+                const order = cartSystem.checkout();
+                if (order) {
+                    cartModal.classList.remove('show');
+                    alert(`Заказ оформлен! Номер заказа: ${order.id.slice(-8)}`);
+                }
+            };
+        }
+        
+        const mobileToggle = document.getElementById('mobileNavToggle');
+        let mobileMenu = null;
+        function createMobileMenu() {
+            if (mobileMenu) return;
+            mobileMenu = document.createElement('div');
+            mobileMenu.className = 'mobile-menu';
+            const links = document.querySelectorAll('.nav a');
+            links.forEach(link => {
+                const newLink = document.createElement('a');
+                newLink.href = link.href;
+                newLink.textContent = link.textContent;
+                if (link.classList.contains('active')) newLink.classList.add('active');
+                mobileMenu.appendChild(newLink);
+            });
+            document.body.appendChild(mobileMenu);
+        }
+        if (mobileToggle) {
+            mobileToggle.onclick = (e) => {
+                e.stopPropagation();
+                createMobileMenu();
+                mobileMenu.style.display = mobileMenu.style.display === 'flex' ? 'none' : 'flex';
+            };
+            document.addEventListener('click', (e) => {
+                if (mobileMenu && mobileMenu.style.display === 'flex' && !mobileToggle.contains(e.target) && !mobileMenu.contains(e.target)) {
+                    mobileMenu.style.display = 'none';
+                }
+            });
+        }
+        
+        const supportWidget = document.getElementById('telegram-support');
+        const toggleSupport = document.getElementById('toggleSupport');
+        if (supportWidget && toggleSupport) {
+            toggleSupport.onclick = () => supportWidget.classList.toggle('expanded');
+        }
+        
+        const appointmentForm = document.getElementById('appointmentForm');
+        const openModalBtn = document.getElementById('openModalBtn');
+        const heroBtn = document.getElementById('heroBtn');
+        const appointmentModal = document.getElementById('appointmentModal');
+        const closeModalBtn = document.querySelector('#appointmentModal .modal__close');
+        
+        function openAppointmentModal() { appointmentModal.classList.add('show'); document.body.style.overflow = 'hidden'; }
+        function closeAppointmentModal() { appointmentModal.classList.remove('show'); document.body.style.overflow = 'auto'; }
+        
+        if (openModalBtn) openModalBtn.onclick = (e) => { e.preventDefault(); openAppointmentModal(); };
+        if (heroBtn) heroBtn.onclick = (e) => { e.preventDefault(); openAppointmentModal(); };
+        if (closeModalBtn) closeModalBtn.onclick = closeAppointmentModal;
+        window.onclick = (e) => { if (e.target === appointmentModal) closeAppointmentModal(); };
+        
+        if (appointmentForm) {
+            const phoneInput = document.getElementById('phone');
+            if (phoneInput) {
+                phoneInput.oninput = function(e) {
+                    let x = e.target.value.replace(/\D/g, '').match(/(\d{0,1})(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/);
+                    e.target.value = !x[2] ? x[1] : '+7 (' + x[2] + ') ' + (x[3] || '') + (x[4] ? '-' + x[4] : '') + (x[5] ? '-' + x[5] : '');
+                };
+            }
+            appointmentForm.onsubmit = async (e) => {
+                e.preventDefault();
+                const name = document.getElementById('name').value.trim();
+                const phone = document.getElementById('phone').value.trim();
+                if (!name || !phone) {
+                    alert('Заполните имя и телефон');
+                    return;
+                }
+                const formData = {
+                    name: name,
+                    phone: phone,
+                    email: document.getElementById('email').value || 'не указан',
+                    service: document.getElementById('service').value,
+                    date: document.getElementById('date').value || 'не указана',
+                    time: document.getElementById('time').value || 'не указано',
+                    comment: document.getElementById('comment').value || 'нет'
+                };
+                const sent = await TelegramNotifier.sendAppointment(formData);
+                if (sent) {
+                    alert('Спасибо! Заявка отправлена');
+                    appointmentForm.reset();
+                    closeAppointmentModal();
+                } else {
+                    alert('Ошибка отправки. Попробуйте позже');
+                }
+            };
+        }
+        
+        const sendBtn = document.getElementById('sendSupportMessage');
+        const input = document.getElementById('supportMessageInput');
+        const messagesContainer = document.getElementById('supportMessages');
+        
+        let userId = localStorage.getItem('tg_user_id');
+        if (!userId) {
+            userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+            localStorage.setItem('tg_user_id', userId);
+        }
+        
+        function addMessage(text, type) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `message message--${type}`;
+            msgDiv.innerHTML = `<div class="message__avatar"><i class="fas ${type === 'bot' ? 'fa-robot' : 'fa-user'}"></i></div><div class="message__content">${escapeHtml(text)}</div>`;
+            if (messagesContainer) {
+                messagesContainer.appendChild(msgDiv);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+        }
+        
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+        
+        if (sendBtn && input) {
+            const newSendBtn = sendBtn.cloneNode(true);
+            sendBtn.parentNode.replaceChild(newSendBtn, sendBtn);
+            
+            newSendBtn.onclick = async () => {
+                const text = input.value.trim();
+                if (!text) return;
+                
+                addMessage(text, 'user');
+                input.value = '';
+                
+                try {
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 5000);
+                    
+                    const url = `https://api.telegram.org/bot${TELEGRAM_CONFIG.BOT_TOKEN}/sendMessage`;
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            chat_id: TELEGRAM_CONFIG.CHAT_ID,
+                            text: `💬 Сообщение из чата поддержки\n\n👤 ID: ${userId}\n💭 ${text}\n🕐 ${new Date().toLocaleString('ru-RU')}`,
+                            parse_mode: 'HTML'
+                        }),
+                        signal: controller.signal
+                    });
+                    
+                    clearTimeout(timeoutId);
+                    
+                    if (response.ok) {
+                        setTimeout(() => addMessage('✅ Сообщение отправлено администратору. Ответ придет в ближайшее время.', 'bot'), 500);
+                    } else {
+                        addMessage('⚠️ Сообщение сохранено локально. Администратор ответит при следующей проверке.', 'bot');
+                        saveLocalMessage(text);
+                    }
+                } catch (error) {
+                    console.log('Telegram недоступен, сообщение сохранено локально');
+                    addMessage('📝 Сообщение сохранено. Администратор ответит, когда появится связь.', 'bot');
+                    saveLocalMessage(text);
+                }
+            };
+            
+            input.onkeypress = (e) => { 
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    newSendBtn.click();
+                }
+            };
+        }
+        
+        function saveLocalMessage(text) {
+            let savedMessages = JSON.parse(localStorage.getItem('support_messages') || '[]');
+            savedMessages.push({
+                text: text,
+                userId: userId,
+                time: new Date().toLocaleString('ru-RU'),
+                sent: false
+            });
+            localStorage.setItem('support_messages', JSON.stringify(savedMessages));
+        }
+        
+        document.getElementById('adminTabBtn')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            const user = userSystem.getCurrentUser();
+            if (user && user.isAdmin) {
+                document.querySelectorAll('.profile-tab').forEach(t => t.classList.remove('active'));
+                document.getElementById('adminTabBtn').classList.add('active');
+                document.querySelectorAll('.profile-tab-content').forEach(c => c.classList.remove('active'));
+                document.getElementById('adminTab').classList.add('active');
+                renderAdminPanel();
+            } else {
+                alert('Доступ только для администратора');
+            }
+        });
+        
+        function addAdminEditButtons() {
+            if (!userSystem.getCurrentUser()?.isAdmin) return;
+            document.querySelectorAll('.product-card').forEach((card, index) => {
+                const editBtn = document.createElement('button');
+                editBtn.className = 'admin-edit-btn';
+                editBtn.innerHTML = '<i class="fas fa-edit"></i>';
+                editBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    const product = siteData.products[index];
+                    if (product) editProduct(product.id);
+                };
+                card.style.position = 'relative';
+                card.appendChild(editBtn);
+            });
+        }
+        
+        const observer = new MutationObserver(() => {
+            addAdminEditButtons();
+        });
+        observer.observe(document.getElementById('popularGrid'), { childList: true, subtree: true });
+        
+        updateUserInterface();
+        loadIndexContent();
+    </script>
+</body>
+</html>

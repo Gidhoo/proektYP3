@@ -1,2 +1,0 @@
-# proektYP3
-test
